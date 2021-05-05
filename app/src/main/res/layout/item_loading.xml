@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="4dp"
+        android:padding="12dp">
+
+        <TextView
+            android:focusable="false"
+            android:id="@+id/tvArEnergy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_toLeftOf="@id/cbLoaded"
+            android:text="Customer:"
+            android:textColor="@color/colorDarkGray" />
+
+        <TextView
+            android:focusable="false"
+            android:id="@+id/tvInNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvArEnergy"
+            android:layout_marginTop="8dp"
+            android:layout_toLeftOf="@id/cbLoaded"
+            android:text="IN #:"
+            android:textColor="@color/colorDarkGray"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView1" />
+
+        <TextView
+            android:focusable="false"
+            android:id="@+id/tvJobSite"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvInNumber"
+            android:layout_marginTop="8dp"
+            android:text="Job Site:"
+            android:layout_toStartOf="@id/cbLoaded"
+            android:textColor="@color/colorDarkGray"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+        <TextView
+            android:focusable="false"
+            android:id="@+id/tvJobSiteAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvJobSite"
+            android:layout_marginTop="8dp"
+            android:text="Job Site Address:"
+            android:textColor="@color/colorDarkGray"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+        <TextView
+            android:focusable="false"
+            android:id="@+id/tvItemName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvJobSiteAddress"
+            android:layout_marginTop="8dp"
+            android:text="Item Name:"
+            android:textColor="@color/colorDarkGray"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+        <TextView
+            android:focusable="false"
+            android:id="@+id/tvPieceNo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvItemName"
+            android:layout_marginTop="8dp"
+            android:text="Piece #:"
+            android:textColor="@color/colorDarkGray"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+        <CheckBox
+            android:id="@+id/cbLoaded"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="Loaded"
+            android:textColor="@color/colorDarkGray" />
+
+        <TextView
+            android:layout_below="@id/cbLoaded"
+            android:layout_alignParentEnd="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Item Info"
+            android:padding="5dp"
+            android:id="@+id/itemInfo"
+            android:focusable="false"
+            android:layout_marginTop="5dp"
+            android:textColor="@android:color/white"
+            android:background="@drawable/bt_back"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

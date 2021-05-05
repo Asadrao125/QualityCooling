@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="240dp"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/bt_jobs"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/bt_back_dash"
+            android:text="JOBS"
+            android:textAllCaps="false"
+            android:textColor="#555555" />
+
+        <Button
+            android:id="@+id/bt_cutting"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/bt_back_dash"
+            android:text="Cutting"
+            android:textAllCaps="false"
+            android:textColor="#555555" />
+
+        <Button
+            android:id="@+id/bt_forming"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/bt_back_dash"
+            android:text="Forming"
+            android:textAllCaps="false"
+            android:textColor="#555555" />
+
+        <Button
+            android:id="@+id/bt_loading"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/bt_back_dash"
+            android:text="Loading"
+            android:textAllCaps="false"
+            android:textColor="#555555" />
+
+        <Button
+            android:id="@+id/bt_item_info"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/bt_back_dash"
+            android:text="Item Info"
+            android:textAllCaps="false"
+            android:textColor="#555555" />
+    </LinearLayout>
+
+</RelativeLayout>

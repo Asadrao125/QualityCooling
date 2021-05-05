@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="sjcomputers.com.qualitycooling">
+
+    <application
+        android:usesCleartextTraffic="true"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".SplashActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".LoginActivity"
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="adjustNothing" />
+
+        <activity
+            android:name=".Admin.JobActivity"
+            android:configChanges="orientation|screenSize" />
+
+        <activity
+            android:name=".Admin.OrderItemActivity"
+            android:configChanges="orientation|screenSize" />
+
+        <activity
+            android:name=".Driver.DriverOrderActivity"
+            android:configChanges="orientation|screenSize" />
+
+        <activity
+            android:name=".DocumentActivity"
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="adjustNothing" />
+
+        <activity
+            android:name=".Util.ImageViewActivity"
+            android:configChanges="orientation|screenSize" />
+
+        <activity
+            android:name=".Util.RotateImageActivity"
+            android:configChanges="orientation|screenSize" />
+
+        <activity
+            android:name=".Customer.CustomerActivity"
+            android:configChanges="orientation|screenSize" />
+
+        <activity
+            android:name=".Customer.CustomerOrderActivity"
+            android:configChanges="orientation|screenSize" />
+
+        <activity
+            android:name=".Customer.NewOrderActivity"
+            android:configChanges="orientation|screenSize" />
+
+        <activity
+            android:name=".Customer.NewJobSiteActivity"
+            android:configChanges="orientation|screenSize" />
+
+        <activity
+            android:name=".Customer.CustomerDocumentActivity"
+            android:configChanges="orientation|screenSize" />
+
+        <activity
+            android:name=".Customer.CustomerInvoiceActivity"
+            android:configChanges="orientation|screenSize" />
+
+        <activity
+            android:name=".Customer.CustomerTicketActivity"
+            android:configChanges="orientation|screenSize" />
+
+        <activity
+            android:name=".Customer.NewTicketActivity"
+            android:configChanges="orientation|screenSize" />
+
+        <activity
+            android:name=".Customer.SettingActivity"
+            android:configChanges="orientation|screenSize" />
+
+        <activity
+            android:name=".Customer.TicketDetailActivity"
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="adjustPan" />
+
+        <activity
+            android:name=".Driver.SignatureActivity"
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="stateHidden" />
+
+        <activity
+            android:name=".Driver.DriverItemActivity"
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="adjustPan" />
+
+        <activity
+            android:name=".Driver.NewItemActivity"
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="adjustPan" />
+
+        <activity
+            android:name=".DashboardActivity"
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="adjustPan" />
+
+        <activity
+            android:name=".QRScannerActivity"
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="adjustPan" />
+
+        <activity
+            android:name=".LoadingActivity"
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="adjustPan" />
+
+        <activity
+            android:name=".ItemInfoActivity"
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="adjustPan" />
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBASkgI8EM7Bt9W0q2gxuj7zjipSznX8EE" />
+
+        <provider
+            android:name=".Util.GenericFileProvider"
+            android:authorities="${applicationId}.my.package.name.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
+
+    </application>
+    <uses-feature android:name="android.hardware.location.gps" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+
+</manifest>

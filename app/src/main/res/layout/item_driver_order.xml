@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_weight="3">
+
+            <Button
+                android:id="@+id/pick_bt"
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
+                android:layout_weight="3"
+                android:background="@drawable/bt_back"
+                android:text="Pick"
+                android:textAllCaps="false"
+                android:textColor="#ffffff"
+                android:textSize="12sp" />
+        </RelativeLayout>
+
+
+        <TextView
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:background="#555555"
+            android:text="TextView" />
+
+        <TextView
+            android:id="@+id/d_textView11"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:gravity="left|center_vertical"
+            android:maxLines="2"
+            android:paddingLeft="4dp"
+            android:text="12345"
+            android:textSize="12sp" />
+
+        <TextView
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:background="#555555"
+            android:text="TextView" />
+
+        <TextView
+            android:id="@+id/d_textView1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="4"
+            android:gravity="center_vertical|center_horizontal"
+            android:maxLines="1"
+            android:paddingLeft="4dp"
+            android:text="1"
+            android:textSize="12sp" />
+
+        <TextView
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:background="#555555"
+            android:text="TextView" />
+
+        <TextView
+            android:id="@+id/d_textView2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:gravity="left|center_vertical"
+            android:maxLines="1"
+            android:paddingLeft="4dp"
+            android:text="00020664" />
+
+        <TextView
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:background="#555555"
+            android:text="TextView" />
+
+        <TextView
+            android:id="@+id/d_textView4"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:gravity="left|center_vertical"
+            android:maxLines="1"
+            android:paddingLeft="4dp"
+            android:text="AIR TECH COOLING"
+            android:textSize="12sp" />
+
+        <TextView
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:background="#555555"
+            android:text="TextView" />
+
+        <!--<TextView-->
+        <!--android:id="@+id/d_textView5"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_weight="3"-->
+        <!--android:gravity="left|center_vertical"-->
+        <!--android:maxLines="1"-->
+        <!--android:paddingLeft="4dp"-->
+        <!--android:text="205 WATER ST."-->
+        <!--android:textSize="12sp" />-->
+
+        <!--<TextView-->
+        <!--android:layout_width="0.5dp"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:background="#555555"-->
+        <!--android:text="TextView" />-->
+
+        <TextView
+            android:id="@+id/d_textView6"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:gravity="left|center_vertical"
+            android:maxLines="1"
+            android:paddingLeft="4dp"
+            android:text="Sam do email"
+            android:textSize="12sp" />
+
+        <TextView
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:background="#555555"
+            android:text="TextView" />
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="6"
+            android:gravity="left|center_vertical">
+
+            <TextView
+                android:id="@+id/d_textView7"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toLeftOf="@+id/clipboard_iv"
+                android:gravity="left|center_vertical"
+                android:maxLines="3"
+                android:paddingLeft="4dp"
+                android:text="1-13"
+                android:textSize="12sp" />
+
+            <ImageView
+                android:id="@+id/clipboard_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="0dp"
+                android:adjustViewBounds="true"
+                android:src="@drawable/clipboard"
+                android:textAllCaps="false"
+                android:textColor="#ffffff" />
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:background="#555555"
+            android:text="TextView" />
+
+        <TextView
+            android:id="@+id/d_textView8"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:gravity="left|center_vertical"
+            android:maxLines="1"
+            android:paddingLeft="4dp"
+            android:text="Ready for Delivery"
+            android:textSize="12sp" />
+
+        <TextView
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:background="#555555"
+            android:text="TextView" />
+
+        <TextView
+            android:id="@+id/d_textView9"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:gravity="left|center_vertical"
+            android:maxLines="1"
+            android:paddingLeft="4dp"
+            android:text="Un Billed"
+            android:textSize="12sp" />
+
+        <TextView
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:background="#555555"
+            android:text="TextView" />
+
+        <TextView
+            android:id="@+id/d_textView10"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:gravity="left|center_vertical"
+            android:maxLines="2"
+            android:paddingLeft="4dp"
+            android:text="12345"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView90"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#555555" />
+
+</LinearLayout>
