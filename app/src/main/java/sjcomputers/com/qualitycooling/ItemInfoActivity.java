@@ -12,9 +12,11 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -65,7 +67,6 @@ public class ItemInfoActivity extends AppCompatActivity {
             itemInfo(scanned_value);
             itemList(scanned_value);
         }
-
     }
 
     private void itemInfo(String value) {
@@ -131,14 +132,16 @@ public class ItemInfoActivity extends AppCompatActivity {
                                 itemModelArrayList.add(new ItemModel(name, PieceNo, Quantity, Width, Height, Length, Depth, LoadedInTruck,
                                         Completed, CompletedBy, Delivered));
                             }
+
+                            itemListAdapter = new ItemListAdapter(itemModelArrayList, ItemInfoActivity.this);
+                            itemListLv.setAdapter(itemListAdapter);
+
                         } else {
                             Util.showToast(objAPIResult.getString("Message"), ItemInfoActivity.this);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    itemListAdapter = new ItemListAdapter(itemModelArrayList, ItemInfoActivity.this);
-                    itemListLv.setAdapter(itemListAdapter);
                 }
             }
         });
