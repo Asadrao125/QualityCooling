@@ -2,6 +2,8 @@ package sjcomputers.com.qualitycooling.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -35,6 +37,8 @@ import sjcomputers.com.qualitycooling.R;
 public class LoadingAdapter extends ArrayAdapter<LoadingModel> {
     private ArrayList<LoadingModel> dataSet;
     Context mContext;
+    private SharedPreferences sharedPreferences;
+    String apiUrl;
 
     private static class ViewHolder {
         TextView tvArEnergy, inNumber, itemName, jobSite, jobSiteAddress, pieceNo, itemInfo;
@@ -45,6 +49,7 @@ public class LoadingAdapter extends ArrayAdapter<LoadingModel> {
         super(context, R.layout.item_itemlist, data);
         this.dataSet = data;
         this.mContext = context;
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
     }
 
     @Override
@@ -155,8 +160,10 @@ public class LoadingAdapter extends ArrayAdapter<LoadingModel> {
         String token = UserData.getInstance().authToken;
         String userId = String.valueOf(UserData.getInstance().userId);
 
+        apiUrl = sharedPreferences.getString("URL", "");
+        Log.d("api_url_jd", "check: "+apiUrl);
         Log.d("log_data", "check: " + orderItemId + "\n" + loaded + "\n" + UserData.getInstance().authToken + "\n" + UserData.getInstance().userId);
-        client.post("http://69.162.169.135/QC//services/service.svc/LoadingCheckOrUncheck?orderItemId=" + orderItemId + "&loaded=" + loaded + "&authtoken=" + token + "&userId=" + userId, /*params,*/ new TextHttpResponseHandler() {
+        client.post(apiUrl + "/services/service.svc/LoadingCheckOrUncheck?orderItemId=" + orderItemId + "&loaded=" + loaded + "&authtoken=" + token + "&userId=" + userId, /*params,*/ new TextHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, String res) {
                         try {
