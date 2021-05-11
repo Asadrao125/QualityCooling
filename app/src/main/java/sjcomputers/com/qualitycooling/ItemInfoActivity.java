@@ -45,7 +45,8 @@ public class ItemInfoActivity extends AppCompatActivity {
     ListView documentLv, itemListLv;
     TextView itemInfoTv;
     ItemListAdapter itemListAdapter;
-    String IN_Number;
+    public static int IN_Number;
+    Button btnViewJob;
     ArrayList<ItemModel> itemModelArrayList = new ArrayList<>();
 
     @Override
@@ -54,6 +55,8 @@ public class ItemInfoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_item_info);
 
         setupView();
+        btnViewJob = findViewById(R.id.btnViewJob);
+
         handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
@@ -74,9 +77,17 @@ public class ItemInfoActivity extends AppCompatActivity {
         documentLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+            }
+        });
+
+        btnViewJob.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 Intent intent = new Intent(ItemInfoActivity.this, OrderItemActivity.class);
                 Bundle b = new Bundle();
-                b.putString("Title", IN_Number);
+                b.putInt("OrderID", IN_Number);
+                b.putString("Title", String.valueOf(IN_Number));
                 intent.putExtras(b);
                 startActivity(intent);
             }
@@ -96,11 +107,7 @@ public class ItemInfoActivity extends AppCompatActivity {
                         if (objAPIResult.getString("Status").equals("Success")) {
                             String itemInfo = objAPIResult.getString("ItemInfo");
                             itemInfoTv.setText(itemInfo.replace("\\n", "\n"));
-
-                            String[] words = itemInfo.split(":");
-                            String newWord = words[5];
-                            String[] finalWord = newWord.split("  ");
-                            IN_Number = finalWord[0];
+                            IN_Number = objAPIResult.getInt("OrderId");
 
                             JSONArray documentJSONArr = objAPIResult.getJSONArray("Documents");
                             ArrayList<HashMap<String, Object>> documentArr = Util.toList(documentJSONArr);
@@ -115,7 +122,6 @@ public class ItemInfoActivity extends AppCompatActivity {
                 } else {
                     Util.showToast("Failed and try again", ItemInfoActivity.this);
                 }
-
             }
         });
         apiManager.itemInfo(value);

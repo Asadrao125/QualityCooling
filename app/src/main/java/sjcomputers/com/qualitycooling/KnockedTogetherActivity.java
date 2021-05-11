@@ -18,6 +18,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
@@ -117,7 +118,7 @@ public class KnockedTogetherActivity extends AppCompatActivity {
 
                     @Override
                     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                        if (charSequence.length() >= 9) {
+                        if (charSequence.length() > 5 && charSequence.length() <= 9) {
                             serial = charSequence.toString();
                             check(serial);
                             inputVal = serial;
@@ -135,6 +136,10 @@ public class KnockedTogetherActivity extends AppCompatActivity {
                 okBt.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        String serial = serialEt.getText().toString();
+                        if (!TextUtils.isEmpty(serial)) {
+                            check(serial);
+                        }
                         inputDialog.hide();
                     }
                 });

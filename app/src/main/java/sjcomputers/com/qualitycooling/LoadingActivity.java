@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
@@ -168,7 +169,7 @@ public class LoadingActivity extends AppCompatActivity {
 
                     @Override
                     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                        if (charSequence.length() >= 9) {
+                        if (charSequence.length() > 5 && charSequence.length() <= 9) {
                             serial = charSequence.toString();
                             loadValue(serial);
                             inputVal = serial;
@@ -182,29 +183,14 @@ public class LoadingActivity extends AppCompatActivity {
                     }
                 });
 
-               /* loadLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        Intent intent = new Intent(LoadingActivity.this, ItemInfoActivity.class);
-                        intent.putExtra("scanned_value", serial);
-                        startActivity(intent);
-                    }
-                });*/
-                //Chnages By Asad
-
                 Button okBt = (Button) inputDialog.findViewById(R.id.button8);
                 okBt.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //Chnages By Asad
-
-                       /* String serial = serialEt.getText().toString();
-                        if(serial.equals("")) {
-                            Util.showToast("Input valid serial number", LoadingActivity.this);
-                            return;
+                        String serial = serialEt.getText().toString();
+                        if (!TextUtils.isEmpty(serial)) {
+                            loadValue(serial);
                         }
-
-                        loadValue(serial);*/
                         inputDialog.hide();
                     }
                 });

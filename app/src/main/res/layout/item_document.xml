@@ -53,6 +53,7 @@
         android:layout_height="wrap_content"
         android:text="View Job"
         android:padding="10dp"
+        android:visibility="gone"
         android:layout_marginRight="8dp"
         android:layout_below="@id/textView18"
         android:focusable="false"

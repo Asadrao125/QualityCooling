@@ -44,6 +44,15 @@
         android:text="Text"
         android:textColor="@color/colorDarkGray" />
 
+    <Button
+        android:layout_marginTop="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:text="View Job"
+        android:textColor="@android:color/white"
+        android:background="@drawable/bt_back"
+        android:id="@+id/btnViewJob"/>
+
        <LinearLayout
            android:weightSum="2"
            android:layout_width="match_parent"

@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.gcacace.signaturepad.views.SignaturePad;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -60,7 +61,6 @@ import static sjcomputers.com.qualitycooling.Global.Util.STATUS_UPDATE_INTERVAL;
 public class OrderItemActivity extends AppCompatActivity {
     public static Handler handler;
     OrderItemAdapter orderDetailListAdapter;
-
     HashMap<String, Object> orderObj;
     ArrayList<HashMap<String, Object>> statusArray;
     String[] filters;
@@ -105,6 +105,7 @@ public class OrderItemActivity extends AppCompatActivity {
 
     private Timer timer;
     public static boolean isApiCalling;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,10 +120,9 @@ public class OrderItemActivity extends AppCompatActivity {
         handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
-                if(msg.what == MSG_ORDER_ITEMS_MARK_COMPLETED) {
+                if (msg.what == MSG_ORDER_ITEMS_MARK_COMPLETED) {
                     showStatusOptionDialog();
-                }
-                else if(msg.what == MSG_ORDER_ITEMS_MARK_CHANGED) {
+                } else if (msg.what == MSG_ORDER_ITEMS_MARK_CHANGED) {
                     updateOnlyOrderItems();
                 }
 
@@ -144,7 +144,7 @@ public class OrderItemActivity extends AppCompatActivity {
     }
 
     private void cancelTimer() {
-        if(timer != null) {
+        if (timer != null) {
             timer.cancel();
             timer = null;
         }
@@ -152,13 +152,13 @@ public class OrderItemActivity extends AppCompatActivity {
 
     private void getUpdateStatus() {
         APIManager apiManager = new APIManager();
-        apiManager.setCallback( new APIManagerCallback() {
+        apiManager.setCallback(new APIManagerCallback() {
             @Override
             public void APICallback(JSONObject objAPIResult) {
                 if (objAPIResult != null) {
                     try {
                         String statusCode = objAPIResult.getString("StatusCode");
-                        if(statusCode.equals("1")) {
+                        if (statusCode.equals("1")) {
                             getOrderDetail(true);
                         }
                     } catch (Exception e) {
@@ -169,14 +169,13 @@ public class OrderItemActivity extends AppCompatActivity {
                 }
             }
         });
-
         apiManager.checkOrderLastAction(orderID);
     }
 
     private void getOrderDetailValuesFromOrderActivity() {
         Bundle b = getIntent().getExtras();
         customer = b.getString("Customer");
-        jobSite= b.getString("Jobsite");
+        jobSite = b.getString("Jobsite");
         status = b.getString("Status");
         title = b.getString("Title");
         orderID = b.getInt("OrderID");
@@ -203,7 +202,7 @@ public class OrderItemActivity extends AppCompatActivity {
         signatureIv = findViewById(R.id.imageView);
 
         int orientation = getResources().getConfiguration().orientation;
-        if(orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
             portraitCl.setVisibility(View.GONE);
             landscapeCl.setVisibility(View.VISIBLE);
             signatureBt.setVisibility(View.GONE);
@@ -241,22 +240,22 @@ public class OrderItemActivity extends AppCompatActivity {
 
         listView = findViewById(R.id.item_order_list_lv);
 
-        customerTv = (TextView)findViewById(R.id.textView12);
-        jobSiteTv = (TextView)findViewById(R.id.textView13);
+        customerTv = (TextView) findViewById(R.id.textView12);
+        jobSiteTv = (TextView) findViewById(R.id.textView13);
         filterSpinner = findViewById(R.id.spinner4);
-        statusSpinner = (Spinner)findViewById(R.id.spinner);
+        statusSpinner = (Spinner) findViewById(R.id.spinner);
 
-        customerTvLand = (TextView)findViewById(R.id.textView12_land);
-        jobSiteTvLand = (TextView)findViewById(R.id.textView13_land);
+        customerTvLand = (TextView) findViewById(R.id.textView12_land);
+        jobSiteTvLand = (TextView) findViewById(R.id.textView13_land);
         filterSpinnerLand = findViewById(R.id.spinner4_land);
-        statusSpinnerLand = (Spinner)findViewById(R.id.spinner_land);
+        statusSpinnerLand = (Spinner) findViewById(R.id.spinner_land);
 
         customerTv.setText(String.format("Customer Name: %s ", customer));
         jobSiteTv.setText("Job Site: " + jobSite);
         customerTvLand.setText(String.format("Customer Name: %s ", customer));
         jobSiteTvLand.setText("Job Site: " + jobSite);
 
-        Button updateBt = (Button)findViewById(R.id.button);
+        Button updateBt = (Button) findViewById(R.id.button);
         updateBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -264,7 +263,7 @@ public class OrderItemActivity extends AppCompatActivity {
             }
         });
 
-        Button seeDocumentBt = (Button)findViewById(R.id.see_doc_bt);
+        Button seeDocumentBt = (Button) findViewById(R.id.see_doc_bt);
         seeDocumentBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -374,7 +373,7 @@ public class OrderItemActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
                         APIManager apiManager = new APIManager();
-                        apiManager.setCallback( new APIManagerCallback() {
+                        apiManager.setCallback(new APIManagerCallback() {
                             @Override
                             public void APICallback(JSONObject objAPIResult) {
                                 isApiCalling = false;
@@ -414,7 +413,7 @@ public class OrderItemActivity extends AppCompatActivity {
 
     private void markItemDelivered() {
         APIManager apiManager = new APIManager();
-        apiManager.setCallback( new APIManagerCallback() {
+        apiManager.setCallback(new APIManagerCallback() {
             @Override
             public void APICallback(JSONObject objAPIResult) {
                 isApiCalling = false;
@@ -440,7 +439,7 @@ public class OrderItemActivity extends AppCompatActivity {
 
     private void markItemLoadedInTruck() {
         APIManager apiManager = new APIManager();
-        apiManager.setCallback( new APIManagerCallback() {
+        apiManager.setCallback(new APIManagerCallback() {
             @Override
             public void APICallback(JSONObject objAPIResult) {
                 isApiCalling = false;
@@ -474,7 +473,7 @@ public class OrderItemActivity extends AppCompatActivity {
         signatureDialog.show();
         setSignature();
 
-        Button closeBt = (Button)signatureDialog.findViewById(R.id.closeBtn);
+        Button closeBt = (Button) signatureDialog.findViewById(R.id.closeBtn);
         closeBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -504,15 +503,15 @@ public class OrderItemActivity extends AppCompatActivity {
             }
         });
 
-        mSaveButton = (Button)signatureDialog.findViewById(R.id.saveSignature);
-        mClearButton = (Button)signatureDialog.findViewById(R.id.clearSignature);
+        mSaveButton = (Button) signatureDialog.findViewById(R.id.saveSignature);
+        mClearButton = (Button) signatureDialog.findViewById(R.id.clearSignature);
         receiverNameEt = signatureDialog.findViewById(R.id.editText11);
 
         mSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String receiverName = receiverNameEt.getText().toString();
-                if(receiverName.equals("")) {
+                if (receiverName.equals("")) {
                     Util.showToast("Please input name.", OrderItemActivity.this);
                     return;
                 }
@@ -531,12 +530,12 @@ public class OrderItemActivity extends AppCompatActivity {
     }
 
     private void getOrderDetail(final boolean shouldReadStatus) {
-        if(isApiCalling) {
+        if (isApiCalling) {
             return;
         }
 
         APIManager apiManager = new APIManager();
-        apiManager.setCallback( new APIManagerCallback() {
+        apiManager.setCallback(new APIManagerCallback() {
             @Override
             public void APICallback(JSONObject objAPIResult) {
                 isApiCalling = false;
@@ -546,7 +545,7 @@ public class OrderItemActivity extends AppCompatActivity {
                         JSONObject orderJSONObj = objAPIResult.getJSONObject("Order");
                         orderObj = Util.toMap(orderJSONObj);
 
-                        if(orderObj.get("DriverSignature") != JSONObject.NULL) {
+                        if (orderObj.get("DriverSignature") != JSONObject.NULL) {
                             signatureImgUrl = (String) orderObj.get("DriverSignature");
                             ImageLoader.getInstance().displayImage(signatureImgUrl, signatureIv, Util.optionsImg);
                         }
@@ -573,7 +572,7 @@ public class OrderItemActivity extends AppCompatActivity {
         String signatureString = BitmapToString(signatureBitmap);
 
         APIManager apiManager = new APIManager();
-        apiManager.setCallback( new APIManagerCallback() {
+        apiManager.setCallback(new APIManagerCallback() {
             @Override
             public void APICallback(JSONObject objAPIResult) {
                 isApiCalling = false;
@@ -581,7 +580,7 @@ public class OrderItemActivity extends AppCompatActivity {
                 if (objAPIResult != null) {
                     try {
                         String message = objAPIResult.getString("Message");
-                        if(objAPIResult.getInt("Status") == 1) {
+                        if (objAPIResult.getInt("Status") == 1) {
                             signatureDialog.hide();
                             Util.showToast(message, OrderItemActivity.this);
                             getOrderDetail(false);
@@ -624,13 +623,13 @@ public class OrderItemActivity extends AppCompatActivity {
         statusArray = new ArrayList<>();
         statusArray = UserData.getInstance().statusArray;
         statuses = new String[statusArray.size()];
-        for(int i = 0; i < statusArray.size(); i++) {
+        for (int i = 0; i < statusArray.size(); i++) {
             statuses[i] = statusArray.get(i).get("Status").toString();
             if (statuses[i].equals("Ready for Delivery")) {
-                readyForDeliveryStatusID =  Integer.parseInt(statusArray.get(i).get("ID").toString());
+                readyForDeliveryStatusID = Integer.parseInt(statusArray.get(i).get("ID").toString());
             }
             if (statuses[i].equals("Ready for Pickup")) {
-                readyForPickupStatusID =  Integer.parseInt(statusArray.get(i).get("ID").toString());
+                readyForPickupStatusID = Integer.parseInt(statusArray.get(i).get("ID").toString());
             }
         }
 
@@ -664,9 +663,9 @@ public class OrderItemActivity extends AppCompatActivity {
         });
 
         //will be changed in the future
-        for(int i = 0; i < statuses.length; i++) {
+        for (int i = 0; i < statuses.length; i++) {
             String temp = statuses[i];
-            if(temp.equals(status)) {
+            if (temp.equals(status)) {
                 statusSpinner.setSelection(i);
                 statusSpinnerLand.setSelection(i);
                 break;
@@ -706,7 +705,7 @@ public class OrderItemActivity extends AppCompatActivity {
     private void updateMainOrders() {
         Util.showToast("Status is updated successfully.", OrderItemActivity.this);
         JobActivity.searchInEt.setText("");
-        if(!JobActivity.isLive) {
+        if (!JobActivity.isLive) {
             JobActivity.orderAdapter.getOrders();
         }
     }
@@ -716,16 +715,16 @@ public class OrderItemActivity extends AppCompatActivity {
 
         APIManager apiManager = new APIManager();
         apiManager.setCallback(new APIManagerCallback() {
-                        @Override
-                        public void APICallback(JSONObject objAPIResult) {
-                            isApiCalling = false;
-                            Util.hideProgressDialog();
-                            if (objAPIResult != null) {
-                                try {
-                                    //if(objAPIResult.getString("StatusCode").equals("Success")) {
-                                    updateOrderStatus();
-                                    //}
-                                } catch (Exception e) {
+            @Override
+            public void APICallback(JSONObject objAPIResult) {
+                isApiCalling = false;
+                Util.hideProgressDialog();
+                if (objAPIResult != null) {
+                    try {
+                        //if(objAPIResult.getString("StatusCode").equals("Success")) {
+                        updateOrderStatus();
+                        //}
+                    } catch (Exception e) {
                         Util.showToast("Failed and try again", OrderItemActivity.this);
                     }
                 } else {
@@ -736,7 +735,7 @@ public class OrderItemActivity extends AppCompatActivity {
 
         JSONArray completedItemJSONArr = new JSONArray();
         try {
-            for(int i = 0; i < OrderItemAdapter.itemOrderJSONArr.length(); i++) {
+            for (int i = 0; i < OrderItemAdapter.itemOrderJSONArr.length(); i++) {
                 JSONObject itemJSONObj = OrderItemAdapter.itemOrderJSONArr.getJSONObject(i);
                 completedItemJSONArr.put(itemJSONObj);
             }
@@ -759,7 +758,7 @@ public class OrderItemActivity extends AppCompatActivity {
         apiManager.setCallback(null);
         JSONArray completedItemJSONArr = new JSONArray();
         try {
-            for(int i = 0; i < OrderItemAdapter.itemOrderJSONArr.length(); i++) {
+            for (int i = 0; i < OrderItemAdapter.itemOrderJSONArr.length(); i++) {
                 JSONObject itemJSONObj = OrderItemAdapter.itemOrderJSONArr.getJSONObject(i);
                 completedItemJSONArr.put(itemJSONObj);
             }
