@@ -157,6 +157,7 @@ public class KnockedTogetherActivity extends AppCompatActivity {
                             JSONArray jsonArray = jsonObject.getJSONArray("Items");
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject obj = jsonArray.getJSONObject(i);
+                                Log.d("item_jdnjdj", "onSuccess: " + obj);
 
                                 String completed = obj.getString("Completed");
                                 String customer = obj.getString("Customer");

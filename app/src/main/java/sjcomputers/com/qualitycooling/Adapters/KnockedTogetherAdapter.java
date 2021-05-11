@@ -111,8 +111,6 @@ public class KnockedTogetherAdapter extends ArrayAdapter<KnockedTogetherModel> {
         String userId = String.valueOf(UserData.getInstance().userId);
 
         apiUrl = sharedPreferences.getString("URL", "");
-        Log.d("api_url_jd", "check: " + apiUrl);
-        Log.d("log_data", "check: " + orderItemId + "\n" + completed + "\n" + UserData.getInstance().authToken + "\n" + UserData.getInstance().userId);
         client.post(apiUrl + "/services/service.svc/KnockedTogetherCheckOrUncheck?orderItemId=" + orderItemId + "&completed=" + completed + "&authtoken=" + token + "&userId=" + userId, new TextHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, String res) {
@@ -124,6 +122,7 @@ public class KnockedTogetherAdapter extends ArrayAdapter<KnockedTogetherModel> {
                             String button1_text = jsonObject.getString("Button1Text");
                             String button2_text = jsonObject.getString("Button2Text");
                             String ShowPopup = jsonObject.getString("ShowPopup");
+                            Toast.makeText(mContext, "" + ShowPopup, Toast.LENGTH_SHORT).show();
 
                             if (ShowPopup.equals("1")) {
                                 showDialog(button1_text, button2_text, inNumber);
@@ -146,20 +145,29 @@ public class KnockedTogetherAdapter extends ArrayAdapter<KnockedTogetherModel> {
 
     private void showDialog(String button1_text, String button2_text, String inNumber) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        builder.setMessage("")
+        builder.setMessage("Confirmation")
                 .setCancelable(false)
                 .setPositiveButton(button2_text, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        finalHit(inNumber, button2_text);
+                        String NewString = button2_text.replaceAll(" ", "_");
+                        finalHit(inNumber, NewString);
                         dialog.dismiss();
                     }
                 })
                 .setNegativeButton(button1_text, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        finalHit(inNumber, button1_text);
+                        String NewString = button1_text.replaceAll(" ", "_");
+                        finalHit(inNumber, NewString);
                         dialog.dismiss();
                     }
+                })
+                .setNeutralButton("Close", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
                 });
+
         final AlertDialog alert = builder.create();
         alert.show();
     }
@@ -171,12 +179,11 @@ public class KnockedTogetherAdapter extends ArrayAdapter<KnockedTogetherModel> {
         String userId = String.valueOf(UserData.getInstance().userId);
 
         apiUrl = sharedPreferences.getString("URL", "");
-        client.post(apiUrl + "/services/service.svc/MarkOrderReadyFor?innumber=" + innumber + "&buttonText=" + buttonText + "&authtoken=" + token + "&userId=" + userId, new TextHttpResponseHandler() {
+        client.post(apiUrl + "/services/service.svc/MarkOrderReadyFor?innumber=" + innumber + "&buttonText=" + buttonText + "&userId=" + userId + "&authtoken=" + token, new TextHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, String res) {
                         Util.hideProgressDialog();
                         try {
-
                             JSONObject jsonObject = new JSONObject(res);
                             String msg = jsonObject.getString("Message");
                             Toast.makeText(mContext, "" + msg, Toast.LENGTH_SHORT).show();
