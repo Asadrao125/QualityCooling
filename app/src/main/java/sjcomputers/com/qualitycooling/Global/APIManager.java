@@ -362,6 +362,13 @@ public class APIManager {
         task.execute((Void) null);
     }
 
+    public void loadingChjeckOrUncheck(String orderItemId, String loaded) {
+        /* http://69.162.169.135/QC/Services/service.svc */
+        String API_URL = String.format("/LoadingCheckOrUncheck?orderItemId=%s&loaded=%s&userid=%d&authtoken=%s", orderItemId, loaded, UserData.getInstance().userId, UserData.getInstance().authToken);
+        APITask task = new APITask(SERVER_ADDR, API_URL, null, HTTP_POST);
+        task.execute((Void) null);
+    }
+
     public void showPopup(String inNumber, String buttonText) {
         /* http://69.162.169.135/QC/services/service.svc */
         String API_URL = String.format("/MarkOrderReadyFor?innumber=%s&buttonText=%s&userid=%d&authtoken=%s", inNumber, buttonText, UserData.getInstance().userId, UserData.getInstance().authToken);

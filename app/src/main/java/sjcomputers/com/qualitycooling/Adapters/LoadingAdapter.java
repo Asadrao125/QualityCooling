@@ -92,9 +92,11 @@ public class LoadingAdapter extends ArrayAdapter<LoadingModel> {
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 //checkOrUncheck(loadingModel.OrderItemId, loadingModel.Loaded);
                 if (b) {
-                    check(loadingModel.OrderItemId, "1");
+                    //check(loadingModel.OrderItemId, "1");
+                    checkcheckcheck(loadingModel.OrderItemId, "0");
                 } else {
-                    check(loadingModel.OrderItemId, "0");
+                    //check(loadingModel.OrderItemId, "0");
+                    checkcheckcheck(loadingModel.OrderItemId, "0");
                 }
 
             }
@@ -184,5 +186,34 @@ public class LoadingAdapter extends ArrayAdapter<LoadingModel> {
                     }
                 }
         );
+    }
+
+    public void checkcheckcheck(String orderItemId, String loaded){
+        Util.showProgressDialog("Loading..", mContext);
+        APIManager apiManager = new APIManager();
+        apiManager.setCallback(new APIManagerCallback() {
+            @Override
+            public void APICallback(JSONObject objAPIResult) {
+                Util.hideProgressDialog();
+                if (objAPIResult != null) {
+                    try {
+
+                        if (objAPIResult.getString("Status").equals("Success")) {
+                            JSONObject jsonObject = new JSONObject(objAPIResult.toString());
+                            String msg = jsonObject.getString("Message");
+                            Toast.makeText(mContext, "" + msg, Toast.LENGTH_SHORT).show();
+
+                        } else {
+                            Util.showToast(objAPIResult.getString("Message"), mContext);
+                        }
+                    } catch (Exception e) {
+                        Util.showToast("Failed and try again", mContext);
+                    }
+                } else {
+                    Util.showToast("Failed and try again", mContext);
+                }
+            }
+        });
+        apiManager.loadingChjeckOrUncheck(orderItemId, loaded);
     }
 }
