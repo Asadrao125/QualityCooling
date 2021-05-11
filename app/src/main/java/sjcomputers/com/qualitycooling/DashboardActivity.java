@@ -44,10 +44,10 @@ public class DashboardActivity extends AppCompatActivity {
         handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
-                if(msg.what == MSG_CUTTING_CONFIRMED) {
+                if (msg.what == MSG_CUTTING_CONFIRMED) {
                     JSONObject object = (JSONObject) msg.obj;
                     showConfirmDialog(object);
-                } else if(msg.what == MSG_FORMING_CONFIRMED) {
+                } else if (msg.what == MSG_FORMING_CONFIRMED) {
                     JSONObject object = (JSONObject) msg.obj;
                     showConfirmDialog(object);
                 }
@@ -103,12 +103,14 @@ public class DashboardActivity extends AppCompatActivity {
         Button formingBt = findViewById(R.id.bt_forming);
         Button loadingBt = findViewById(R.id.bt_loading);
         Button itemInfoBt = findViewById(R.id.bt_item_info);
+        Button btnKnockedTogether = findViewById(R.id.btnKnockedTogether);
 
-        jobsBt.setVisibility(UserData.getInstance().jobsButtonShow == 1? View.VISIBLE : View.INVISIBLE);
-        cuttingBt.setVisibility(UserData.getInstance().cuttingButtonShow == 1? View.VISIBLE : View.INVISIBLE);
-        formingBt.setVisibility(UserData.getInstance().formingButtonShow == 1? View.VISIBLE : View.INVISIBLE);
-        loadingBt.setVisibility(UserData.getInstance().loadingButtonShow == 1? View.VISIBLE : View.INVISIBLE);
-        itemInfoBt.setVisibility(UserData.getInstance().itemInfoButtonShow == 1? View.VISIBLE : View.INVISIBLE);
+        jobsBt.setVisibility(UserData.getInstance().jobsButtonShow == 1 ? View.VISIBLE : View.INVISIBLE);
+        cuttingBt.setVisibility(UserData.getInstance().cuttingButtonShow == 1 ? View.VISIBLE : View.INVISIBLE);
+        formingBt.setVisibility(UserData.getInstance().formingButtonShow == 1 ? View.VISIBLE : View.INVISIBLE);
+        loadingBt.setVisibility(UserData.getInstance().loadingButtonShow == 1 ? View.VISIBLE : View.INVISIBLE);
+        itemInfoBt.setVisibility(UserData.getInstance().itemInfoButtonShow == 1 ? View.VISIBLE : View.INVISIBLE);
+        //btnKnockedTogether.setVisibility(UserData.getInstance().knockedTogetherButtonShow == 1 ? View.VISIBLE : View.INVISIBLE);
 
         jobsBt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -140,6 +142,14 @@ public class DashboardActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(DashboardActivity.this, LoadingActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btnKnockedTogether.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(DashboardActivity.this, KnockedTogetherActivity.class);
                 startActivity(intent);
             }
         });

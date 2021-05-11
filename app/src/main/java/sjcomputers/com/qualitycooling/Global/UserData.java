@@ -27,9 +27,11 @@ public class UserData {
     public String jobsButtonText;
     public int loadingButtonShow;
     public String loadingButtonText;
+    public int knockedTogetherButtonShow;
+    public String knockedTogetherButtonText;
 
     public static UserData getInstance() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new UserData();
             instance.initInstance();
         }
@@ -55,5 +57,7 @@ public class UserData {
         jobsButtonText = "";
         loadingButtonShow = 0;
         loadingButtonText = "";
+        knockedTogetherButtonShow = 0;
+        knockedTogetherButtonText = "";
     }
 }

@@ -39,19 +39,21 @@ public class QRScannerActivity extends AppCompatActivity implements ZBarScannerV
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(this, R.color.colorAccent)));
-        if(screenType == 0) {
+        if (screenType == 0) {
             getSupportActionBar().setTitle("Cutting");
-        } else if(screenType == 1) {
+        } else if (screenType == 1) {
             getSupportActionBar().setTitle("Forming");
-        } else if(screenType == 2) {
+        } else if (screenType == 2) {
             getSupportActionBar().setTitle("Loading");
+        } else if (screenType == 3) {
+            getSupportActionBar().setTitle("Knocked Together");
         } else {
             getSupportActionBar().setTitle("Item Info");
         }
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             boolean permission = checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
-            if(!permission) {
+            if (!permission) {
                 ActivityCompat.requestPermissions(QRScannerActivity.this, new String[]{Manifest.permission.CAMERA}, 1);
             }
         }
@@ -75,20 +77,20 @@ public class QRScannerActivity extends AppCompatActivity implements ZBarScannerV
         mScannerView.stopCamera();
         String scanResult = result.getContents();
 
-        if(screenType == 0 || screenType == 1) {
+        if (screenType == 0 || screenType == 1) {
             APIManager apiManager = new APIManager();
-            apiManager.setCallback( new APIManagerCallback() {
+            apiManager.setCallback(new APIManagerCallback() {
                 @Override
                 public void APICallback(JSONObject objAPIResult) {
                     Util.hideProgressDialog();
                     if (objAPIResult != null) {
                         try {
-                            if(objAPIResult.getString("Status").equals("Success")) {
+                            if (objAPIResult.getString("Status").equals("Success")) {
                                 String message = objAPIResult.getString("Message");
                                 Util.showToast(message, QRScannerActivity.this);
                                 Message message1 = new Message();
                                 message1.obj = objAPIResult;
-                                if(screenType == 0) {
+                                if (screenType == 0) {
                                     message1.what = MSG_CUTTING_CONFIRMED;
                                 } else {
                                     message1.what = MSG_FORMING_CONFIRMED;
@@ -110,17 +112,19 @@ public class QRScannerActivity extends AppCompatActivity implements ZBarScannerV
             });
 
             Util.showProgressDialog("Updating..", QRScannerActivity.this);
-            if(screenType == 0) {
+            if (screenType == 0) {
                 apiManager.cutting(scanResult);
-            } else if(screenType == 1) {
+            } else if (screenType == 1) {
                 apiManager.forming(scanResult);
             }
-        } else if(screenType == 2 || screenType == 3) {
+        } else if (screenType == 2 || screenType == 3) {
             Message message = new Message();
             message.what = MSG_SERIAL_SCANNED;
             message.obj = scanResult;
-            if(screenType == 2) {
+            if (screenType == 2) {
                 LoadingActivity.handler.sendMessage(message);
+            } else if (screenType == 3) {
+                KnockedTogetherActivity.handler.sendMessage(message);
             } else {
                 ItemInfoActivity.handler.sendMessage(message);
             }
