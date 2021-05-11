@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListAdapter;
@@ -30,6 +31,7 @@ import java.util.HashMap;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import sjcomputers.com.qualitycooling.Admin.OrderItemActivity;
 import sjcomputers.com.qualitycooling.Global.APIManager;
 import sjcomputers.com.qualitycooling.Global.APIManagerCallback;
 import sjcomputers.com.qualitycooling.Global.Util;
@@ -43,6 +45,7 @@ public class ItemInfoActivity extends AppCompatActivity {
     ListView documentLv, itemListLv;
     TextView itemInfoTv;
     ItemListAdapter itemListAdapter;
+    String IN_Number;
     ArrayList<ItemModel> itemModelArrayList = new ArrayList<>();
 
     @Override
@@ -67,6 +70,18 @@ public class ItemInfoActivity extends AppCompatActivity {
             itemInfo(scanned_value);
             itemList(scanned_value);
         }
+
+        documentLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(ItemInfoActivity.this, OrderItemActivity.class);
+                Bundle b = new Bundle();
+                b.putString("Title", IN_Number);
+                intent.putExtras(b);
+                startActivity(intent);
+            }
+        });
+
     }
 
     private void itemInfo(String value) {
@@ -81,6 +96,11 @@ public class ItemInfoActivity extends AppCompatActivity {
                         if (objAPIResult.getString("Status").equals("Success")) {
                             String itemInfo = objAPIResult.getString("ItemInfo");
                             itemInfoTv.setText(itemInfo.replace("\\n", "\n"));
+
+                            String[] words = itemInfo.split(":");
+                            String newWord = words[5];
+                            String[] finalWord = newWord.split("  ");
+                            IN_Number = finalWord[0];
 
                             JSONArray documentJSONArr = objAPIResult.getJSONArray("Documents");
                             ArrayList<HashMap<String, Object>> documentArr = Util.toList(documentJSONArr);

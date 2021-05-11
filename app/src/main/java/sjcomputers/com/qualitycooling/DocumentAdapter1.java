@@ -29,6 +29,7 @@ public class DocumentAdapter1 extends BaseAdapter {
     Activity activity;
     ArrayList<HashMap<String, Object>> documentArr;
     public static Handler handler;
+
     @Override
     public int getCount() {
         return documentArr.size();
@@ -54,10 +55,10 @@ public class DocumentAdapter1 extends BaseAdapter {
 
     private void configureDocumentItem(View view, final int position) {
         HashMap<String, Object> documentObj = documentArr.get(position);
-        TextView nameTv = (TextView)view.findViewById(R.id.textView15);
-        TextView dateTv = (TextView)view.findViewById(R.id.textView18);
-        nameTv.setText((String)documentObj.get("Name"));
-        dateTv.setText((String)documentObj.get("CreatedDate"));
+        TextView nameTv = (TextView) view.findViewById(R.id.textView15);
+        TextView dateTv = (TextView) view.findViewById(R.id.textView18);
+        nameTv.setText((String) documentObj.get("Name"));
+        dateTv.setText((String) documentObj.get("CreatedDate"));
         Button seeBt = view.findViewById(R.id.button3);
         seeBt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,6 +67,14 @@ public class DocumentAdapter1 extends BaseAdapter {
                 getDocument((int) documentObj.get("DocumentID"));
             }
         });
+
+        /*btnViewJob.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });*/
+
     }
 
     public DocumentAdapter1(Activity activity, ArrayList<HashMap<String, Object>> documentArr) {
@@ -80,7 +89,7 @@ public class DocumentAdapter1 extends BaseAdapter {
             @Override
             public void APICallback(JSONObject objAPIResult) {
                 Util.hideProgressDialog();
-                if(objAPIResult != null) {
+                if (objAPIResult != null) {
                     try {
                         JSONArray documentJSONArr = objAPIResult.getJSONArray("Documents");
                         documentArr = Util.toList(documentJSONArr);
@@ -95,7 +104,7 @@ public class DocumentAdapter1 extends BaseAdapter {
             }
         });
         Util.showProgressDialog("Loading documents..", activity);
-        if(DocumentActivity.documentType == 0) {
+        if (DocumentActivity.documentType == 0) {
             APIManager.getInstance().getOrderDocuments(DocumentActivity.orderId);
         } else {
             APIManager.getInstance().getDriverOrderDocuments(DocumentActivity.orderId);
@@ -113,7 +122,7 @@ public class DocumentAdapter1 extends BaseAdapter {
             @Override
             public void APICallback(JSONObject objAPIResult) {
                 Util.hideProgressDialog();
-                if(objAPIResult != null) {
+                if (objAPIResult != null) {
                     try {
                         String pdfUrl = objAPIResult.getString("DocumentUrl");
                         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(pdfUrl));

@@ -168,7 +168,7 @@ public class LoadingActivity extends AppCompatActivity {
 
                     @Override
                     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                        if (charSequence.length() > 5) {
+                        if (charSequence.length() >= 9) {
                             serial = charSequence.toString();
                             loadValue(serial);
                             inputVal = serial;

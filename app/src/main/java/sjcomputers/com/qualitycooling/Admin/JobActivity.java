@@ -82,7 +82,6 @@ public class JobActivity extends AppCompatActivity {
                     status = statuses[position];
                     OrderAdapter.handler.sendEmptyMessage(MSG_REFRESH_ORDER);
                 }
-
             }
 
             @Override
