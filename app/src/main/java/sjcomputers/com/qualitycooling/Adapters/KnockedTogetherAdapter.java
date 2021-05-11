@@ -44,7 +44,7 @@ public class KnockedTogetherAdapter extends ArrayAdapter<KnockedTogetherModel> {
     String apiUrl;
 
     private static class ViewHolder {
-        TextView customer, inNumber, itemName, jobSite, jobSiteAddress, pieceNo;
+        TextView customer, inNumber, itemName, jobSite, jobSiteAddress, pieceNo, itemInfo;
         CheckBox cbCompleted;
     }
 
@@ -72,6 +72,7 @@ public class KnockedTogetherAdapter extends ArrayAdapter<KnockedTogetherModel> {
             viewHolder.jobSiteAddress = (TextView) convertView.findViewById(R.id.tvJobSiteAddress);
             viewHolder.pieceNo = (TextView) convertView.findViewById(R.id.tvPieceNo);
             viewHolder.cbCompleted = convertView.findViewById(R.id.cbCompleted);
+            viewHolder.itemInfo = convertView.findViewById(R.id.itemInfo);
 
             result = convertView;
             convertView.setTag(viewHolder);
@@ -101,6 +102,19 @@ public class KnockedTogetherAdapter extends ArrayAdapter<KnockedTogetherModel> {
             }
         });
 
+        viewHolder.itemInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!TextUtils.isEmpty(KnockedTogetherActivity.inputVal)) {
+                    Intent intent = new Intent(mContext, ItemInfoActivity.class);
+                    intent.putExtra("scanned_value", KnockedTogetherActivity.inputVal);
+                    mContext.startActivity(intent);
+                } else {
+                    Toast.makeText(mContext, "Please enter input", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
         return convertView;
     }
 
@@ -122,7 +136,6 @@ public class KnockedTogetherAdapter extends ArrayAdapter<KnockedTogetherModel> {
                             String button1_text = jsonObject.getString("Button1Text");
                             String button2_text = jsonObject.getString("Button2Text");
                             String ShowPopup = jsonObject.getString("ShowPopup");
-                            Toast.makeText(mContext, "" + ShowPopup, Toast.LENGTH_SHORT).show();
 
                             if (ShowPopup.equals("1")) {
                                 showDialog(button1_text, button2_text, inNumber);

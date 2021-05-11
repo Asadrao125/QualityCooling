@@ -21,6 +21,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -48,6 +49,7 @@ public class KnockedTogetherActivity extends AppCompatActivity {
     String apiUrl;
     public static Handler handler;
     ListView lvKnockedTogether;
+    public static String inputVal = "";
     ArrayList<KnockedTogetherModel> knockedTogetherModelArrayList = new ArrayList<>();
 
     @Override
@@ -65,6 +67,7 @@ public class KnockedTogetherActivity extends AppCompatActivity {
                 if (msg.what == MSG_SERIAL_SCANNED) {
                     String scanResult = (String) msg.obj;
                     check(scanResult);
+                    inputVal = scanResult;
                 }
             }
         };
@@ -117,6 +120,7 @@ public class KnockedTogetherActivity extends AppCompatActivity {
                         if (charSequence.length() >= 9) {
                             serial = charSequence.toString();
                             check(serial);
+                            inputVal = serial;
                             serialEt.setText("");
                         }
                     }
@@ -189,6 +193,16 @@ public class KnockedTogetherActivity extends AppCompatActivity {
                     }
                 }
         );
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }
