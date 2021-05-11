@@ -4,6 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import cz.msebera.android.httpclient.Header;
 import sjcomputers.com.qualitycooling.Adapters.KnockedTogetherAdapter;
+import sjcomputers.com.qualitycooling.Adapters.LoadingAdapter;
+import sjcomputers.com.qualitycooling.Adapters.LoadingModel;
+import sjcomputers.com.qualitycooling.Global.APIManager;
+import sjcomputers.com.qualitycooling.Global.APIManagerCallback;
 import sjcomputers.com.qualitycooling.Global.UserData;
 import sjcomputers.com.qualitycooling.Global.Util;
 import sjcomputers.com.qualitycooling.models.KnockedTogetherModel;
@@ -67,7 +71,8 @@ public class KnockedTogetherActivity extends AppCompatActivity {
             public void handleMessage(Message msg) {
                 if (msg.what == MSG_SERIAL_SCANNED) {
                     String scanResult = (String) msg.obj;
-                    check(scanResult);
+                    //check(scanResult);
+                    checkcheckcheck(scanResult);
                     inputVal = scanResult;
                 }
             }
@@ -120,7 +125,8 @@ public class KnockedTogetherActivity extends AppCompatActivity {
                     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                         if (charSequence.length() > 5 && charSequence.length() <= 9) {
                             serial = charSequence.toString();
-                            check(serial);
+                            //check(serial);
+                            checkcheckcheck(serial);
                             inputVal = serial;
                             serialEt.setText("");
                         }
@@ -138,7 +144,8 @@ public class KnockedTogetherActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         String serial = serialEt.getText().toString();
                         if (!TextUtils.isEmpty(serial)) {
-                            check(serial);
+                            //check(serial);
+                            checkcheckcheck(serial);
                         }
                         inputDialog.hide();
                     }
@@ -155,7 +162,14 @@ public class KnockedTogetherActivity extends AppCompatActivity {
 
         apiUrl = sharedPreferences.getString("URL", "");
         Log.d("api_url_jd", "check: " + apiUrl);
-        client.post(apiUrl + "/services/service.svc/KnockedTogether?scannedValue=" + scanResult + "&authtoken=" + token + "&userId=" + userId, new TextHttpResponseHandler() {
+
+        RequestParams params = new RequestParams();
+        params.put("scannedValue", scanResult);
+        params.put("authtoken", token);
+        params.put("userId", userId);
+
+        /* "/services/service.svc/KnockedTogether?scannedValue=" + scanResult + "&authtoken=" + token + "&userId=" + userId */
+        client.post(apiUrl + "/services/service.svc/KnockedTogether?", params, new TextHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, String res) {
                         Util.hideProgressDialog();
@@ -198,6 +212,51 @@ public class KnockedTogetherActivity extends AppCompatActivity {
                     }
                 }
         );
+    }
+
+    public void checkcheckcheck(String value) {
+        Util.showProgressDialog("Loading..", KnockedTogetherActivity.this);
+        APIManager apiManager = new APIManager();
+        apiManager.setCallback(new APIManagerCallback() {
+            @Override
+            public void APICallback(JSONObject objAPIResult) {
+                Util.hideProgressDialog();
+                if (objAPIResult != null) {
+                    try {
+                        if (objAPIResult.getString("Status").equals("Success")) {
+                            JSONObject jsonObject = new JSONObject(objAPIResult.toString());
+                            JSONArray jsonArray = jsonObject.getJSONArray("Items");
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject obj = jsonArray.getJSONObject(i);
+                                String completed = obj.getString("Completed");
+                                String customer = obj.getString("Customer");
+                                String inNumber = obj.getString("INNumber");
+                                String itemName = obj.getString("ItemName");
+                                String jobSite = obj.getString("JobSite");
+                                String jobSiteAddress = obj.getString("JobSiteAddress");
+                                String orderItemId = obj.getString("OrderItemId");
+                                String pieceNo = obj.getString("PieceNo");
+
+                                knockedTogetherModelArrayList.add(new KnockedTogetherModel(completed, customer, inNumber,
+                                        itemName, jobSite, jobSiteAddress, orderItemId, pieceNo));
+                            }
+
+                            KnockedTogetherAdapter adapter = new KnockedTogetherAdapter(knockedTogetherModelArrayList,
+                                    KnockedTogetherActivity.this);
+                            lvKnockedTogether.setAdapter(adapter);
+
+                        } else {
+                            Util.showToast(objAPIResult.getString("Message"), KnockedTogetherActivity.this);
+                        }
+                    } catch (Exception e) {
+                        Util.showToast("Failed and try again", KnockedTogetherActivity.this);
+                    }
+                } else {
+                    Util.showToast("Failed and try again", KnockedTogetherActivity.this);
+                }
+            }
+        });
+        apiManager.knockedTogether(value);
     }
 
     @Override

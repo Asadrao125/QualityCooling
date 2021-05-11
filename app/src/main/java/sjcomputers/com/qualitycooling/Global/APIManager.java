@@ -346,6 +346,29 @@ public class APIManager {
         task.execute((Void) null);
     }
 
+    /*************************************************************************************************/
+
+    public void knockedTogether(String scanResult) {
+        /* http://69.162.169.135/QC/services/service.svc */
+        String API_URL = String.format("/KnockedTogether?scannedValue=%s&authtoken=%s&userid=%d", scanResult, UserData.getInstance().authToken, UserData.getInstance().userId);
+        APITask task = new APITask(SERVER_ADDR, API_URL, null, HTTP_POST);
+        task.execute((Void) null);
+    }
+
+    public void checkOrUncheckKnocked(String orderItemId, String completed) {
+        /* http://69.162.169.135/QC/services/service.svc */
+        String API_URL = String.format("/KnockedTogetherCheckOrUncheck?orderItemId=%s&completed=%s&userid=%d&authtoken=%s", orderItemId, completed, UserData.getInstance().userId, UserData.getInstance().authToken);
+        APITask task = new APITask(SERVER_ADDR, API_URL, null, HTTP_POST);
+        task.execute((Void) null);
+    }
+
+    public void showPopup(String inNumber, String buttonText) {
+        /* http://69.162.169.135/QC/services/service.svc */
+        String API_URL = String.format("/MarkOrderReadyFor?innumber=%s&buttonText=%s&userid=%d&authtoken=%s", inNumber, buttonText, UserData.getInstance().userId, UserData.getInstance().authToken);
+        APITask task = new APITask(SERVER_ADDR, API_URL, null, HTTP_POST);
+        task.execute((Void) null);
+    }
+
     public void itemInfo(String scannedValue) {
 
         String API_URL2 = String.format("/ItemInfo?scannedValue=%s&authtoken=%s&userid=%d", scannedValue, UserData.getInstance().authToken, UserData.getInstance().userId);

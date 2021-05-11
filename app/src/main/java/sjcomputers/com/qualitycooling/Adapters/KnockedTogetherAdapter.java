@@ -21,6 +21,7 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -95,9 +96,11 @@ public class KnockedTogetherAdapter extends ArrayAdapter<KnockedTogetherModel> {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b) {
-                    check(knockedTogetherModel.OrderItemId, "1", knockedTogetherModel.INNumber);
+                    //check(knockedTogetherModel.OrderItemId, "1", knockedTogetherModel.INNumber);
+                    checkcheckcheck(knockedTogetherModel.OrderItemId, "1", knockedTogetherModel.INNumber);
                 } else {
-                    check(knockedTogetherModel.OrderItemId, "0", knockedTogetherModel.INNumber);
+                    //check(knockedTogetherModel.OrderItemId, "0", knockedTogetherModel.INNumber);
+                    checkcheckcheck(knockedTogetherModel.OrderItemId, "0", knockedTogetherModel.INNumber);
                 }
             }
         });
@@ -156,6 +159,42 @@ public class KnockedTogetherAdapter extends ArrayAdapter<KnockedTogetherModel> {
         );
     }
 
+    public void checkcheckcheck(String orderId, String completed, String inNumber) {
+        Util.showProgressDialog("Loading..", mContext);
+        APIManager apiManager = new APIManager();
+        apiManager.setCallback(new APIManagerCallback() {
+            @Override
+            public void APICallback(JSONObject objAPIResult) {
+                Util.hideProgressDialog();
+                if (objAPIResult != null) {
+                    try {
+                        if (objAPIResult.getString("Status").equals("Success")) {
+                            JSONObject jsonObject = new JSONObject(objAPIResult.toString());
+                            String msg = jsonObject.getString("Message");
+                            Toast.makeText(mContext, "" + msg, Toast.LENGTH_SHORT).show();
+
+                            String button1_text = jsonObject.getString("Button1Text");
+                            String button2_text = jsonObject.getString("Button2Text");
+                            String ShowPopup = jsonObject.getString("ShowPopup");
+
+                            if (ShowPopup.equals("1")) {
+                                showDialog(button1_text, button2_text, inNumber);
+                            }
+
+                        } else {
+                            Util.showToast(objAPIResult.getString("Message"), mContext);
+                        }
+                    } catch (Exception e) {
+                        Util.showToast("Failed and try again", mContext);
+                    }
+                } else {
+                    Util.showToast("Failed and try again", mContext);
+                }
+            }
+        });
+        apiManager.checkOrUncheckKnocked(orderId, completed);
+    }
+
     private void showDialog(String button1_text, String button2_text, String inNumber) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         builder.setMessage("Confirmation")
@@ -163,14 +202,16 @@ public class KnockedTogetherAdapter extends ArrayAdapter<KnockedTogetherModel> {
                 .setPositiveButton(button2_text, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         String NewString = button2_text.replaceAll(" ", "_");
-                        finalHit(inNumber, NewString);
+                        //finalHit(inNumber, NewString);
+                        finalHit2(inNumber, NewString);
                         dialog.dismiss();
                     }
                 })
                 .setNegativeButton(button1_text, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         String NewString = button1_text.replaceAll(" ", "_");
-                        finalHit(inNumber, NewString);
+                        //finalHit(inNumber, NewString);
+                        finalHit2(inNumber, NewString);
                         dialog.dismiss();
                     }
                 })
@@ -213,6 +254,35 @@ public class KnockedTogetherAdapter extends ArrayAdapter<KnockedTogetherModel> {
                     }
                 }
         );
+    }
+
+    public void finalHit2(String inNumber, String buttonText) {
+        Util.showProgressDialog("Loading..", mContext);
+        APIManager apiManager = new APIManager();
+        apiManager.setCallback(new APIManagerCallback() {
+            @Override
+            public void APICallback(JSONObject objAPIResult) {
+                Util.hideProgressDialog();
+                if (objAPIResult != null) {
+                    try {
+
+                        if (objAPIResult.getString("Status").equals("Success")) {
+                            JSONObject jsonObject = new JSONObject(objAPIResult.toString());
+                            String msg = jsonObject.getString("Message");
+                            Toast.makeText(mContext, "" + msg, Toast.LENGTH_SHORT).show();
+
+                        } else {
+                            Util.showToast(objAPIResult.getString("Message"), mContext);
+                        }
+                    } catch (Exception e) {
+                        Util.showToast("Failed and try again", mContext);
+                    }
+                } else {
+                    Util.showToast("Failed and try again", mContext);
+                }
+            }
+        });
+        apiManager.showPopup(inNumber, buttonText);
     }
 
 }
