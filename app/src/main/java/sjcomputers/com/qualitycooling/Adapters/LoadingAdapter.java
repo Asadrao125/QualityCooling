@@ -93,7 +93,7 @@ public class LoadingAdapter extends ArrayAdapter<LoadingModel> {
                 //checkOrUncheck(loadingModel.OrderItemId, loadingModel.Loaded);
                 if (b) {
                     //check(loadingModel.OrderItemId, "1");
-                    checkcheckcheck(loadingModel.OrderItemId, "0");
+                    checkcheckcheck(loadingModel.OrderItemId, "1");
                 } else {
                     //check(loadingModel.OrderItemId, "0");
                     checkcheckcheck(loadingModel.OrderItemId, "0");
