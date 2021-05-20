@@ -76,13 +76,6 @@ public class ItemInfoActivity extends AppCompatActivity {
             itemList(scanned_value);
         }
 
-        documentLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-            }
-        });
-
         btnViewJob.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -98,6 +91,9 @@ public class ItemInfoActivity extends AppCompatActivity {
     }
 
     private void itemInfo(String value) {
+
+        Log.d("123456", "checkcheckcheck: val= " + val + "\n" + "value: " + value);
+
         if (!val.equals(value)) {
             itemModelArrayList.clear();
             Util.showProgressDialog("Loading..", ItemInfoActivity.this);
@@ -135,6 +131,9 @@ public class ItemInfoActivity extends AppCompatActivity {
     }
 
     private void itemList(String value) {
+
+        Log.d("1234567", "checkcheckcheck: val= " + val + "\n" + "value: " + value);
+
         if (!val.equals(value)) {
             //Util.showProgressDialog("Loading..", ItemInfoActivity.this);
             itemModelArrayList.clear();

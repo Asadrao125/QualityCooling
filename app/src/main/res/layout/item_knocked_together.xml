@@ -32,7 +32,6 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
-            android:layout_toLeftOf="@id/cbCompleted"
             android:text="Customer:"
             android:textColor="@color/colorDarkGray" />
 
@@ -43,8 +42,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/tvCustomer"
             android:layout_marginTop="8dp"
-            android:layout_toLeftOf="@id/cbCompleted"
             android:text="IN #:"
+            android:layout_marginRight="5dp"
+            android:layout_toStartOf="@+id/itemInfo"
             android:textColor="@color/colorDarkGray" />
 
         <TextView
@@ -93,6 +93,7 @@
                 android:textColor="@color/colorDarkGray" />
 
             <CheckBox
+                android:visibility="gone"
                 android:id="@+id/cbDelivered"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -101,20 +102,20 @@
                 android:layout_below="@id/cbCompleted"
                 android:textColor="@color/colorDarkGray" />
 
-        </LinearLayout>
+            <TextView
+                android:layout_below="@id/cbLayout"
+                android:layout_alignParentEnd="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Item Info"
+                android:padding="5dp"
+                android:id="@+id/itemInfo"
+                android:focusable="false"
+                android:layout_marginTop="5dp"
+                android:textColor="@android:color/white"
+                android:background="@drawable/bt_back"/>
 
-        <TextView
-            android:layout_below="@id/cbLayout"
-            android:layout_alignParentEnd="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Item Info"
-            android:padding="5dp"
-            android:id="@+id/itemInfo"
-            android:focusable="false"
-            android:layout_marginTop="5dp"
-            android:textColor="@android:color/white"
-            android:background="@drawable/bt_back"/>
+        </LinearLayout>
 
     </RelativeLayout>
 

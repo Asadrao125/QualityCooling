@@ -55,7 +55,6 @@ public class KnockedTogetherActivity extends AppCompatActivity {
     public static Handler handler;
     ListView lvKnockedTogether;
     public static String inputVal;
-    String val = "d";
     ArrayList<KnockedTogetherModel> knockedTogetherModelArrayList = new ArrayList<>();
 
     @Override
@@ -74,7 +73,6 @@ public class KnockedTogetherActivity extends AppCompatActivity {
                 if (msg.what == MSG_SERIAL_SCANNED) {
                     String scanResult = (String) msg.obj;
                     checkcheckcheck(scanResult);
-                    val = scanResult;
                     inputVal = scanResult;
                 }
             }
@@ -128,7 +126,6 @@ public class KnockedTogetherActivity extends AppCompatActivity {
                         if (charSequence.length() > 5 && charSequence.length() <= 9) {
                             String serial = charSequence.toString();
                             checkcheckcheck(serial);
-                            val = serial;
                             inputVal = serial;
                             serialEt.setText("");
                         }
@@ -147,7 +144,6 @@ public class KnockedTogetherActivity extends AppCompatActivity {
                         String serial = serialEt.getText().toString();
                         if (!TextUtils.isEmpty(serial)) {
                             checkcheckcheck(serial);
-                            val = serial;
                         }
                         inputDialog.hide();
                     }
@@ -157,55 +153,65 @@ public class KnockedTogetherActivity extends AppCompatActivity {
     }
 
     public void checkcheckcheck(String value) {
-        Log.d("val_value", "checkcheckcheck: val= " + val + "\n" + "value: " + value);
-        if (!val.equals(value)) {
-            knockedTogetherModelArrayList.clear();
-            Util.showProgressDialog("Loading..", KnockedTogetherActivity.this);
-            APIManager apiManager = new APIManager();
-            apiManager.setCallback(new APIManagerCallback() {
-                @Override
-                public void APICallback(JSONObject objAPIResult) {
-                    Util.hideProgressDialog();
-                    if (objAPIResult != null) {
-                        try {
-                            if (objAPIResult.getString("Status").equals("Success")) {
-                                JSONObject jsonObject = new JSONObject(objAPIResult.toString());
-                                JSONArray jsonArray = jsonObject.getJSONArray("Items");
-                                for (int i = 0; i < jsonArray.length(); i++) {
-                                    JSONObject obj = jsonArray.getJSONObject(i);
-                                    String completed = obj.getString("Completed");
-                                    String customer = obj.getString("Customer");
-                                    String inNumber = obj.getString("INNumber");
-                                    String itemName = obj.getString("ItemName");
-                                    String jobSite = obj.getString("JobSite");
-                                    String jobSiteAddress = obj.getString("JobSiteAddress");
-                                    String orderItemId = obj.getString("OrderItemId");
-                                    String pieceNo = obj.getString("PieceNo");
-                                    String delivered = obj.getString("Delivered");
+        knockedTogetherModelArrayList.clear();
+        Util.showProgressDialog("Loading..", KnockedTogetherActivity.this);
+        APIManager apiManager = new APIManager();
+        apiManager.setCallback(new APIManagerCallback() {
+            @Override
+            public void APICallback(JSONObject objAPIResult) {
+                Util.hideProgressDialog();
+                if (objAPIResult != null) {
+                    try {
+                        if (objAPIResult.getString("Status").equals("Success")) {
+                            JSONObject jsonObject = new JSONObject(objAPIResult.toString());
+                            JSONArray jsonArray = jsonObject.getJSONArray("Items");
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject obj = jsonArray.getJSONObject(i);
+                                String completed = obj.getString("Completed");
+                                String customer = obj.getString("Customer");
+                                String inNumber = obj.getString("INNumber");
+                                String itemName = obj.getString("ItemName");
+                                String jobSite = obj.getString("JobSite");
+                                String jobSiteAddress = obj.getString("JobSiteAddress");
+                                String orderItemId = obj.getString("OrderItemId");
+                                String pieceNo = obj.getString("PieceNo");
+                                String delivered = obj.getString("Delivered");
+                                String ShowNotificationPopup = obj.getString("ShowNotificationPopup");
+                                String ShowPopup = obj.getString("ShowPopup");
+                                String Button1Text = obj.getString("Button1Text");
+                                String Button2Text = obj.getString("Button2Text");
 
-                                    knockedTogetherModelArrayList.add(new KnockedTogetherModel(completed, customer, inNumber,
-                                            itemName, jobSite, jobSiteAddress, orderItemId, pieceNo, delivered));
-                                }
-
-                                KnockedTogetherAdapter adapter = new KnockedTogetherAdapter(knockedTogetherModelArrayList,
-                                        KnockedTogetherActivity.this);
-                                lvKnockedTogether.setAdapter(adapter);
-
-                            } else {
-                                Util.showToast(objAPIResult.getString("Message"), KnockedTogetherActivity.this);
+                                knockedTogetherModelArrayList.add(new KnockedTogetherModel(completed, customer, inNumber,
+                                        itemName, jobSite, jobSiteAddress, orderItemId, pieceNo, delivered, ShowNotificationPopup,
+                                        ShowPopup, Button1Text, Button2Text));
                             }
-                        } catch (Exception e) {
-                            Util.showToast("Failed and try again", KnockedTogetherActivity.this);
+
+                            KnockedTogetherAdapter adapter = new KnockedTogetherAdapter(knockedTogetherModelArrayList,
+                                    KnockedTogetherActivity.this);
+                            lvKnockedTogether.setAdapter(adapter);
+
+                        } else if (objAPIResult.getString("Status").equals("Scanned")) {
+                            knockedTogetherModelArrayList.add(new KnockedTogetherModel("0", "", "",
+                                    "", "", "", "0", "", "0", "1",
+                                    "0", "Ready for Delivery", "Ready for Pickup"));
+
+                            Toast.makeText(KnockedTogetherActivity.this, "" + objAPIResult.getString("Message"), Toast.LENGTH_SHORT).show();
+
+                            KnockedTogetherAdapter adapter = new KnockedTogetherAdapter(knockedTogetherModelArrayList,
+                                    KnockedTogetherActivity.this);
+                            lvKnockedTogether.setAdapter(adapter);
+
                         }
-                    } else {
+
+                    } catch (Exception e) {
                         Util.showToast("Failed and try again", KnockedTogetherActivity.this);
                     }
+                } else {
+                    Util.showToast("Failed and try again", KnockedTogetherActivity.this);
                 }
-            });
-            apiManager.knockedTogether(value);
-        } else {
-            Toast.makeText(this, "This item is already scanned", Toast.LENGTH_SHORT).show();
-        }
+            }
+        });
+        apiManager.knockedTogether(value);
     }
 
     @Override
