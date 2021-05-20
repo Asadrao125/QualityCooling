@@ -53,9 +53,9 @@ public class LoadingActivity extends AppCompatActivity {
     sjcomputers.com.qualitycooling.Adapters.LoadingAdapter adapter;
     Dialog inputDialog;
     public static Handler handler;
-    String serial;
     ListView loadLv;
-    public static String inputVal = "";
+    public static String inputVal;
+    String val = "d";
     ArrayList<LoadingModel> loadingModelArrayList = new ArrayList<>();
 
     @Override
@@ -70,6 +70,7 @@ public class LoadingActivity extends AppCompatActivity {
                 if (msg.what == MSG_SERIAL_SCANNED) {
                     String scanResult = (String) msg.obj;
                     loadValue(scanResult);
+                    val = scanResult;
                     inputVal = scanResult;
                 }
             }
@@ -77,48 +78,53 @@ public class LoadingActivity extends AppCompatActivity {
     }
 
     private void loadValue(String value) {
-        Util.showProgressDialog("Loading..", LoadingActivity.this);
-        APIManager apiManager = new APIManager();
-        apiManager.setCallback(new APIManagerCallback() {
-            @Override
-            public void APICallback(JSONObject objAPIResult) {
-                Util.hideProgressDialog();
-                if (objAPIResult != null) {
-                    try {
-                        if (objAPIResult.getString("Status").equals("Success")) {
-                            JSONObject jsonObject = new JSONObject(objAPIResult.toString());
-                            JSONArray jsonArray = jsonObject.getJSONArray("Items");
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                JSONObject obj = jsonArray.getJSONObject(i);
-                                String A_R_ENERGY = obj.getString("Customer");
-                                String INNumber = obj.getString("INNumber");
-                                String ItemName = obj.getString("ItemName");
-                                String JobSite = obj.getString("JobSite");
-                                String JobSiteAddress = obj.getString("JobSiteAddress");
-                                String Loaded = obj.getString("Loaded");
-                                String OrderItemId = obj.getString("OrderItemId");
-                                String PieceNo = obj.getString("PieceNo");
+        if (!val.equals(value)) {
+            loadingModelArrayList.clear();
+            Util.showProgressDialog("Loading..", LoadingActivity.this);
+            APIManager apiManager = new APIManager();
+            apiManager.setCallback(new APIManagerCallback() {
+                @Override
+                public void APICallback(JSONObject objAPIResult) {
+                    Util.hideProgressDialog();
+                    if (objAPIResult != null) {
+                        try {
+                            if (objAPIResult.getString("Status").equals("Success")) {
+                                JSONObject jsonObject = new JSONObject(objAPIResult.toString());
+                                JSONArray jsonArray = jsonObject.getJSONArray("Items");
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    JSONObject obj = jsonArray.getJSONObject(i);
+                                    String A_R_ENERGY = obj.getString("Customer");
+                                    String INNumber = obj.getString("INNumber");
+                                    String ItemName = obj.getString("ItemName");
+                                    String JobSite = obj.getString("JobSite");
+                                    String JobSiteAddress = obj.getString("JobSiteAddress");
+                                    String Loaded = obj.getString("Loaded");
+                                    String OrderItemId = obj.getString("OrderItemId");
+                                    String PieceNo = obj.getString("PieceNo");
 
-                                loadingModelArrayList.add(new LoadingModel(A_R_ENERGY, INNumber, ItemName, JobSite, JobSiteAddress, Loaded,
-                                        OrderItemId, PieceNo));
+                                    loadingModelArrayList.add(new LoadingModel(A_R_ENERGY, INNumber, ItemName, JobSite, JobSiteAddress, Loaded,
+                                            OrderItemId, PieceNo));
+                                }
+
+                            } else {
+                                Util.showToast(objAPIResult.getString("Message"), LoadingActivity.this);
                             }
-
-                        } else {
-                            Util.showToast(objAPIResult.getString("Message"), LoadingActivity.this);
+                        } catch (Exception e) {
+                            Util.showToast("Failed and try again", LoadingActivity.this);
                         }
-                    } catch (Exception e) {
+                    } else {
                         Util.showToast("Failed and try again", LoadingActivity.this);
                     }
-                } else {
-                    Util.showToast("Failed and try again", LoadingActivity.this);
+
+                    adapter = new LoadingAdapter(loadingModelArrayList, LoadingActivity.this);
+                    loadLv.setAdapter(adapter);
+
                 }
-
-                adapter = new LoadingAdapter(loadingModelArrayList, LoadingActivity.this);
-                loadLv.setAdapter(adapter);
-
-            }
-        });
-        apiManager.loading(value);
+            });
+            apiManager.loading(value);
+        } else {
+            Toast.makeText(this, "This item is already scanned", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void setupView() {
@@ -170,8 +176,9 @@ public class LoadingActivity extends AppCompatActivity {
                     @Override
                     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                         if (charSequence.length() > 5 && charSequence.length() <= 9) {
-                            serial = charSequence.toString();
+                            String serial = charSequence.toString();
                             loadValue(serial);
+                            val = serial;
                             inputVal = serial;
                             serialEt.setText("");
                         }
@@ -190,6 +197,7 @@ public class LoadingActivity extends AppCompatActivity {
                         String serial = serialEt.getText().toString();
                         if (!TextUtils.isEmpty(serial)) {
                             loadValue(serial);
+                            val = serial;
                         }
                         inputDialog.hide();
                     }

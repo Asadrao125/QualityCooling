@@ -346,44 +346,43 @@ public class APIManager {
         task.execute((Void) null);
     }
 
-    /*************************************************************************************************/
+    /***************************************** Methods By Asad ********************************************************/
 
     public void knockedTogether(String scanResult) {
-        /* http://69.162.169.135/QC/services/service.svc */
         String API_URL = String.format("/KnockedTogether?scannedValue=%s&authtoken=%s&userid=%d", scanResult, UserData.getInstance().authToken, UserData.getInstance().userId);
         APITask task = new APITask(SERVER_ADDR, API_URL, null, HTTP_POST);
         task.execute((Void) null);
     }
 
     public void checkOrUncheckKnocked(String orderItemId, String completed) {
-        /* http://69.162.169.135/QC/services/service.svc */
         String API_URL = String.format("/KnockedTogetherCheckOrUncheck?orderItemId=%s&completed=%s&userid=%d&authtoken=%s", orderItemId, completed, UserData.getInstance().userId, UserData.getInstance().authToken);
         APITask task = new APITask(SERVER_ADDR, API_URL, null, HTTP_POST);
         task.execute((Void) null);
     }
 
     public void loadingChjeckOrUncheck(String orderItemId, String loaded) {
-        /* http://69.162.169.135/QC/Services/service.svc */
         String API_URL = String.format("/LoadingCheckOrUncheck?orderItemId=%s&loaded=%s&userid=%d&authtoken=%s", orderItemId, loaded, UserData.getInstance().userId, UserData.getInstance().authToken);
         APITask task = new APITask(SERVER_ADDR, API_URL, null, HTTP_POST);
         task.execute((Void) null);
     }
 
     public void showPopup(String inNumber, String buttonText) {
-        /* http://69.162.169.135/QC/services/service.svc */
         String API_URL = String.format("/MarkOrderReadyFor?innumber=%s&buttonText=%s&userid=%d&authtoken=%s", inNumber, buttonText, UserData.getInstance().userId, UserData.getInstance().authToken);
         APITask task = new APITask(SERVER_ADDR, API_URL, null, HTTP_POST);
         task.execute((Void) null);
     }
 
-    public void itemInfo(String scannedValue) {
-
-        String API_URL2 = String.format("/ItemInfo?scannedValue=%s&authtoken=%s&userid=%d", scannedValue, UserData.getInstance().authToken, UserData.getInstance().userId);
-
-        //String API_URL = String.format("/ItemInfo?scannedValue=%s&authtoken=%s&userId=%d", scannedValue, UserData.getInstance().authToken, UserData.getInstance().userId);
-        APITask task = new APITask(SERVER_ADDR, API_URL2, null, HTTP_POST);
+    public void checkUncheckDelivered(String orderItemId, String delivered) {
+        String API_URL = String.format("/KnockedTogetherCheckOrUncheckDelivered?orderItemId=%s&delivered=%s&userId=%d&authtoken=%s", orderItemId, delivered, UserData.getInstance().userId, UserData.getInstance().authToken);
+        APITask task = new APITask(SERVER_ADDR, API_URL, null, HTTP_POST);
         task.execute((Void) null);
     }
+
+    public void itemInfo(String scannedValue) {
+        String API_URL2 = String.format("/ItemInfo?scannedValue=%s&authtoken=%s&userid=%d", scannedValue, UserData.getInstance().authToken, UserData.getInstance().userId);
+        APITask task = new APITask(SERVER_ADDR, API_URL2, null, HTTP_POST);
+        task.execute((Void) null);
+    }/* Methods By Asad Ends Here */
 
     // API Task..
     private class APITask extends AsyncTask<Void, Void, Boolean> {
