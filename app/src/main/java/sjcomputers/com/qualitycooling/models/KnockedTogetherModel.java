@@ -9,8 +9,9 @@ public class KnockedTogetherModel {
     public String JobSiteAddress;
     public String OrderItemId;
     public String PieceNo;
+    public String Delivered;
 
-    public KnockedTogetherModel(String completed, String customer, String INNumber, String itemName, String jobSite, String jobSiteAddress, String orderItemId, String pieceNo) {
+    public KnockedTogetherModel(String completed, String customer, String INNumber, String itemName, String jobSite, String jobSiteAddress, String orderItemId, String pieceNo, String delivered) {
         Completed = completed;
         Customer = customer;
         this.INNumber = INNumber;
@@ -19,5 +20,6 @@ public class KnockedTogetherModel {
         JobSiteAddress = jobSiteAddress;
         OrderItemId = orderItemId;
         PieceNo = pieceNo;
+        Delivered = delivered;
     }
 }

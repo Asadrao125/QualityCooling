@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,6 +26,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import sjcomputers.com.qualitycooling.Admin.JobActivity;
 import sjcomputers.com.qualitycooling.Admin.OrderAdapter;
 import sjcomputers.com.qualitycooling.Global.UserData;
+import sjcomputers.com.qualitycooling.Util.SharedPref;
 
 import static sjcomputers.com.qualitycooling.Global.Util.MSG_CUTTING_CONFIRMED;
 import static sjcomputers.com.qualitycooling.Global.Util.MSG_FORMING_CONFIRMED;
@@ -53,6 +55,12 @@ public class DashboardActivity extends AppCompatActivity {
                 }
             }
         };
+
+        /*SharedPref.init(this);
+        if (!TextUtils.isEmpty(SharedPref.read("input", ""))) {
+            SharedPref.remove("input");
+        }*/
+
     }
 
     private void showConfirmDialog(JSONObject object) {

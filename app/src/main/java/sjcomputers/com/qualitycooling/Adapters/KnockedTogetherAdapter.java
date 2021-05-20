@@ -46,7 +46,7 @@ public class KnockedTogetherAdapter extends ArrayAdapter<KnockedTogetherModel> {
 
     private static class ViewHolder {
         TextView customer, inNumber, itemName, jobSite, jobSiteAddress, pieceNo, itemInfo;
-        CheckBox cbCompleted;
+        CheckBox cbCompleted, cbDelivered;
     }
 
     public KnockedTogetherAdapter(ArrayList<KnockedTogetherModel> data, Context context) {
@@ -74,6 +74,7 @@ public class KnockedTogetherAdapter extends ArrayAdapter<KnockedTogetherModel> {
             viewHolder.pieceNo = (TextView) convertView.findViewById(R.id.tvPieceNo);
             viewHolder.cbCompleted = convertView.findViewById(R.id.cbCompleted);
             viewHolder.itemInfo = convertView.findViewById(R.id.itemInfo);
+            viewHolder.cbDelivered = convertView.findViewById(R.id.cbDelivered);
 
             result = convertView;
             convertView.setTag(viewHolder);
@@ -92,15 +93,28 @@ public class KnockedTogetherAdapter extends ArrayAdapter<KnockedTogetherModel> {
             viewHolder.cbCompleted.setChecked(true);
         }
 
+        if (knockedTogetherModel.Delivered.equals("1")) {
+            viewHolder.cbDelivered.setChecked(true);
+        }
+
         viewHolder.cbCompleted.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b) {
-                    //check(knockedTogetherModel.OrderItemId, "1", knockedTogetherModel.INNumber);
                     checkcheckcheck(knockedTogetherModel.OrderItemId, "1", knockedTogetherModel.INNumber);
                 } else {
-                    //check(knockedTogetherModel.OrderItemId, "0", knockedTogetherModel.INNumber);
                     checkcheckcheck(knockedTogetherModel.OrderItemId, "0", knockedTogetherModel.INNumber);
+                }
+            }
+        });
+
+        viewHolder.cbDelivered.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    check_uncheck_delivered(knockedTogetherModel.OrderItemId, "1");
+                } else {
+                    check_uncheck_delivered(knockedTogetherModel.OrderItemId, "0");
                 }
             }
         });
@@ -117,46 +131,7 @@ public class KnockedTogetherAdapter extends ArrayAdapter<KnockedTogetherModel> {
                 }
             }
         });
-
         return convertView;
-    }
-
-    public void check(String orderItemId, String completed, String inNumber) {
-        Util.showProgressDialog("Loading..", mContext);
-        AsyncHttpClient client = new AsyncHttpClient();
-        String token = UserData.getInstance().authToken;
-        String userId = String.valueOf(UserData.getInstance().userId);
-
-        apiUrl = sharedPreferences.getString("URL", "");
-        client.post(apiUrl + "/services/service.svc/KnockedTogetherCheckOrUncheck?orderItemId=" + orderItemId + "&completed=" + completed + "&authtoken=" + token + "&userId=" + userId, new TextHttpResponseHandler() {
-                    @Override
-                    public void onSuccess(int statusCode, Header[] headers, String res) {
-                        Util.hideProgressDialog();
-                        try {
-                            JSONObject jsonObject = new JSONObject(res);
-                            String msg = jsonObject.getString("Message");
-                            Toast.makeText(mContext, "" + msg, Toast.LENGTH_SHORT).show();
-                            String button1_text = jsonObject.getString("Button1Text");
-                            String button2_text = jsonObject.getString("Button2Text");
-                            String ShowPopup = jsonObject.getString("ShowPopup");
-
-                            if (ShowPopup.equals("1")) {
-                                showDialog(button1_text, button2_text, inNumber);
-                            }
-
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(int statusCode, Header[] headers, String res, Throwable t) {
-                        Util.hideProgressDialog();
-                        Toast.makeText(mContext, "Error: " + res, Toast.LENGTH_SHORT).show();
-                    }
-                }
-        );
     }
 
     public void checkcheckcheck(String orderId, String completed, String inNumber) {
@@ -226,6 +201,62 @@ public class KnockedTogetherAdapter extends ArrayAdapter<KnockedTogetherModel> {
         alert.show();
     }
 
+    public void finalHit2(String inNumber, String buttonText) {
+        Util.showProgressDialog("Loading..", mContext);
+        APIManager apiManager = new APIManager();
+        apiManager.setCallback(new APIManagerCallback() {
+            @Override
+            public void APICallback(JSONObject objAPIResult) {
+                Util.hideProgressDialog();
+                if (objAPIResult != null) {
+                    try {
+
+                        if (objAPIResult.getString("Status").equals("Success")) {
+                            JSONObject jsonObject = new JSONObject(objAPIResult.toString());
+                            String msg = jsonObject.getString("Message");
+                            Toast.makeText(mContext, "" + msg, Toast.LENGTH_SHORT).show();
+
+                        } else {
+                            Util.showToast(objAPIResult.getString("Message"), mContext);
+                        }
+                    } catch (Exception e) {
+                        Util.showToast("Failed and try again", mContext);
+                    }
+                } else {
+                    Util.showToast("Failed and try again", mContext);
+                }
+            }
+        });
+        apiManager.showPopup(inNumber, buttonText);
+    }
+
+    public void check_uncheck_delivered(String orderItemId, String delivered) {
+        Util.showProgressDialog("Loading..", mContext);
+        APIManager apiManager = new APIManager();
+        apiManager.setCallback(new APIManagerCallback() {
+            @Override
+            public void APICallback(JSONObject objAPIResult) {
+                Util.hideProgressDialog();
+                if (objAPIResult != null) {
+                    try {
+                        if (objAPIResult.getString("Status").equals("Success")) {
+                            JSONObject jsonObject = new JSONObject(objAPIResult.toString());
+                            String msg = jsonObject.getString("Message");
+                            Toast.makeText(mContext, "" + msg, Toast.LENGTH_SHORT).show();
+                        } else {
+                            Util.showToast(objAPIResult.getString("Message"), mContext);
+                        }
+                    } catch (Exception e) {
+                        Util.showToast("Failed and try again", mContext);
+                    }
+                } else {
+                    Util.showToast("Failed and try again", mContext);
+                }
+            }
+        });
+        apiManager.checkUncheckDelivered(orderItemId, delivered);
+    }
+
     public void finalHit(String innumber, String buttonText) {
         Util.showProgressDialog("Loading..", mContext);
         AsyncHttpClient client = new AsyncHttpClient();
@@ -256,33 +287,42 @@ public class KnockedTogetherAdapter extends ArrayAdapter<KnockedTogetherModel> {
         );
     }
 
-    public void finalHit2(String inNumber, String buttonText) {
+    public void check(String orderItemId, String completed, String inNumber) {
         Util.showProgressDialog("Loading..", mContext);
-        APIManager apiManager = new APIManager();
-        apiManager.setCallback(new APIManagerCallback() {
-            @Override
-            public void APICallback(JSONObject objAPIResult) {
-                Util.hideProgressDialog();
-                if (objAPIResult != null) {
-                    try {
+        AsyncHttpClient client = new AsyncHttpClient();
+        String token = UserData.getInstance().authToken;
+        String userId = String.valueOf(UserData.getInstance().userId);
 
-                        if (objAPIResult.getString("Status").equals("Success")) {
-                            JSONObject jsonObject = new JSONObject(objAPIResult.toString());
+        apiUrl = sharedPreferences.getString("URL", "");
+        client.post(apiUrl + "/services/service.svc/KnockedTogetherCheckOrUncheck?orderItemId=" + orderItemId + "&completed=" + completed + "&authtoken=" + token + "&userId=" + userId, new TextHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, String res) {
+                        Util.hideProgressDialog();
+                        try {
+                            JSONObject jsonObject = new JSONObject(res);
                             String msg = jsonObject.getString("Message");
                             Toast.makeText(mContext, "" + msg, Toast.LENGTH_SHORT).show();
+                            String button1_text = jsonObject.getString("Button1Text");
+                            String button2_text = jsonObject.getString("Button2Text");
+                            String ShowPopup = jsonObject.getString("ShowPopup");
 
-                        } else {
-                            Util.showToast(objAPIResult.getString("Message"), mContext);
+                            if (ShowPopup.equals("1")) {
+                                showDialog(button1_text, button2_text, inNumber);
+                            }
+
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                    } catch (Exception e) {
-                        Util.showToast("Failed and try again", mContext);
                     }
-                } else {
-                    Util.showToast("Failed and try again", mContext);
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, String res, Throwable t) {
+                        Util.hideProgressDialog();
+                        Toast.makeText(mContext, "Error: " + res, Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
-        });
-        apiManager.showPopup(inNumber, buttonText);
+        );
     }
 
 }

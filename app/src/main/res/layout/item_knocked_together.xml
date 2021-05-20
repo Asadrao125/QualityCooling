@@ -77,16 +77,34 @@
             android:text="Piece #:"
             android:textColor="@color/colorDarkGray" />
 
-        <CheckBox
-            android:id="@+id/cbCompleted"
+        <LinearLayout
+            android:layout_alignParentEnd="true"
+            android:id="@+id/cbLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:text="Completed"
-            android:textColor="@color/colorDarkGray" />
+            android:orientation="vertical">
+
+            <CheckBox
+                android:id="@+id/cbCompleted"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="Completed"
+                android:textColor="@color/colorDarkGray" />
+
+            <CheckBox
+                android:id="@+id/cbDelivered"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="Delivered"
+                android:layout_below="@id/cbCompleted"
+                android:textColor="@color/colorDarkGray" />
+
+        </LinearLayout>
 
         <TextView
-            android:layout_below="@id/cbCompleted"
+            android:layout_below="@id/cbLayout"
             android:layout_alignParentEnd="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

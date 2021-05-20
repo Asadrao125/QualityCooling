@@ -129,6 +129,7 @@ public class ItemInfoActivity extends AppCompatActivity {
 
     private void itemList(String value) {
         //Util.showProgressDialog("Loading..", ItemInfoActivity.this);
+        itemModelArrayList.clear();
         APIManager apiManager = new APIManager();
         apiManager.setCallback(new APIManagerCallback() {
             @Override
