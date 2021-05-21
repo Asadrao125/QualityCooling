@@ -2,14 +2,11 @@ package sjcomputers.com.qualitycooling;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import cz.msebera.android.httpclient.Header;
+import sjcomputers.com.qualitycooling.Adapters.DeliveredAdapter;
 import sjcomputers.com.qualitycooling.Adapters.KnockedTogetherAdapter;
-import sjcomputers.com.qualitycooling.Adapters.LoadingAdapter;
-import sjcomputers.com.qualitycooling.Adapters.LoadingModel;
 import sjcomputers.com.qualitycooling.Admin.OrderItemActivity;
 import sjcomputers.com.qualitycooling.Global.APIManager;
 import sjcomputers.com.qualitycooling.Global.APIManagerCallback;
-import sjcomputers.com.qualitycooling.Global.UserData;
 import sjcomputers.com.qualitycooling.Global.Util;
 import sjcomputers.com.qualitycooling.Util.SharedPref;
 import sjcomputers.com.qualitycooling.models.KnockedTogetherModel;
@@ -28,7 +25,6 @@ import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,19 +34,14 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.RequestParams;
-import com.loopj.android.http.TextHttpResponseHandler;
-
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 import static sjcomputers.com.qualitycooling.Global.Util.MSG_SERIAL_SCANNED;
 
-public class KnockedTogetherActivity extends AppCompatActivity {
+public class DeliveredActivity extends AppCompatActivity {
     Button btnScan, btnManual;
     Dialog inputDialog;
     private SharedPreferences sharedPreferences;
@@ -66,7 +57,7 @@ public class KnockedTogetherActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_knocked_together);
+        setContentView(R.layout.activity_delivered);
 
         btnScan = findViewById(R.id.scan_bt);
         btnManual = findViewById(R.id.manual_bt);
@@ -87,7 +78,7 @@ public class KnockedTogetherActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(this, R.color.colorAccent)));
-        getSupportActionBar().setTitle("Knocked Together");
+        getSupportActionBar().setTitle("Delivered");
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         apiUrl = sharedPreferences.getString("URL", "");
@@ -95,8 +86,8 @@ public class KnockedTogetherActivity extends AppCompatActivity {
         btnScan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(KnockedTogetherActivity.this, QRScannerActivity.class);
-                QRScannerActivity.screenType = 3;
+                Intent intent = new Intent(DeliveredActivity.this, QRScannerActivity.class);
+                QRScannerActivity.screenType = 4;
                 startActivity(intent);
             }
         });
@@ -104,7 +95,7 @@ public class KnockedTogetherActivity extends AppCompatActivity {
         btnManual.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                inputDialog = new Dialog(KnockedTogetherActivity.this);
+                inputDialog = new Dialog(DeliveredActivity.this);
                 inputDialog.requestWindowFeature(getWindow().FEATURE_NO_TITLE);
                 inputDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 inputDialog.setContentView(R.layout.dialog_input_serial);
@@ -157,10 +148,12 @@ public class KnockedTogetherActivity extends AppCompatActivity {
                 });
             }
         });
+
     }
 
     public void checkcheckcheck(String value) {
-        Util.showProgressDialog("Loading..", KnockedTogetherActivity.this);
+        knockedTogetherModelArrayList.clear();
+        Util.showProgressDialog("Loading..", DeliveredActivity.this);
         APIManager apiManager = new APIManager();
         apiManager.setCallback(new APIManagerCallback() {
             @Override
@@ -193,27 +186,25 @@ public class KnockedTogetherActivity extends AppCompatActivity {
                                         ShowPopup, Button1Text, Button2Text, OrderId));
                             }
 
-                            KnockedTogetherAdapter adapter = new KnockedTogetherAdapter(knockedTogetherModelArrayList,
-                                    KnockedTogetherActivity.this);
+                            DeliveredAdapter adapter = new DeliveredAdapter(knockedTogetherModelArrayList,
+                                    DeliveredActivity.this);
                             lvKnockedTogether.setAdapter(adapter);
 
                             if (ShowNotificationPopup.equals("1")) {
-                                if (knockedTogetherModelArrayList.size() > 1 || knockedTogetherModelArrayList.size() > 0) {
-                                    knockedTogetherModelArrayList.remove(knockedTogetherModelArrayList.size() - 1);
-                                }
-                                showDialog2(OrderId, objAPIResult.getString("Message"), customer, jobSite, inNumber);
+                                showDialog2(OrderId, objAPIResult.getString("Message"), customer, jobSite);
                             }
 
                             if (ShowPopup.equals("1")) {
-                                showDialog(Button1Text, Button2Text, inNumber, "Notification"/*objAPIResult.getString("Message")*/);
+                                showDialog(Button1Text, Button2Text, inNumber, objAPIResult.getString("Message"));
                             }
+
                         }
 
                     } catch (Exception e) {
-                        Util.showToast("Failed and try again", KnockedTogetherActivity.this);
+                        Util.showToast("Failed and try again", DeliveredActivity.this);
                     }
                 } else {
-                    Util.showToast("Failed and try again", KnockedTogetherActivity.this);
+                    Util.showToast("Failed and try again", DeliveredActivity.this);
                 }
             }
         });
@@ -231,20 +222,18 @@ public class KnockedTogetherActivity extends AppCompatActivity {
     }
 
     // For View Job Popup
-    private void showDialog2(String orderId, String confirmation, String customer, String jobSite, String in_number) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(KnockedTogetherActivity.this);
+    private void showDialog2(String orderId, String confirmation, String customer, String jobSite) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(DeliveredActivity.this);
         builder.setMessage(confirmation)
                 .setCancelable(false)
                 .setPositiveButton("View Job", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        Intent intent = new Intent(KnockedTogetherActivity.this, OrderItemActivity.class);
-                        Bundle b = new Bundle();
-                        b.putInt("OrderID", Integer.parseInt(orderId));
-                        b.putString("Title", in_number);
-                        b.putString("Jobsite", jobSite);
-                        b.putString("Customer", customer);
 
-                        intent.putExtras(b);
+                        Intent intent = new Intent(DeliveredActivity.this, OrderItemActivity.class);
+                        intent.putExtra("OrderID", orderId);
+                        intent.putExtra("Title", orderId);
+                        intent.putExtra("Customer", customer);
+                        intent.putExtra("Jobsite", jobSite);
                         startActivity(intent);
                         dialog.cancel();
                     }
@@ -261,7 +250,7 @@ public class KnockedTogetherActivity extends AppCompatActivity {
 
     // For Ready For Pickup / Delivery Popup
     private void showDialog(String button1_text, String button2_text, String inNumber, String confirmation) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(KnockedTogetherActivity.this);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(DeliveredActivity.this);
         builder.setMessage(confirmation)
                 .setCancelable(false)
                 .setPositiveButton(button2_text, new DialogInterface.OnClickListener() {
@@ -290,7 +279,7 @@ public class KnockedTogetherActivity extends AppCompatActivity {
     }
 
     public void finalHit2(String inNumber, String buttonText) {
-        Util.showProgressDialog("Loading..", KnockedTogetherActivity.this);
+        Util.showProgressDialog("Loading..", DeliveredActivity.this);
         APIManager apiManager = new APIManager();
         apiManager.setCallback(new APIManagerCallback() {
             @Override
@@ -302,16 +291,16 @@ public class KnockedTogetherActivity extends AppCompatActivity {
                         if (objAPIResult.getString("Status").equals("Success")) {
                             JSONObject jsonObject = new JSONObject(objAPIResult.toString());
                             String msg = jsonObject.getString("Message");
-                            Toast.makeText(KnockedTogetherActivity.this, "" + msg, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(DeliveredActivity.this, "" + msg, Toast.LENGTH_SHORT).show();
 
                         } else {
-                            Util.showToast(objAPIResult.getString("Message"), KnockedTogetherActivity.this);
+                            Util.showToast(objAPIResult.getString("Message"), DeliveredActivity.this);
                         }
                     } catch (Exception e) {
-                        Util.showToast("Failed and try again", KnockedTogetherActivity.this);
+                        Util.showToast("Failed and try again", DeliveredActivity.this);
                     }
                 } else {
-                    Util.showToast("Failed and try again", KnockedTogetherActivity.this);
+                    Util.showToast("Failed and try again", DeliveredActivity.this);
                 }
             }
         });

@@ -8,7 +8,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,10 +18,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -34,13 +31,11 @@ import sjcomputers.com.qualitycooling.Global.APIManager;
 import sjcomputers.com.qualitycooling.Global.APIManagerCallback;
 import sjcomputers.com.qualitycooling.Global.UserData;
 import sjcomputers.com.qualitycooling.Global.Util;
-import sjcomputers.com.qualitycooling.ItemInfoActivity;
 import sjcomputers.com.qualitycooling.KnockedTogetherActivity;
-import sjcomputers.com.qualitycooling.LoadingActivity;
 import sjcomputers.com.qualitycooling.R;
 import sjcomputers.com.qualitycooling.models.KnockedTogetherModel;
 
-public class KnockedTogetherAdapter extends ArrayAdapter<KnockedTogetherModel> {
+public class DeliveredAdapter extends ArrayAdapter<KnockedTogetherModel> {
     private ArrayList<KnockedTogetherModel> dataSet;
     Context mContext;
     private SharedPreferences sharedPreferences;
@@ -51,7 +46,7 @@ public class KnockedTogetherAdapter extends ArrayAdapter<KnockedTogetherModel> {
         CheckBox cbCompleted, cbDelivered;
     }
 
-    public KnockedTogetherAdapter(ArrayList<KnockedTogetherModel> data, Context context) {
+    public DeliveredAdapter(ArrayList<KnockedTogetherModel> data, Context context) {
         super(context, R.layout.item_itemlist, data);
         this.dataSet = data;
         this.mContext = context;
@@ -62,12 +57,12 @@ public class KnockedTogetherAdapter extends ArrayAdapter<KnockedTogetherModel> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         KnockedTogetherModel knockedTogetherModel = getItem(position);
-        KnockedTogetherAdapter.ViewHolder viewHolder;
+        DeliveredAdapter.ViewHolder viewHolder;
         final View result;
         if (convertView == null) {
-            viewHolder = new KnockedTogetherAdapter.ViewHolder();
+            viewHolder = new DeliveredAdapter.ViewHolder();
             LayoutInflater inflater = LayoutInflater.from(getContext());
-            convertView = inflater.inflate(R.layout.item_knocked_together, parent, false);
+            convertView = inflater.inflate(R.layout.item_delivered, parent, false);
             viewHolder.itemName = (TextView) convertView.findViewById(R.id.tvItemName);
             viewHolder.customer = (TextView) convertView.findViewById(R.id.tvCustomer);
             viewHolder.inNumber = (TextView) convertView.findViewById(R.id.tvInNumber);
@@ -81,7 +76,7 @@ public class KnockedTogetherAdapter extends ArrayAdapter<KnockedTogetherModel> {
             result = convertView;
             convertView.setTag(viewHolder);
         } else {
-            viewHolder = (KnockedTogetherAdapter.ViewHolder) convertView.getTag();
+            viewHolder = (DeliveredAdapter.ViewHolder) convertView.getTag();
             result = convertView;
         }
         viewHolder.itemName.setText("Item Name: " + knockedTogetherModel.ItemName);
@@ -114,6 +109,17 @@ public class KnockedTogetherAdapter extends ArrayAdapter<KnockedTogetherModel> {
                     checkcheckcheck(knockedTogetherModel.OrderItemId, "1", knockedTogetherModel.INNumber);
                 } else {
                     checkcheckcheck(knockedTogetherModel.OrderItemId, "0", knockedTogetherModel.INNumber);
+                }
+            }
+        });
+
+        viewHolder.cbDelivered.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    check_uncheck_delivered(knockedTogetherModel.OrderItemId, "1");
+                } else {
+                    check_uncheck_delivered(knockedTogetherModel.OrderItemId, "0");
                 }
             }
         });

@@ -11,7 +11,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".KnockedTogetherActivity"></activity>
+        <activity android:name=".DeliveredActivity"></activity>
+        <activity android:name=".KnockedTogetherActivity" />
         <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

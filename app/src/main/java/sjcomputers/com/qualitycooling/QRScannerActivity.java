@@ -117,7 +117,7 @@ public class QRScannerActivity extends AppCompatActivity implements ZBarScannerV
             } else if (screenType == 1) {
                 apiManager.forming(scanResult);
             }
-        } else if (screenType == 2 || screenType == 3) {
+        } else if (screenType == 2 || screenType == 3 || screenType == 4 || screenType == 5) {
             Message message = new Message();
             message.what = MSG_SERIAL_SCANNED;
             message.obj = scanResult;
@@ -125,7 +125,12 @@ public class QRScannerActivity extends AppCompatActivity implements ZBarScannerV
                 LoadingActivity.handler.sendMessage(message);
             } else if (screenType == 3) {
                 KnockedTogetherActivity.handler.sendMessage(message);
-            } else {
+            } else if (screenType == 4) {
+                DeliveredActivity.handler.sendMessage(message);
+            } else if (screenType == 5){
+                ItemInfoActivity.handler.sendMessage(message);
+            }
+            else {
                 ItemInfoActivity.handler.sendMessage(message);
             }
             finish();

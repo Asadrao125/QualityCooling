@@ -1,6 +1,6 @@
 package sjcomputers.com.qualitycooling.models;
 
-public class KnockedTogetherModel {
+public class DeliveredModel {
     public String Completed;
     public String Customer;
     public String INNumber;
@@ -16,7 +16,7 @@ public class KnockedTogetherModel {
     public String Button2Text;
     public String OrderId;
 
-    public KnockedTogetherModel(String completed, String customer, String INNumber, String itemName, String jobSite, String jobSiteAddress, String orderItemId, String pieceNo, String delivered, String showNotificationPopup, String showPopup, String button1Text, String button2Text, String orderId) {
+    public DeliveredModel(String completed, String customer, String INNumber, String itemName, String jobSite, String jobSiteAddress, String orderItemId, String pieceNo, String delivered, String showNotificationPopup, String showPopup, String button1Text, String button2Text, String orderId) {
         Completed = completed;
         Customer = customer;
         this.INNumber = INNumber;

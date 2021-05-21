@@ -200,7 +200,7 @@ public class ItemInfoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ItemInfoActivity.this, QRScannerActivity.class);
-                QRScannerActivity.screenType = 3;
+                QRScannerActivity.screenType = 5;
                 startActivity(intent);
             }
         });

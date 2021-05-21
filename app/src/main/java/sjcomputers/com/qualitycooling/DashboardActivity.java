@@ -112,6 +112,7 @@ public class DashboardActivity extends AppCompatActivity {
         Button loadingBt = findViewById(R.id.bt_loading);
         Button itemInfoBt = findViewById(R.id.bt_item_info);
         Button btnKnockedTogether = findViewById(R.id.btnKnockedTogether);
+        Button btnDelivered = findViewById(R.id.btnDelivered);
 
         jobsBt.setVisibility(UserData.getInstance().jobsButtonShow == 1 ? View.VISIBLE : View.INVISIBLE);
         cuttingBt.setVisibility(UserData.getInstance().cuttingButtonShow == 1 ? View.VISIBLE : View.INVISIBLE);
@@ -166,6 +167,14 @@ public class DashboardActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(DashboardActivity.this, ItemInfoActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btnDelivered.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(DashboardActivity.this, DeliveredActivity.class);
                 startActivity(intent);
             }
         });

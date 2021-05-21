@@ -382,7 +382,14 @@ public class APIManager {
         String API_URL2 = String.format("/ItemInfo?scannedValue=%s&authtoken=%s&userid=%d", scannedValue, UserData.getInstance().authToken, UserData.getInstance().userId);
         APITask task = new APITask(SERVER_ADDR, API_URL2, null, HTTP_POST);
         task.execute((Void) null);
-    }/* Methods By Asad Ends Here */
+    }
+
+    public void getCustomerDetail(String orderId) {
+        String API_URL2 = String.format("/Order?authtoken=%s&orderid=%s", UserData.getInstance().authToken, orderId);
+        APITask task = new APITask(SERVER_ADDR, API_URL2, null, HTTP_POST);
+        task.execute((Void) null);
+    }
+    /* Methods By Asad Ends Here */
 
     // API Task..
     private class APITask extends AsyncTask<Void, Void, Boolean> {

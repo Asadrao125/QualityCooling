@@ -179,6 +179,34 @@ public class OrderItemActivity extends AppCompatActivity {
         status = b.getString("Status");
         title = b.getString("Title");
         orderID = b.getInt("OrderID");
+
+        getCustomerDetail();
+
+    }
+
+    private void getCustomerDetail() {
+        APIManager apiManager = new APIManager();
+        apiManager.setCallback(new APIManagerCallback() {
+            @Override
+            public void APICallback(JSONObject objAPIResult) {
+                if (objAPIResult != null) {
+                    try {
+
+                        JSONObject jsonObject = new JSONObject(objAPIResult.toString());
+                        String cust = jsonObject.getJSONObject("Order").getString("CustomerName");
+                        String inNumber = jsonObject.getJSONObject("Order").getString("INNumber");
+                        getSupportActionBar().setTitle("Order #: " + inNumber);
+                        customerTv.setText("Customer: " + cust);
+
+                    } catch (Exception e) {
+                        Util.showToast("Failed and try again 1", OrderItemActivity.this);
+                    }
+                } else {
+                    Util.showToast("Failed and try again 2", OrderItemActivity.this);
+                }
+            }
+        });
+        apiManager.getCustomerDetail(String.valueOf(orderID));
     }
 
     private void initValue() {
