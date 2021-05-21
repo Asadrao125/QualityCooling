@@ -199,10 +199,10 @@ public class OrderItemActivity extends AppCompatActivity {
                         customerTv.setText("Customer: " + cust);
 
                     } catch (Exception e) {
-                        Util.showToast("Failed and try again 1", OrderItemActivity.this);
+                        Util.showToast("Failed and try again", OrderItemActivity.this);
                     }
                 } else {
-                    Util.showToast("Failed and try again 2", OrderItemActivity.this);
+                    Util.showToast("Failed and try again", OrderItemActivity.this);
                 }
             }
         });

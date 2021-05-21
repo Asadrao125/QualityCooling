@@ -122,11 +122,8 @@ public class KnockedTogetherAdapter extends ArrayAdapter<KnockedTogetherModel> {
             @Override
             public void onClick(View view) {
                 if (!TextUtils.isEmpty(KnockedTogetherActivity.inputVal)) {
-                    Intent intent = new Intent(mContext, OrderItemActivity.class);
-                    Bundle b = new Bundle();
-                    b.putInt("OrderID", Integer.parseInt(knockedTogetherModel.OrderItemId));
-                    b.putString("Title", knockedTogetherModel.INNumber);
-                    intent.putExtras(b);
+                    Intent intent = new Intent(mContext, ItemInfoActivity.class);
+                    intent.putExtra("scanned_value", KnockedTogetherActivity.inputVal);
                     mContext.startActivity(intent);
                 } else {
                     Toast.makeText(mContext, "Please enter input", Toast.LENGTH_SHORT).show();
