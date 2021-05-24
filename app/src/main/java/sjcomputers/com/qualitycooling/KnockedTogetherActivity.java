@@ -1,5 +1,6 @@
 package sjcomputers.com.qualitycooling;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import cz.msebera.android.httpclient.Header;
@@ -19,11 +20,13 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.PersistableBundle;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -157,6 +160,10 @@ public class KnockedTogetherActivity extends AppCompatActivity {
                 });
             }
         });
+
+        if (savedInstanceState != null) {
+            inputVal = savedInstanceState.getString("key");
+        }
     }
 
     public void checkcheckcheck(String value) {
@@ -205,7 +212,7 @@ public class KnockedTogetherActivity extends AppCompatActivity {
                             }
 
                             if (ShowPopup.equals("1")) {
-                                showDialog(Button1Text, Button2Text, inNumber, "Notification"/*objAPIResult.getString("Message")*/);
+                                showDialog(Button1Text, Button2Text, inNumber, "Notification");
                             }
                         }
 
@@ -240,7 +247,7 @@ public class KnockedTogetherActivity extends AppCompatActivity {
                         Intent intent = new Intent(KnockedTogetherActivity.this, OrderItemActivity.class);
                         Bundle b = new Bundle();
                         b.putInt("OrderID", Integer.parseInt(orderId));
-                        b.putString("Title", in_number);
+                        b.putString("Title", orderId);
                         b.putString("Jobsite", jobSite);
                         b.putString("Customer", customer);
 
@@ -298,12 +305,10 @@ public class KnockedTogetherActivity extends AppCompatActivity {
                 Util.hideProgressDialog();
                 if (objAPIResult != null) {
                     try {
-
                         if (objAPIResult.getString("Status").equals("Success")) {
                             JSONObject jsonObject = new JSONObject(objAPIResult.toString());
                             String msg = jsonObject.getString("Message");
                             Toast.makeText(KnockedTogetherActivity.this, "" + msg, Toast.LENGTH_SHORT).show();
-
                         } else {
                             Util.showToast(objAPIResult.getString("Message"), KnockedTogetherActivity.this);
                         }
@@ -318,4 +323,11 @@ public class KnockedTogetherActivity extends AppCompatActivity {
         apiManager.showPopup(inNumber, buttonText);
     }
 
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        if (!TextUtils.isEmpty(inputVal)) {
+            savedInstanceState.putString("key", inputVal);
+        }
+    }
 }

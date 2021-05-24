@@ -360,7 +360,7 @@ public class APIManager {
         task.execute((Void) null);
     }
 
-    public void loadingChjeckOrUncheck(String orderItemId, String loaded) {
+    public void loadingCheckOrUncheck(String orderItemId, String loaded) {
         String API_URL = String.format("/LoadingCheckOrUncheck?orderItemId=%s&loaded=%s&userid=%d&authtoken=%s", orderItemId, loaded, UserData.getInstance().userId, UserData.getInstance().authToken);
         APITask task = new APITask(SERVER_ADDR, API_URL, null, HTTP_POST);
         task.execute((Void) null);

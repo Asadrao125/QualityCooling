@@ -1,6 +1,8 @@
 package sjcomputers.com.qualitycooling;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -42,6 +44,7 @@ import cz.msebera.android.httpclient.entity.StringEntity;
 import cz.msebera.android.httpclient.entity.mime.Header;
 import sjcomputers.com.qualitycooling.Adapters.LoadingAdapter;
 import sjcomputers.com.qualitycooling.Adapters.LoadingModel;
+import sjcomputers.com.qualitycooling.Admin.OrderItemActivity;
 import sjcomputers.com.qualitycooling.Global.APIManager;
 import sjcomputers.com.qualitycooling.Global.APIManagerCallback;
 import sjcomputers.com.qualitycooling.Global.UserData;
@@ -55,8 +58,10 @@ public class LoadingActivity extends AppCompatActivity {
     public static Handler handler;
     ListView loadLv;
     public static String inputVal;
-    String val = "d";
     ArrayList<LoadingModel> loadingModelArrayList = new ArrayList<>();
+    String Loaded, inNumber, ItemName, JobSite, JobSiteAddress, OrderItemId;
+    String PieceNo, ShowNotificationPopup, ShowPopup, Button1Text, Button2Text;
+    String OrderId, Customer;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -70,7 +75,6 @@ public class LoadingActivity extends AppCompatActivity {
                 if (msg.what == MSG_SERIAL_SCANNED) {
                     String scanResult = (String) msg.obj;
                     loadValue(scanResult);
-                    val = scanResult;
                     inputVal = scanResult;
                 }
             }
@@ -78,53 +82,66 @@ public class LoadingActivity extends AppCompatActivity {
     }
 
     private void loadValue(String value) {
-        if (!val.equals(value)) {
-            loadingModelArrayList.clear();
-            Util.showProgressDialog("Loading..", LoadingActivity.this);
-            APIManager apiManager = new APIManager();
-            apiManager.setCallback(new APIManagerCallback() {
-                @Override
-                public void APICallback(JSONObject objAPIResult) {
-                    Util.hideProgressDialog();
-                    if (objAPIResult != null) {
-                        try {
-                            if (objAPIResult.getString("Status").equals("Success")) {
-                                JSONObject jsonObject = new JSONObject(objAPIResult.toString());
-                                JSONArray jsonArray = jsonObject.getJSONArray("Items");
-                                for (int i = 0; i < jsonArray.length(); i++) {
-                                    JSONObject obj = jsonArray.getJSONObject(i);
-                                    String A_R_ENERGY = obj.getString("Customer");
-                                    String INNumber = obj.getString("INNumber");
-                                    String ItemName = obj.getString("ItemName");
-                                    String JobSite = obj.getString("JobSite");
-                                    String JobSiteAddress = obj.getString("JobSiteAddress");
-                                    String Loaded = obj.getString("Loaded");
-                                    String OrderItemId = obj.getString("OrderItemId");
-                                    String PieceNo = obj.getString("PieceNo");
+        Util.showProgressDialog("Loading..", LoadingActivity.this);
+        APIManager apiManager = new APIManager();
+        apiManager.setCallback(new APIManagerCallback() {
+            @Override
+            public void APICallback(JSONObject objAPIResult) {
+                Util.hideProgressDialog();
+                if (objAPIResult != null) {
+                    try {
+                        if (objAPIResult.getString("Status").equals("Success") || objAPIResult.getString("Status").equals("Scanned")) {
+                            JSONObject jsonObject = new JSONObject(objAPIResult.toString());
+                            JSONArray jsonArray = jsonObject.getJSONArray("Items");
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject obj = jsonArray.getJSONObject(i);
+                                Customer = obj.getString("Customer");
+                                inNumber = obj.getString("INNumber");
+                                ItemName = obj.getString("ItemName");
+                                JobSite = obj.getString("JobSite");
+                                JobSiteAddress = obj.getString("JobSiteAddress");
+                                Loaded = obj.getString("Loaded");
+                                OrderItemId = obj.getString("OrderItemId");
+                                PieceNo = obj.getString("PieceNo");
+                                OrderId = obj.getString("OrderId");
 
-                                    loadingModelArrayList.add(new LoadingModel(A_R_ENERGY, INNumber, ItemName, JobSite, JobSiteAddress, Loaded,
-                                            OrderItemId, PieceNo));
-                                }
+                                Button1Text = obj.getString("Button1Text");
+                                Button2Text = obj.getString("Button2Text");
+                                ShowNotificationPopup = obj.getString("ShowNotificationPopup");
+                                ShowPopup = obj.getString("ShowPopup");
 
-                            } else {
-                                Util.showToast(objAPIResult.getString("Message"), LoadingActivity.this);
+
+                                loadingModelArrayList.add(new LoadingModel(Customer, inNumber, ItemName, JobSite, JobSiteAddress, Loaded,
+                                        OrderItemId, PieceNo));
                             }
-                        } catch (Exception e) {
-                            Util.showToast("Failed and try again", LoadingActivity.this);
+
+                            adapter = new LoadingAdapter(loadingModelArrayList, LoadingActivity.this);
+                            loadLv.setAdapter(adapter);
+
+                            if (ShowNotificationPopup.equals("1")) {
+                                if (loadingModelArrayList.size() > 1 || loadingModelArrayList.size() > 0) {
+                                    loadingModelArrayList.remove(loadingModelArrayList.size() - 1);
+                                }
+                                showDialog2(OrderId, objAPIResult.getString("Message"), Customer, JobSite, inNumber);
+                            }
+
+                            if (ShowPopup.equals("1")) {
+                                showDialog(Button1Text, Button2Text, inNumber, "Notification");
+                            }
+
+
+                        } else {
+                            Util.showToast(objAPIResult.getString("Message"), LoadingActivity.this);
                         }
-                    } else {
+                    } catch (Exception e) {
                         Util.showToast("Failed and try again", LoadingActivity.this);
                     }
-
-                    adapter = new LoadingAdapter(loadingModelArrayList, LoadingActivity.this);
-                    loadLv.setAdapter(adapter);
-
+                } else {
+                    Util.showToast("Failed and try again", LoadingActivity.this);
                 }
-            });
-            apiManager.loading(value);
-        } else {
-            Toast.makeText(this, "This item is already scanned", Toast.LENGTH_SHORT).show();
-        }
+            }
+        });
+        apiManager.loading(value);
     }
 
     private void setupView() {
@@ -178,9 +195,9 @@ public class LoadingActivity extends AppCompatActivity {
                         if (charSequence.length() > 5 && charSequence.length() <= 9) {
                             String serial = charSequence.toString();
                             loadValue(serial);
-                            val = serial;
                             inputVal = serial;
                             serialEt.setText("");
+                            inputDialog.dismiss();
                         }
                     }
 
@@ -197,7 +214,6 @@ public class LoadingActivity extends AppCompatActivity {
                         String serial = serialEt.getText().toString();
                         if (!TextUtils.isEmpty(serial)) {
                             loadValue(serial);
-                            val = serial;
                         }
                         inputDialog.hide();
                     }
@@ -215,4 +231,97 @@ public class LoadingActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    // For View Job Popup
+    private void showDialog2(String orderId, String confirmation, String customer, String jobSite, String inNumber) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(LoadingActivity.this);
+        builder.setMessage(confirmation)
+                .setCancelable(false)
+                .setPositiveButton("View Job", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        Intent intent = new Intent(LoadingActivity.this, OrderItemActivity.class);
+                        Bundle b = new Bundle();
+                        b.putInt("OrderID", Integer.parseInt(orderId));
+                        b.putString("Title", orderId);
+                        b.putString("Jobsite", jobSite);
+                        b.putString("Customer", customer);
+
+                        intent.putExtras(b);
+                        startActivity(intent);
+                        dialog.cancel();
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        final AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    // For Ready For Pickup / Delivery Popup
+    private void showDialog(String button1_text, String button2_text, String inNumber, String confirmation) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(LoadingActivity.this);
+        builder.setMessage(confirmation)
+                .setCancelable(false)
+                .setPositiveButton(button2_text, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        String NewString = button2_text.replaceAll(" ", "_");
+                        finalHit2(inNumber, NewString);
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton(button1_text, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        String NewString = button1_text.replaceAll(" ", "_");
+                        finalHit2(inNumber, NewString);
+                        dialog.dismiss();
+                    }
+                })
+                .setNeutralButton("Close", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+
+        final AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    public void finalHit2(String inNumber, String buttonText) {
+
+        Log.d("kjwbdjb", "finalHit2: " + inNumber + "\n" + buttonText);
+
+        Util.showProgressDialog("Loading..", LoadingActivity.this);
+        APIManager apiManager = new APIManager();
+        apiManager.setCallback(new APIManagerCallback() {
+            @Override
+            public void APICallback(JSONObject objAPIResult) {
+                Util.hideProgressDialog();
+                Toast.makeText(LoadingActivity.this, "" + objAPIResult, Toast.LENGTH_SHORT).show();
+                if (objAPIResult != null) {
+                    try {
+                        if (objAPIResult.getString("Status").equals("Success")) {
+                            JSONObject jsonObject = new JSONObject(objAPIResult.toString());
+                            String msg = jsonObject.getString("Message");
+                            Toast.makeText(LoadingActivity.this, "" + msg, Toast.LENGTH_SHORT).show();
+
+                        } else {
+                            Util.showToast(objAPIResult.getString("Message"), LoadingActivity.this);
+                        }
+                    } catch (Exception e) {
+                        Util.showToast("Failed and try again 1", LoadingActivity.this);
+                    }
+                } else {
+                    Util.showToast("Failed and try again 2", LoadingActivity.this);
+                }
+            }
+        });
+        apiManager.showPopup(inNumber, buttonText);
+    }
+
 }

@@ -11,6 +11,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -185,12 +186,10 @@ public class OrderItemActivity extends AppCompatActivity {
     }
 
     private void getCustomerDetail() {
-        //Util.showProgressDialog("Loading..", OrderItemActivity.this);
         APIManager apiManager = new APIManager();
         apiManager.setCallback(new APIManagerCallback() {
             @Override
             public void APICallback(JSONObject objAPIResult) {
-                //Util.hideProgressDialog();
                 if (objAPIResult != null) {
                     try {
                         JSONObject jsonObject = new JSONObject(objAPIResult.toString());
@@ -277,10 +276,17 @@ public class OrderItemActivity extends AppCompatActivity {
         filterSpinnerLand = findViewById(R.id.spinner4_land);
         statusSpinnerLand = (Spinner) findViewById(R.id.spinner_land);
 
+
+        if (jobSite != null && !jobSite.isEmpty()) {
+            jobSiteTv.setText("Job Site: " + jobSite);
+            jobSiteTvLand.setText("Job Site: " + jobSite);
+        } else {
+            jobSiteTv.setText("");
+            jobSiteTvLand.setText("");
+        }
+
         customerTv.setText(String.format("Customer Name: %s ", customer));
-        jobSiteTv.setText("Job Site: " + jobSite);
         customerTvLand.setText(String.format("Customer Name: %s ", customer));
-        jobSiteTvLand.setText("Job Site: " + jobSite);
 
         Button updateBt = (Button) findViewById(R.id.button);
         updateBt.setOnClickListener(new View.OnClickListener() {
@@ -729,10 +735,10 @@ public class OrderItemActivity extends AppCompatActivity {
 
     private void updateMainOrders() {
         Util.showToast("Status is updated successfully.", OrderItemActivity.this);
-        JobActivity.searchInEt.setText("");
+        /*JobActivity.searchInEt.setText("");
         if (!JobActivity.isLive) {
             JobActivity.orderAdapter.getOrders();
-        }
+        }*/
     }
 
     private void updateOrderItems() {

@@ -90,22 +90,11 @@ public class LoadingAdapter extends ArrayAdapter<LoadingModel> {
         viewHolder.cbLoaded.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                //checkOrUncheck(loadingModel.OrderItemId, loadingModel.Loaded);
                 if (b) {
-                    //check(loadingModel.OrderItemId, "1");
-                    checkcheckcheck(loadingModel.OrderItemId, "1");
+                    loadingCheckOrUncheck(loadingModel.OrderItemId, "1");
                 } else {
-                    //check(loadingModel.OrderItemId, "0");
-                    checkcheckcheck(loadingModel.OrderItemId, "0");
+                    loadingCheckOrUncheck(loadingModel.OrderItemId, "0");
                 }
-
-            }
-        });
-
-        viewHolder.pieceNo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
 
             }
         });
@@ -124,6 +113,35 @@ public class LoadingAdapter extends ArrayAdapter<LoadingModel> {
         });
 
         return convertView;
+    }
+
+    public void loadingCheckOrUncheck(String orderItemId, String loaded){
+        Util.showProgressDialog("Loading..", mContext);
+        APIManager apiManager = new APIManager();
+        apiManager.setCallback(new APIManagerCallback() {
+            @Override
+            public void APICallback(JSONObject objAPIResult) {
+                Util.hideProgressDialog();
+                if (objAPIResult != null) {
+                    try {
+
+                        if (objAPIResult.getString("Status").equals("Success")) {
+                            JSONObject jsonObject = new JSONObject(objAPIResult.toString());
+                            String msg = jsonObject.getString("Message");
+                            Toast.makeText(mContext, "" + msg, Toast.LENGTH_SHORT).show();
+
+                        } else {
+                            Util.showToast(objAPIResult.getString("Message"), mContext);
+                        }
+                    } catch (Exception e) {
+                        Util.showToast("Failed and try again", mContext);
+                    }
+                } else {
+                    Util.showToast("Failed and try again", mContext);
+                }
+            }
+        });
+        apiManager.loadingCheckOrUncheck(orderItemId, loaded);
     }
 
     private void checkOrUncheck(String orderItemId, String loaded) {
@@ -186,34 +204,5 @@ public class LoadingAdapter extends ArrayAdapter<LoadingModel> {
                     }
                 }
         );
-    }
-
-    public void checkcheckcheck(String orderItemId, String loaded){
-        Util.showProgressDialog("Loading..", mContext);
-        APIManager apiManager = new APIManager();
-        apiManager.setCallback(new APIManagerCallback() {
-            @Override
-            public void APICallback(JSONObject objAPIResult) {
-                Util.hideProgressDialog();
-                if (objAPIResult != null) {
-                    try {
-
-                        if (objAPIResult.getString("Status").equals("Success")) {
-                            JSONObject jsonObject = new JSONObject(objAPIResult.toString());
-                            String msg = jsonObject.getString("Message");
-                            Toast.makeText(mContext, "" + msg, Toast.LENGTH_SHORT).show();
-
-                        } else {
-                            Util.showToast(objAPIResult.getString("Message"), mContext);
-                        }
-                    } catch (Exception e) {
-                        Util.showToast("Failed and try again", mContext);
-                    }
-                } else {
-                    Util.showToast("Failed and try again", mContext);
-                }
-            }
-        });
-        apiManager.loadingChjeckOrUncheck(orderItemId, loaded);
     }
 }
