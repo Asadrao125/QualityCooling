@@ -152,7 +152,6 @@ public class DeliveredActivity extends AppCompatActivity {
     }
 
     public void checkcheckcheck(String value) {
-        knockedTogetherModelArrayList.clear();
         Util.showProgressDialog("Loading..", DeliveredActivity.this);
         APIManager apiManager = new APIManager();
         apiManager.setCallback(new APIManagerCallback() {
@@ -191,13 +190,15 @@ public class DeliveredActivity extends AppCompatActivity {
                             lvKnockedTogether.setAdapter(adapter);
 
                             if (ShowNotificationPopup.equals("1")) {
-                                showDialog2(OrderId, objAPIResult.getString("Message"), customer, jobSite);
+                                if (knockedTogetherModelArrayList.size() > 1 || knockedTogetherModelArrayList.size() > 0) {
+                                    knockedTogetherModelArrayList.remove(knockedTogetherModelArrayList.size() - 1);
+                                }
+                                showDialog2(OrderId, objAPIResult.getString("Message"), customer, jobSite, inNumber);
                             }
 
                             if (ShowPopup.equals("1")) {
-                                showDialog(Button1Text, Button2Text, inNumber, objAPIResult.getString("Message"));
+                                showDialog(Button1Text, Button2Text, inNumber, "Notification");
                             }
-
                         }
 
                     } catch (Exception e) {
@@ -208,7 +209,7 @@ public class DeliveredActivity extends AppCompatActivity {
                 }
             }
         });
-        apiManager.knockedTogether(value);
+        apiManager.getDeliveryList(value);
     }
 
     @Override
@@ -222,7 +223,7 @@ public class DeliveredActivity extends AppCompatActivity {
     }
 
     // For View Job Popup
-    private void showDialog2(String orderId, String confirmation, String customer, String jobSite) {
+    private void showDialog2(String orderId, String confirmation, String customer, String jobSite, String in_number) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(DeliveredActivity.this);
         builder.setMessage(confirmation)
                 .setCancelable(false)
@@ -230,10 +231,13 @@ public class DeliveredActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int id) {
 
                         Intent intent = new Intent(DeliveredActivity.this, OrderItemActivity.class);
-                        intent.putExtra("OrderID", orderId);
-                        intent.putExtra("Title", orderId);
-                        intent.putExtra("Customer", customer);
-                        intent.putExtra("Jobsite", jobSite);
+                        Bundle b = new Bundle();
+                        b.putInt("OrderID", Integer.parseInt(orderId));
+                        b.putString("Title", orderId);
+                        b.putString("Jobsite", jobSite);
+                        b.putString("Customer", customer);
+
+                        intent.putExtras(b);
                         startActivity(intent);
                         dialog.cancel();
                     }

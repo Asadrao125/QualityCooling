@@ -185,18 +185,17 @@ public class OrderItemActivity extends AppCompatActivity {
     }
 
     private void getCustomerDetail() {
+        //Util.showProgressDialog("Loading..", OrderItemActivity.this);
         APIManager apiManager = new APIManager();
         apiManager.setCallback(new APIManagerCallback() {
             @Override
             public void APICallback(JSONObject objAPIResult) {
+                //Util.hideProgressDialog();
                 if (objAPIResult != null) {
                     try {
-
                         JSONObject jsonObject = new JSONObject(objAPIResult.toString());
                         String cust = jsonObject.getJSONObject("Order").getString("CustomerName");
-                        String inNumber = jsonObject.getJSONObject("Order").getString("INNumber");
-                        getSupportActionBar().setTitle("Order #: " + inNumber);
-                        customerTv.setText("Customer: " + cust);
+                        customerTv.setText(cust);
 
                     } catch (Exception e) {
                         Util.showToast("Failed and try again", OrderItemActivity.this);
@@ -395,37 +394,35 @@ public class OrderItemActivity extends AppCompatActivity {
         builder1.setMessage("Did you complete all the items?");
         builder1.setCancelable(true);
 
-        builder1.setPositiveButton(
-                "Yes",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                        APIManager apiManager = new APIManager();
-                        apiManager.setCallback(new APIManagerCallback() {
-                            @Override
-                            public void APICallback(JSONObject objAPIResult) {
-                                isApiCalling = false;
-                                Util.hideProgressDialog();
-                                if (objAPIResult != null) {
-                                    try {
-                                        orderDetailListAdapter.getOrderItems(filterSpinner.getSelectedItemPosition());
+        builder1.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.cancel();
+                APIManager apiManager = new APIManager();
+                apiManager.setCallback(new APIManagerCallback() {
+                    @Override
+                    public void APICallback(JSONObject objAPIResult) {
+                        isApiCalling = false;
+                        Util.hideProgressDialog();
+                        if (objAPIResult != null) {
+                            try {
+                                orderDetailListAdapter.getOrderItems(filterSpinner.getSelectedItemPosition());
 
-                                        //finishAndUpdateMainOrders();
-                                    } catch (Exception e) {
-                                        Util.showToast("Failed and try again", OrderItemActivity.this);
-                                    }
-                                } else {
-                                    Util.showToast("Failed and try again", OrderItemActivity.this);
-                                }
-
+                                //finishAndUpdateMainOrders();
+                            } catch (Exception e) {
+                                Util.showToast("Failed and try again", OrderItemActivity.this);
                             }
-                        });
+                        } else {
+                            Util.showToast("Failed and try again", OrderItemActivity.this);
+                        }
 
-                        Util.showProgressDialog("Updating..", OrderItemActivity.this);
-                        apiManager.markItemComplete(orderID);
-                        isApiCalling = true;
                     }
                 });
+
+                Util.showProgressDialog("Updating..", OrderItemActivity.this);
+                apiManager.markItemComplete(orderID);
+                isApiCalling = true;
+            }
+        });
 
         builder1.setNegativeButton(
                 "No",

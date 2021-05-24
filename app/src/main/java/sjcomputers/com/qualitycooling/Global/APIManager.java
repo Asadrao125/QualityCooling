@@ -378,6 +378,13 @@ public class APIManager {
         task.execute((Void) null);
     }
 
+    public void getDeliveryList(String scannedValue) {
+        String API_URL = String.format("/KnockedTogetherDelivery?scannedValue=%s&userId=%d&authtoken=%s", scannedValue, UserData.getInstance().userId, UserData.getInstance().authToken);
+        APITask task = new APITask(SERVER_ADDR, API_URL, null, HTTP_POST);
+        task.execute((Void) null);
+    }
+
+
     public void itemInfo(String scannedValue) {
         String API_URL2 = String.format("/ItemInfo?scannedValue=%s&authtoken=%s&userid=%d", scannedValue, UserData.getInstance().authToken, UserData.getInstance().userId);
         APITask task = new APITask(SERVER_ADDR, API_URL2, null, HTTP_POST);

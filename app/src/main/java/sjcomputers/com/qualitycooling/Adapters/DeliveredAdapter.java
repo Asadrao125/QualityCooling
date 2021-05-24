@@ -27,10 +27,12 @@ import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
 import sjcomputers.com.qualitycooling.Admin.OrderItemActivity;
+import sjcomputers.com.qualitycooling.DeliveredActivity;
 import sjcomputers.com.qualitycooling.Global.APIManager;
 import sjcomputers.com.qualitycooling.Global.APIManagerCallback;
 import sjcomputers.com.qualitycooling.Global.UserData;
 import sjcomputers.com.qualitycooling.Global.Util;
+import sjcomputers.com.qualitycooling.ItemInfoActivity;
 import sjcomputers.com.qualitycooling.KnockedTogetherActivity;
 import sjcomputers.com.qualitycooling.R;
 import sjcomputers.com.qualitycooling.models.KnockedTogetherModel;
@@ -94,14 +96,6 @@ public class DeliveredAdapter extends ArrayAdapter<KnockedTogetherModel> {
             viewHolder.cbDelivered.setChecked(true);
         }
 
-        /*if (knockedTogetherModel.ShowNotificationPopup.equals("1")) {
-            showDialog2(knockedTogetherModel.OrderItemId);
-        }*/
-
-        /*if (knockedTogetherModel.ShowPopup.equals("1")) {
-            showDialog(knockedTogetherModel.Button1Text, knockedTogetherModel.Button2Text, knockedTogetherModel.INNumber);
-        }*/
-
         viewHolder.cbCompleted.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -127,12 +121,9 @@ public class DeliveredAdapter extends ArrayAdapter<KnockedTogetherModel> {
         viewHolder.itemInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!TextUtils.isEmpty(KnockedTogetherActivity.inputVal)) {
-                    Intent intent = new Intent(mContext, OrderItemActivity.class);
-                    Bundle b = new Bundle();
-                    b.putInt("OrderID", Integer.parseInt(knockedTogetherModel.OrderItemId));
-                    b.putString("Title", knockedTogetherModel.INNumber);
-                    intent.putExtras(b);
+                if (!TextUtils.isEmpty(DeliveredActivity.inputVal)) {
+                    Intent intent = new Intent(mContext, ItemInfoActivity.class);
+                    intent.putExtra("scanned_value", DeliveredActivity.inputVal);
                     mContext.startActivity(intent);
                 } else {
                     Toast.makeText(mContext, "Please enter input", Toast.LENGTH_SHORT).show();
@@ -237,30 +228,6 @@ public class DeliveredAdapter extends ArrayAdapter<KnockedTogetherModel> {
         apiManager.showPopup(inNumber, buttonText);
     }
 
-    // For View Job Popup
-    private void showDialog2(String orderItemId) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        builder.setMessage("Confirmation")
-                .setCancelable(false)
-                .setPositiveButton("View Job", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-
-                        Intent intent = new Intent(mContext, OrderItemActivity.class);
-                        intent.putExtra("", orderItemId);
-                        mContext.startActivity(intent);
-                        dialog.cancel();
-                    }
-                })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
-
-        final AlertDialog alert = builder.create();
-        alert.show();
-    }
-
     public void check_uncheck_delivered(String orderItemId, String delivered) {
         Util.showProgressDialog("Loading..", mContext);
         APIManager apiManager = new APIManager();
@@ -286,6 +253,29 @@ public class DeliveredAdapter extends ArrayAdapter<KnockedTogetherModel> {
             }
         });
         apiManager.checkUncheckDelivered(orderItemId, delivered);
+    }
+
+    private void showDialog2(String orderItemId) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setMessage("Confirmation")
+                .setCancelable(false)
+                .setPositiveButton("View Job", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        Intent intent = new Intent(mContext, OrderItemActivity.class);
+                        intent.putExtra("", orderItemId);
+                        mContext.startActivity(intent);
+                        dialog.cancel();
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        final AlertDialog alert = builder.create();
+        alert.show();
     }
 
     public void finalHit(String innumber, String buttonText) {
