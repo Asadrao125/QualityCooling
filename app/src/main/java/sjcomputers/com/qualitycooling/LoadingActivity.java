@@ -44,6 +44,7 @@ import cz.msebera.android.httpclient.entity.StringEntity;
 import cz.msebera.android.httpclient.entity.mime.Header;
 import sjcomputers.com.qualitycooling.Adapters.LoadingAdapter;
 import sjcomputers.com.qualitycooling.Adapters.LoadingModel;
+import sjcomputers.com.qualitycooling.Adapters.LoadingModel2;
 import sjcomputers.com.qualitycooling.Admin.OrderItemActivity;
 import sjcomputers.com.qualitycooling.Global.APIManager;
 import sjcomputers.com.qualitycooling.Global.APIManagerCallback;
@@ -58,7 +59,7 @@ public class LoadingActivity extends AppCompatActivity {
     public static Handler handler;
     ListView loadLv;
     public static String inputVal;
-    ArrayList<LoadingModel> loadingModelArrayList = new ArrayList<>();
+    ArrayList<LoadingModel2> loadingModelArrayList = new ArrayList<>();
     String Loaded, inNumber, ItemName, JobSite, JobSiteAddress, OrderItemId;
     String PieceNo, ShowNotificationPopup, ShowPopup, Button1Text, Button2Text;
     String OrderId, Customer;
@@ -111,8 +112,8 @@ public class LoadingActivity extends AppCompatActivity {
                                 ShowPopup = obj.getString("ShowPopup");
 
 
-                                loadingModelArrayList.add(new LoadingModel(Customer, inNumber, ItemName, JobSite, JobSiteAddress, Loaded,
-                                        OrderItemId, PieceNo));
+                                loadingModelArrayList.add(new LoadingModel2(Button1Text, Button2Text, Customer, inNumber,
+                                        ItemName, JobSite, JobSiteAddress, Loaded, OrderId, OrderItemId, PieceNo, ShowNotificationPopup, ShowPopup));
                             }
 
                             adapter = new LoadingAdapter(loadingModelArrayList, LoadingActivity.this);
@@ -122,7 +123,7 @@ public class LoadingActivity extends AppCompatActivity {
                                 if (loadingModelArrayList.size() > 1 || loadingModelArrayList.size() > 0) {
                                     loadingModelArrayList.remove(loadingModelArrayList.size() - 1);
                                 }
-                                showDialog2(OrderId, objAPIResult.getString("Message"), Customer, JobSite, inNumber);
+                                showDialog2(OrderId, objAPIResult.getString("Message"), Customer, JobSite);
                             }
 
                             if (ShowPopup.equals("1")) {
@@ -233,7 +234,7 @@ public class LoadingActivity extends AppCompatActivity {
     }
 
     // For View Job Popup
-    private void showDialog2(String orderId, String confirmation, String customer, String jobSite, String inNumber) {
+    private void showDialog2(String orderId, String confirmation, String customer, String jobSite) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(LoadingActivity.this);
         builder.setMessage(confirmation)
                 .setCancelable(false)
@@ -293,16 +294,13 @@ public class LoadingActivity extends AppCompatActivity {
     }
 
     public void finalHit2(String inNumber, String buttonText) {
-
-        Log.d("kjwbdjb", "finalHit2: " + inNumber + "\n" + buttonText);
-
         Util.showProgressDialog("Loading..", LoadingActivity.this);
+        String newIn = inNumber.trim();
         APIManager apiManager = new APIManager();
         apiManager.setCallback(new APIManagerCallback() {
             @Override
             public void APICallback(JSONObject objAPIResult) {
                 Util.hideProgressDialog();
-                Toast.makeText(LoadingActivity.this, "" + objAPIResult, Toast.LENGTH_SHORT).show();
                 if (objAPIResult != null) {
                     try {
                         if (objAPIResult.getString("Status").equals("Success")) {
@@ -321,7 +319,7 @@ public class LoadingActivity extends AppCompatActivity {
                 }
             }
         });
-        apiManager.showPopup(inNumber, buttonText);
+        apiManager.showPopup(newIn, buttonText);
     }
 
 }

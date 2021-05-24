@@ -34,8 +34,8 @@ import sjcomputers.com.qualitycooling.ItemInfoActivity;
 import sjcomputers.com.qualitycooling.LoadingActivity;
 import sjcomputers.com.qualitycooling.R;
 
-public class LoadingAdapter extends ArrayAdapter<LoadingModel> {
-    private ArrayList<LoadingModel> dataSet;
+public class LoadingAdapter extends ArrayAdapter<LoadingModel2> {
+    private ArrayList<LoadingModel2> dataSet;
     Context mContext;
     private SharedPreferences sharedPreferences;
     String apiUrl;
@@ -45,7 +45,7 @@ public class LoadingAdapter extends ArrayAdapter<LoadingModel> {
         CheckBox cbLoaded;
     }
 
-    public LoadingAdapter(ArrayList<LoadingModel> data, Context context) {
+    public LoadingAdapter(ArrayList<LoadingModel2> data, Context context) {
         super(context, R.layout.item_itemlist, data);
         this.dataSet = data;
         this.mContext = context;
@@ -54,7 +54,7 @@ public class LoadingAdapter extends ArrayAdapter<LoadingModel> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        LoadingModel loadingModel = getItem(position);
+        LoadingModel2 loadingModel = getItem(position);
         LoadingAdapter.ViewHolder viewHolder;
         final View result;
         if (convertView == null) {
@@ -76,7 +76,7 @@ public class LoadingAdapter extends ArrayAdapter<LoadingModel> {
             viewHolder = (LoadingAdapter.ViewHolder) convertView.getTag();
             result = convertView;
         }
-        viewHolder.tvArEnergy.setText("Customer: " + loadingModel.A_R_ENERGY);
+        viewHolder.tvArEnergy.setText("Customer: " + loadingModel.Customer);
         viewHolder.itemName.setText("Item Name: " + loadingModel.ItemName);
         viewHolder.inNumber.setText("IN: " + loadingModel.INNumber);
         viewHolder.jobSite.setText("Job site: " + loadingModel.JobSite);
@@ -115,7 +115,7 @@ public class LoadingAdapter extends ArrayAdapter<LoadingModel> {
         return convertView;
     }
 
-    public void loadingCheckOrUncheck(String orderItemId, String loaded){
+    public void loadingCheckOrUncheck(String orderItemId, String loaded) {
         Util.showProgressDialog("Loading..", mContext);
         APIManager apiManager = new APIManager();
         apiManager.setCallback(new APIManagerCallback() {
@@ -181,7 +181,7 @@ public class LoadingAdapter extends ArrayAdapter<LoadingModel> {
         String userId = String.valueOf(UserData.getInstance().userId);
 
         apiUrl = sharedPreferences.getString("URL", "");
-        Log.d("api_url_jd", "check: "+apiUrl);
+        Log.d("api_url_jd", "check: " + apiUrl);
         Log.d("log_data", "check: " + orderItemId + "\n" + loaded + "\n" + UserData.getInstance().authToken + "\n" + UserData.getInstance().userId);
         client.post(apiUrl + "/services/service.svc/LoadingCheckOrUncheck?orderItemId=" + orderItemId + "&loaded=" + loaded + "&authtoken=" + token + "&userId=" + userId, /*params,*/ new TextHttpResponseHandler() {
                     @Override
