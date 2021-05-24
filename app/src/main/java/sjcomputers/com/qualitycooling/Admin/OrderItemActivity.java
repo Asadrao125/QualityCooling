@@ -194,7 +194,9 @@ public class OrderItemActivity extends AppCompatActivity {
                     try {
                         JSONObject jsonObject = new JSONObject(objAPIResult.toString());
                         String cust = jsonObject.getJSONObject("Order").getString("CustomerName");
-                        customerTv.setText(cust);
+                        String inNumber = jsonObject.getJSONObject("Order").getString("INNumber");
+                        customerTv.setText("Customer: " + cust);
+                        setTitle("Order #: " + inNumber);
 
                     } catch (Exception e) {
                         Util.showToast("Failed and try again", OrderItemActivity.this);
@@ -216,7 +218,7 @@ public class OrderItemActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(this, R.color.colorAccent)));
-        getSupportActionBar().setTitle("Order #: " + title);
+        //getSupportActionBar().setTitle("Order #: " + title);
 
         landscapeCl = findViewById(R.id.landscape_cl);
         portraitCl = findViewById(R.id.portrait_cl);
@@ -333,9 +335,9 @@ public class OrderItemActivity extends AppCompatActivity {
 
     private void configureFilterSpinner() {
         filters = new String[3];
-        filters[0] = "Not Completed";
+        filters[0] = "All";
         filters[1] = "Complete";
-        filters[2] = "All";
+        filters[2] = "Not Completed";
 
         ArrayAdapter<String> filterAdapter = new ArrayAdapter<String>(OrderItemActivity.this, R.layout.item_spinner, filters);
         filterSpinner.setAdapter(filterAdapter);

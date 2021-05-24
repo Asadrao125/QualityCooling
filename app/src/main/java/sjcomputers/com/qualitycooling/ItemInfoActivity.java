@@ -49,6 +49,7 @@ public class ItemInfoActivity extends AppCompatActivity {
     Button btnViewJob;
     ArrayList<ItemModel> itemModelArrayList = new ArrayList<>();
     String val = "d";
+    String Status, finalStatus;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -83,6 +84,7 @@ public class ItemInfoActivity extends AppCompatActivity {
                 Bundle b = new Bundle();
                 b.putInt("OrderID", IN_Number);
                 b.putString("Title", String.valueOf(IN_Number));
+                b.putString("Status", finalStatus);
                 intent.putExtras(b);
                 startActivity(intent);
             }
@@ -91,9 +93,6 @@ public class ItemInfoActivity extends AppCompatActivity {
     }
 
     private void itemInfo(String value) {
-
-        Log.d("123456", "checkcheckcheck: val= " + val + "\n" + "value: " + value);
-
         if (!val.equals(value)) {
             itemModelArrayList.clear();
             Util.showProgressDialog("Loading..", ItemInfoActivity.this);
@@ -108,6 +107,17 @@ public class ItemInfoActivity extends AppCompatActivity {
                                 String itemInfo = objAPIResult.getString("ItemInfo");
                                 itemInfoTv.setText(itemInfo.replace("\\n", "\n"));
                                 IN_Number = objAPIResult.getInt("OrderId");
+
+                                Log.d("sooooooor", "APICallback: " + itemInfo);
+                                String newString = itemInfo.replace("\\n", "\n");
+                                String newString2[] = newString.split("\n");
+                                for (int i = 0; i < newString2.length; i++) {
+                                    Log.d("museebathhb", "APICallback: " + newString2[i]);
+                                    Status = newString2[2];
+                                }
+
+                                String newStatus[] = Status.split(":");
+                                finalStatus = newStatus[1].trim();
 
                                 JSONArray documentJSONArr = objAPIResult.getJSONArray("Documents");
                                 ArrayList<HashMap<String, Object>> documentArr = Util.toList(documentJSONArr);

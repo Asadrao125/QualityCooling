@@ -86,14 +86,8 @@ public class OrderItemAdapter extends BaseAdapter {
             }
 
             if(status == 0) {
-                try {
-                    if(!itemOrderJSONObj.getBoolean("IsCompleted")) {
-                        searchedItemOrderJSONArr.put(itemOrderJSONObj);
-                        searchedItemOrderList.add(itemOrderList.get(i));
-                    }
-                } catch (JSONException e) {
-
-                }
+                searchedItemOrderJSONArr.put(itemOrderJSONObj);
+                searchedItemOrderList.add(itemOrderList.get(i));
             }
             else if(status == 1) {
                 try {
@@ -106,8 +100,14 @@ public class OrderItemAdapter extends BaseAdapter {
                 }
             }
             else {
-                searchedItemOrderJSONArr.put(itemOrderJSONObj);
-                searchedItemOrderList.add(itemOrderList.get(i));
+                try {
+                    if(!itemOrderJSONObj.getBoolean("IsCompleted")) {
+                        searchedItemOrderJSONArr.put(itemOrderJSONObj);
+                        searchedItemOrderList.add(itemOrderList.get(i));
+                    }
+                } catch (JSONException e) {
+
+                }
             }
         }
 
