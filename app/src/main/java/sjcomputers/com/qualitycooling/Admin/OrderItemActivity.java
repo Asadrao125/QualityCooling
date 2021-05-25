@@ -181,35 +181,6 @@ public class OrderItemActivity extends AppCompatActivity {
         status = b.getString("Status");
         title = b.getString("Title");
         orderID = b.getInt("OrderID");
-
-        Log.d("order_id_check", "getOrderDetailValuesFromOrderActivity: " + orderID);
-
-        getCustomerDetail();
-
-    }
-
-    private void getCustomerDetail() {
-        APIManager apiManager = new APIManager();
-        apiManager.setCallback(new APIManagerCallback() {
-            @Override
-            public void APICallback(JSONObject objAPIResult) {
-                if (objAPIResult != null) {
-                    try {
-                        JSONObject jsonObject = new JSONObject(objAPIResult.toString());
-                        String cust = jsonObject.getJSONObject("Order").getString("CustomerName");
-                        String inNumber = jsonObject.getJSONObject("Order").getString("INNumber");
-                        customerTv.setText("Customer: " + cust);
-                        setTitle("Order #: " + inNumber);
-
-                    } catch (Exception e) {
-                        Util.showToast("Failed and try again", OrderItemActivity.this);
-                    }
-                } else {
-                    Util.showToast("Failed and try again", OrderItemActivity.this);
-                }
-            }
-        });
-        apiManager.getCustomerDetail(String.valueOf(orderID));
     }
 
     private void initValue() {
@@ -581,6 +552,11 @@ public class OrderItemActivity extends AppCompatActivity {
                     try {
                         JSONObject orderJSONObj = objAPIResult.getJSONObject("Order");
                         orderObj = Util.toMap(orderJSONObj);
+
+                        status = orderJSONObj.getString("Status").trim();
+                        setTitle("Order #: " + orderJSONObj.getString("INNumber"));
+                        customerTv.setText("Customer: " + orderJSONObj.getString("CustomerName"));
+                        setStatus();
 
                         if (orderObj.get("DriverSignature") != JSONObject.NULL) {
                             signatureImgUrl = (String) orderObj.get("DriverSignature");
