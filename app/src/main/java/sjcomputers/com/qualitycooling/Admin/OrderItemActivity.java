@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -180,6 +181,8 @@ public class OrderItemActivity extends AppCompatActivity {
         status = b.getString("Status");
         title = b.getString("Title");
         orderID = b.getInt("OrderID");
+
+        Log.d("order_id_check", "getOrderDetailValuesFromOrderActivity: " + orderID);
 
         getCustomerDetail();
 
@@ -468,6 +471,7 @@ public class OrderItemActivity extends AppCompatActivity {
         Util.showProgressDialog("Updating..", OrderItemActivity.this);
         apiManager.markItemDelivered(orderID);
         isApiCalling = true;
+
     }
 
     private void markItemLoadedInTruck() {

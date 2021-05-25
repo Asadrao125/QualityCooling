@@ -285,19 +285,20 @@ public class APIManager {
     }
 
     public void markItemComplete(int orderId) {
-        String API_URL = String.format("/MarkItemComplete?orderId=%d", orderId);
+        String API_URL = String.format("/MarkItemComplete?authtoken=%s&orderid=%d&userId=%s", UserData.getInstance().authToken, orderId, UserData.getInstance().userId);
         APITask task = new APITask(SERVER_ADDR, API_URL, null, HTTP_POST);
         task.execute((Void) null);
     }
 
     public void markItemDelivered(int orderId) {
-        String API_URL = String.format("/MarkItemDelivered?orderId=%d", orderId);
+        String API_URL = String.format("/MarkItemDelivered?authtoken=%s&orderid=%d&userId=%s", UserData.getInstance().authToken, orderId, UserData.getInstance().userId);
         APITask task = new APITask(SERVER_ADDR, API_URL, null, HTTP_POST);
         task.execute((Void) null);
     }
 
     public void markItemLoadedInTruck(int orderId) {
-        String API_URL = String.format("/MarkItemLoadedInTruck?orderId=%d", orderId);
+        Log.d("order_id_api", "markItemLoadedInTruck: " + orderId);
+        String API_URL = String.format("/MarkItemLoadedInTruck?authtoken=%s&orderid=%d&userId=%s", UserData.getInstance().authToken, orderId, UserData.getInstance().userId);
         APITask task = new APITask(SERVER_ADDR, API_URL, null, HTTP_POST);
         task.execute((Void) null);
     }

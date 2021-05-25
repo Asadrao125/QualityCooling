@@ -108,6 +108,8 @@ public class ItemInfoActivity extends AppCompatActivity {
                                 itemInfoTv.setText(itemInfo.replace("\\n", "\n"));
                                 IN_Number = objAPIResult.getInt("OrderId");
 
+                                Log.d("kfnkfnknfk", "APICallback: " + IN_Number);
+
                                 Log.d("sooooooor", "APICallback: " + itemInfo);
                                 String newString = itemInfo.replace("\\n", "\n");
                                 String newString2[] = newString.split("\n");
