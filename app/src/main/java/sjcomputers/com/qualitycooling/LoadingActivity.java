@@ -185,7 +185,7 @@ public class LoadingActivity extends AppCompatActivity {
                 });
 
                 //Chnages By Asad
-                serialEt.addTextChangedListener(new TextWatcher() {
+                /*serialEt.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -206,7 +206,7 @@ public class LoadingActivity extends AppCompatActivity {
                     public void afterTextChanged(Editable editable) {
 
                     }
-                });
+                });*/
 
                 Button okBt = (Button) inputDialog.findViewById(R.id.button8);
                 okBt.setOnClickListener(new View.OnClickListener() {
@@ -215,6 +215,7 @@ public class LoadingActivity extends AppCompatActivity {
                         String serial = serialEt.getText().toString();
                         if (!TextUtils.isEmpty(serial)) {
                             loadValue(serial);
+                            inputVal = serial;
                         }
                         inputDialog.hide();
                     }
