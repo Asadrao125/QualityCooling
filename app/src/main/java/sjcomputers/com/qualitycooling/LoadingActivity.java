@@ -69,6 +69,7 @@ public class LoadingActivity extends AppCompatActivity {
     String PieceNo, ShowNotificationPopup, ShowPopup, Button1Text, Button2Text;
     String OrderId, Customer;
     EditText edtManualInput;
+    Handler handler2 = new Handler();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -115,7 +116,7 @@ public class LoadingActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (charSequence.length() > 5 && charSequence.length() <= 9) {
-                    new Handler().postDelayed(new Runnable() {
+                    handler2.postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             String serial = charSequence.toString();
@@ -137,6 +138,7 @@ public class LoadingActivity extends AppCompatActivity {
 
     private void loadValue(String value) {
         Util.showProgressDialog("Loading..", LoadingActivity.this);
+        handler2.removeMessages(0);
         APIManager apiManager = new APIManager();
         apiManager.setCallback(new APIManagerCallback() {
             @Override

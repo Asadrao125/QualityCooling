@@ -71,6 +71,7 @@ public class KnockedTogetherActivity extends AppCompatActivity {
     String completed, customer, inNumber, itemName, jobSite, jobSiteAddress, orderItemId;
     String pieceNo, delivered, ShowNotificationPopup, ShowPopup, Button1Text, Button2Text;
     String OrderId;
+    Handler handler2 = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,7 +139,7 @@ public class KnockedTogetherActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (charSequence.length() > 5 && charSequence.length() <= 9) {
-                    new Handler().postDelayed(new Runnable() {
+                    handler2.postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             String serial = charSequence.toString();
@@ -175,7 +176,6 @@ public class KnockedTogetherActivity extends AppCompatActivity {
                         inputDialog.hide();
                     }
                 });
-
                 /*serialEt.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -198,7 +198,6 @@ public class KnockedTogetherActivity extends AppCompatActivity {
 
                     }
                 });*/
-
                 Button okBt = (Button) inputDialog.findViewById(R.id.button8);
                 okBt.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -217,6 +216,7 @@ public class KnockedTogetherActivity extends AppCompatActivity {
 
     public void checkcheckcheck(String value) {
         Util.showProgressDialog("Loading..", KnockedTogetherActivity.this);
+        handler2.removeMessages(0);
         APIManager apiManager = new APIManager();
         apiManager.setCallback(new APIManagerCallback() {
             @Override
@@ -225,6 +225,7 @@ public class KnockedTogetherActivity extends AppCompatActivity {
                 if (objAPIResult != null) {
                     try {
                         if (objAPIResult.getString("Status").equals("Success") || objAPIResult.getString("Status").equals("Scanned")) {
+                            Log.d("kfkjfkfkfk", "APICallback: " + objAPIResult);
                             JSONObject jsonObject = new JSONObject(objAPIResult.toString());
                             JSONArray jsonArray = jsonObject.getJSONArray("Items");
                             for (int i = 0; i < jsonArray.length(); i++) {
