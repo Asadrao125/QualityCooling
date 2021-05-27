@@ -26,12 +26,15 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -53,6 +56,7 @@ public class DeliveredActivity extends AppCompatActivity {
     String completed, customer, inNumber, itemName, jobSite, jobSiteAddress, orderItemId;
     String pieceNo, delivered, ShowNotificationPopup, ShowPopup, Button1Text, Button2Text;
     String OrderId;
+    EditText edtManualInput;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +78,24 @@ public class DeliveredActivity extends AppCompatActivity {
                 }
             }
         };
+
+        edtManualInput = findViewById(R.id.edtManualInput);
+        edtManualInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if (i == EditorInfo.IME_ACTION_DONE) {
+                    String input = edtManualInput.getText().toString().trim();
+                    if (!TextUtils.isEmpty(input)) {
+                        checkcheckcheck(input);
+                        inputVal = input;
+                    } else {
+                        Toast.makeText(DeliveredActivity.this, "Please enter input value", Toast.LENGTH_SHORT).show();
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);

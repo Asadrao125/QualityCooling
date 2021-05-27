@@ -10,10 +10,12 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -50,6 +52,7 @@ public class ItemInfoActivity extends AppCompatActivity {
     ArrayList<ItemModel> itemModelArrayList = new ArrayList<>();
     String val = "d";
     String Status, finalStatus;
+    EditText edtManualInput;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,6 +74,7 @@ public class ItemInfoActivity extends AppCompatActivity {
             }
         };
 
+        edtManualInput = findViewById(R.id.edtManualInput);
         String scanned_value = getIntent().getStringExtra("scanned_value");
         if (!TextUtils.isEmpty(scanned_value)) {
             itemInfo(scanned_value);
@@ -90,109 +94,118 @@ public class ItemInfoActivity extends AppCompatActivity {
             }
         });
 
+        edtManualInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if (i == EditorInfo.IME_ACTION_DONE) {
+                    String input = edtManualInput.getText().toString().trim();
+                    if (!TextUtils.isEmpty(input)) {
+                        itemInfo(input);
+                        itemList(input);
+                    } else {
+                        Toast.makeText(ItemInfoActivity.this, "Please enter input value", Toast.LENGTH_SHORT).show();
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
+
     }
 
     private void itemInfo(String value) {
-        if (!val.equals(value)) {
-            itemModelArrayList.clear();
-            Util.showProgressDialog("Loading..", ItemInfoActivity.this);
-            APIManager apiManager = new APIManager();
-            apiManager.setCallback(new APIManagerCallback() {
-                @Override
-                public void APICallback(JSONObject objAPIResult) {
-                    Util.hideProgressDialog();
-                    if (objAPIResult != null) {
-                        try {
-                            if (objAPIResult.getString("Status").equals("Success")) {
-                                String itemInfo = objAPIResult.getString("ItemInfo");
-                                itemInfoTv.setText(itemInfo.replace("\\n", "\n"));
-                                IN_Number = objAPIResult.getInt("OrderId");
+        itemModelArrayList.clear();
+        Util.showProgressDialog("Loading..", ItemInfoActivity.this);
+        APIManager apiManager = new APIManager();
+        apiManager.setCallback(new APIManagerCallback() {
+            @Override
+            public void APICallback(JSONObject objAPIResult) {
+                Util.hideProgressDialog();
+                if (objAPIResult != null) {
+                    try {
+                        if (objAPIResult.getString("Status").equals("Success")) {
+                            String itemInfo = objAPIResult.getString("ItemInfo");
+                            itemInfoTv.setText(itemInfo.replace("\\n", "\n"));
+                            IN_Number = objAPIResult.getInt("OrderId");
 
-                                Log.d("kfnkfnknfk", "APICallback: " + IN_Number);
+                            Log.d("kfnkfnknfk", "APICallback: " + IN_Number);
 
-                                Log.d("sooooooor", "APICallback: " + itemInfo);
-                                String newString = itemInfo.replace("\\n", "\n");
-                                String newString2[] = newString.split("\n");
-                                for (int i = 0; i < newString2.length; i++) {
-                                    Log.d("museebathhb", "APICallback: " + newString2[i]);
-                                    Status = newString2[2];
-                                }
-
-                                String newStatus[] = Status.split(":");
-                                finalStatus = newStatus[1].trim();
-
-                                JSONArray documentJSONArr = objAPIResult.getJSONArray("Documents");
-                                ArrayList<HashMap<String, Object>> documentArr = Util.toList(documentJSONArr);
-                                DocumentAdapter1 adapter = new DocumentAdapter1(ItemInfoActivity.this, documentArr);
-                                documentLv.setAdapter(adapter);
-                            } else {
-                                Util.showToast(objAPIResult.getString("Message"), ItemInfoActivity.this);
+                            Log.d("sooooooor", "APICallback: " + itemInfo);
+                            String newString = itemInfo.replace("\\n", "\n");
+                            String newString2[] = newString.split("\n");
+                            for (int i = 0; i < newString2.length; i++) {
+                                Log.d("museebathhb", "APICallback: " + newString2[i]);
+                                Status = newString2[2];
                             }
-                        } catch (Exception e) {
-                            Util.showToast("Failed and try again", ItemInfoActivity.this);
+
+                            String newStatus[] = Status.split(":");
+                            finalStatus = newStatus[1].trim();
+
+                            JSONArray documentJSONArr = objAPIResult.getJSONArray("Documents");
+                            ArrayList<HashMap<String, Object>> documentArr = Util.toList(documentJSONArr);
+                            DocumentAdapter1 adapter = new DocumentAdapter1(ItemInfoActivity.this, documentArr);
+                            documentLv.setAdapter(adapter);
+                        } else {
+                            Util.showToast(objAPIResult.getString("Message"), ItemInfoActivity.this);
                         }
-                    } else {
+                    } catch (Exception e) {
                         Util.showToast("Failed and try again", ItemInfoActivity.this);
                     }
+                } else {
+                    Util.showToast("Failed and try again", ItemInfoActivity.this);
                 }
-            });
-            apiManager.itemInfo(value);
-        } else {
-            Toast.makeText(this, "This item is already scanned", Toast.LENGTH_SHORT).show();
-        }
+            }
+        });
+        apiManager.itemInfo(value);
     }
 
     private void itemList(String value) {
-
         Log.d("1234567", "checkcheckcheck: val= " + val + "\n" + "value: " + value);
+        //Util.showProgressDialog("Loading..", ItemInfoActivity.this);
+        itemModelArrayList.clear();
+        APIManager apiManager = new APIManager();
+        apiManager.setCallback(new APIManagerCallback() {
+            @Override
+            public void APICallback(JSONObject objAPIResult) {
+                //Util.hideProgressDialog();
+                if (objAPIResult != null) {
+                    try {
+                        if (objAPIResult.getString("Status").equals("Success")) {
+                            JSONArray documentJSONArr = objAPIResult.getJSONArray("ItemList");
+                            for (int i = 0; i < documentJSONArr.length(); i++) {
+                                JSONObject object = documentJSONArr.getJSONObject(i);
+                                String name = object.getString("Name");
+                                String Completed = object.getString("Completed");
+                                String CompletedBy = object.getString("CompletedBy");
+                                String Delivered = object.getString("Delivered");
+                                String Depth = object.getString("Depth");
+                                //String Description = object.getString("Description");
+                                String Height = object.getString("Height");
+                                String Length = object.getString("Length");
+                                String LoadedInTruck = object.getString("LoadedInTruck");
+                                //String OrderItemID = object.getString("OrderItemID");
+                                String PieceNo = object.getString("PieceNo");
+                                //String Price = object.getString("Price");
+                                String Quantity = object.getString("Quantity");
+                                String Width = object.getString("Width");
 
-        if (!val.equals(value)) {
-            //Util.showProgressDialog("Loading..", ItemInfoActivity.this);
-            itemModelArrayList.clear();
-            APIManager apiManager = new APIManager();
-            apiManager.setCallback(new APIManagerCallback() {
-                @Override
-                public void APICallback(JSONObject objAPIResult) {
-                    //Util.hideProgressDialog();
-                    if (objAPIResult != null) {
-                        try {
-                            if (objAPIResult.getString("Status").equals("Success")) {
-                                JSONArray documentJSONArr = objAPIResult.getJSONArray("ItemList");
-                                for (int i = 0; i < documentJSONArr.length(); i++) {
-                                    JSONObject object = documentJSONArr.getJSONObject(i);
-                                    String name = object.getString("Name");
-                                    String Completed = object.getString("Completed");
-                                    String CompletedBy = object.getString("CompletedBy");
-                                    String Delivered = object.getString("Delivered");
-                                    String Depth = object.getString("Depth");
-                                    //String Description = object.getString("Description");
-                                    String Height = object.getString("Height");
-                                    String Length = object.getString("Length");
-                                    String LoadedInTruck = object.getString("LoadedInTruck");
-                                    //String OrderItemID = object.getString("OrderItemID");
-                                    String PieceNo = object.getString("PieceNo");
-                                    //String Price = object.getString("Price");
-                                    String Quantity = object.getString("Quantity");
-                                    String Width = object.getString("Width");
-
-                                    itemModelArrayList.add(new ItemModel(name, PieceNo, Quantity, Width, Height, Length, Depth, LoadedInTruck,
-                                            Completed, CompletedBy, Delivered));
-                                }
-
-                                itemListAdapter = new ItemListAdapter(itemModelArrayList, ItemInfoActivity.this);
-                                itemListLv.setAdapter(itemListAdapter);
-
-                            } else {
-                                Util.showToast(objAPIResult.getString("Message"), ItemInfoActivity.this);
+                                itemModelArrayList.add(new ItemModel(name, PieceNo, Quantity, Width, Height, Length, Depth, LoadedInTruck,
+                                        Completed, CompletedBy, Delivered));
                             }
-                        } catch (Exception e) {
-                            e.printStackTrace();
+
+                            itemListAdapter = new ItemListAdapter(itemModelArrayList, ItemInfoActivity.this);
+                            itemListLv.setAdapter(itemListAdapter);
+
+                        } else {
+                            Util.showToast(objAPIResult.getString("Message"), ItemInfoActivity.this);
                         }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
-            });
-            apiManager.itemInfo(value);
-        }
+            }
+        });
+        apiManager.itemInfo(value);
     }
 
     private void setupView() {

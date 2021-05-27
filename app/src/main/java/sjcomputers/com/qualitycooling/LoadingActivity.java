@@ -14,13 +14,16 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -63,6 +66,7 @@ public class LoadingActivity extends AppCompatActivity {
     String Loaded, inNumber, ItemName, JobSite, JobSiteAddress, OrderItemId;
     String PieceNo, ShowNotificationPopup, ShowPopup, Button1Text, Button2Text;
     String OrderId, Customer;
+    EditText edtManualInput;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -80,6 +84,25 @@ public class LoadingActivity extends AppCompatActivity {
                 }
             }
         };
+
+        edtManualInput = findViewById(R.id.edtManualInput);
+        edtManualInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if (i == EditorInfo.IME_ACTION_DONE) {
+                    String input = edtManualInput.getText().toString().trim();
+                    if (!TextUtils.isEmpty(input)) {
+                        loadValue(input);
+                        inputVal = input;
+                    } else {
+                        Toast.makeText(LoadingActivity.this, "Please enter input value", Toast.LENGTH_SHORT).show();
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
+
     }
 
     private void loadValue(String value) {

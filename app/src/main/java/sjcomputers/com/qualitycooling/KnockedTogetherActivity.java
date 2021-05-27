@@ -33,12 +33,15 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -56,6 +59,7 @@ import static sjcomputers.com.qualitycooling.Global.Util.MSG_SERIAL_SCANNED;
 public class KnockedTogetherActivity extends AppCompatActivity {
     Button btnScan, btnManual;
     Dialog inputDialog;
+    EditText edtManualInput;
     private SharedPreferences sharedPreferences;
     String apiUrl;
     public static Handler handler;
@@ -74,6 +78,7 @@ public class KnockedTogetherActivity extends AppCompatActivity {
         btnScan = findViewById(R.id.scan_bt);
         btnManual = findViewById(R.id.manual_bt);
         lvKnockedTogether = findViewById(R.id.lvKnockedTogether);
+        edtManualInput = findViewById(R.id.edtManualInput);
         SharedPref.init(this);
 
         handler = new Handler() {
@@ -101,6 +106,23 @@ public class KnockedTogetherActivity extends AppCompatActivity {
                 Intent intent = new Intent(KnockedTogetherActivity.this, QRScannerActivity.class);
                 QRScannerActivity.screenType = 3;
                 startActivity(intent);
+            }
+        });
+
+        edtManualInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if (i == EditorInfo.IME_ACTION_DONE) {
+                    String input = edtManualInput.getText().toString().trim();
+                    if (!TextUtils.isEmpty(input)) {
+                        checkcheckcheck(input);
+                        inputVal = input;
+                    } else {
+                        Toast.makeText(KnockedTogetherActivity.this, "Please enter input value", Toast.LENGTH_SHORT).show();
+                    }
+                    return true;
+                }
+                return false;
             }
         });
 
