@@ -1,6 +1,7 @@
 package sjcomputers.com.qualitycooling;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -74,7 +76,6 @@ public class ItemInfoActivity extends AppCompatActivity {
             }
         };
 
-        edtManualInput = findViewById(R.id.edtManualInput);
         String scanned_value = getIntent().getStringExtra("scanned_value");
         if (!TextUtils.isEmpty(scanned_value)) {
             itemInfo(scanned_value);
@@ -94,6 +95,8 @@ public class ItemInfoActivity extends AppCompatActivity {
             }
         });
 
+        edtManualInput = findViewById(R.id.edtManualInput);
+        showSoftKeyboard(edtManualInput);
         edtManualInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
@@ -102,6 +105,7 @@ public class ItemInfoActivity extends AppCompatActivity {
                     if (!TextUtils.isEmpty(input)) {
                         itemInfo(input);
                         itemList(input);
+                        edtManualInput.setText("");
                     } else {
                         Toast.makeText(ItemInfoActivity.this, "Please enter input value", Toast.LENGTH_SHORT).show();
                     }
@@ -278,5 +282,13 @@ public class ItemInfoActivity extends AppCompatActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void showSoftKeyboard(View view) {
+        if (view.requestFocus()) {
+            InputMethodManager imm = (InputMethodManager)
+                    getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
+        }
     }
 }

@@ -17,6 +17,7 @@ import sjcomputers.com.qualitycooling.models.KnockedTogetherModel;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -38,6 +39,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -109,6 +111,7 @@ public class KnockedTogetherActivity extends AppCompatActivity {
             }
         });
 
+        showSoftKeyboard(edtManualInput);
         edtManualInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
@@ -117,6 +120,7 @@ public class KnockedTogetherActivity extends AppCompatActivity {
                     if (!TextUtils.isEmpty(input)) {
                         checkcheckcheck(input);
                         inputVal = input;
+                        edtManualInput.setText("");
                     } else {
                         Toast.makeText(KnockedTogetherActivity.this, "Please enter input value", Toast.LENGTH_SHORT).show();
                     }
@@ -183,10 +187,6 @@ public class KnockedTogetherActivity extends AppCompatActivity {
                 });
             }
         });
-
-        if (savedInstanceState != null) {
-            inputVal = savedInstanceState.getString("key");
-        }
     }
 
     public void checkcheckcheck(String value) {
@@ -346,11 +346,11 @@ public class KnockedTogetherActivity extends AppCompatActivity {
         apiManager.showPopup(inNumber, buttonText);
     }
 
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle savedInstanceState) {
-        super.onSaveInstanceState(savedInstanceState);
-        if (!TextUtils.isEmpty(inputVal)) {
-            savedInstanceState.putString("key", inputVal);
+    public void showSoftKeyboard(View view) {
+        if (view.requestFocus()) {
+            InputMethodManager imm = (InputMethodManager)
+                    getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
         }
     }
 }
