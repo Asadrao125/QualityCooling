@@ -1,5 +1,6 @@
 package sjcomputers.com.qualitycooling.Admin;
 
+import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.preference.PreferenceManager;
 import android.os.Bundle;
@@ -35,6 +36,7 @@ public class JobActivity extends AppCompatActivity {
     public static Spinner pageSpinner;
     String[] statuses = {"All", "Open"};
     public static String status;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,6 +139,12 @@ public class JobActivity extends AppCompatActivity {
                 return true;
             case R.id.refresh:
                 OrderAdapter.handler.sendEmptyMessage(MSG_REFRESH_ORDER);
+                return true;
+            case R.id.logout:
+                sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+                sharedPreferences.edit().putString("UserName", "").apply();
+                sharedPreferences.edit().putString("Password", "").apply();
+                finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
