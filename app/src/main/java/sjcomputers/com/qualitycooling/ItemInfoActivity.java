@@ -8,7 +8,9 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -97,7 +99,7 @@ public class ItemInfoActivity extends AppCompatActivity {
 
         edtManualInput = findViewById(R.id.edtManualInput);
         showSoftKeyboard(edtManualInput);
-        edtManualInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        /*edtManualInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
                 if (i == EditorInfo.IME_ACTION_DONE) {
@@ -112,6 +114,32 @@ public class ItemInfoActivity extends AppCompatActivity {
                     return true;
                 }
                 return false;
+            }
+        });*/
+        edtManualInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (charSequence.length() > 5 && charSequence.length() <= 9) {
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            String serial = charSequence.toString();
+                            itemInfo(serial);
+                            itemList(serial);
+                            edtManualInput.setText("");
+                        }
+                    }, 2000);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
             }
         });
 

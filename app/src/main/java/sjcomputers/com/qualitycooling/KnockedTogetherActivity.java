@@ -112,7 +112,7 @@ public class KnockedTogetherActivity extends AppCompatActivity {
         });
 
         showSoftKeyboard(edtManualInput);
-        edtManualInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        /* edtManualInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
                 if (i == EditorInfo.IME_ACTION_DONE) {
@@ -127,6 +127,32 @@ public class KnockedTogetherActivity extends AppCompatActivity {
                     return true;
                 }
                 return false;
+            }
+        });*/
+        edtManualInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (charSequence.length() > 5 && charSequence.length() <= 9) {
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            String serial = charSequence.toString();
+                            checkcheckcheck(serial);
+                            inputVal = serial;
+                            edtManualInput.setText("");
+                        }
+                    }, 2000);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
             }
         });
 
@@ -281,7 +307,7 @@ public class KnockedTogetherActivity extends AppCompatActivity {
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
+                        dialog.dismiss();
                     }
                 });
 
