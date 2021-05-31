@@ -66,6 +66,7 @@ public class ItemInfoActivity extends AppCompatActivity {
 
         setupView();
         btnViewJob = findViewById(R.id.btnViewJob);
+        edtManualInput = findViewById(R.id.edtManualInput);
 
         handler = new Handler() {
             @Override
@@ -98,7 +99,6 @@ public class ItemInfoActivity extends AppCompatActivity {
             }
         });
 
-        edtManualInput = findViewById(R.id.edtManualInput);
         showSoftKeyboard(edtManualInput);
         /*edtManualInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -150,6 +150,8 @@ public class ItemInfoActivity extends AppCompatActivity {
         itemModelArrayList.clear();
         Util.showProgressDialog("Loading..", ItemInfoActivity.this);
         handler2.removeMessages(0);
+        showSoftKeyboard(edtManualInput);
+        edtManualInput.requestFocus();
         APIManager apiManager = new APIManager();
         apiManager.setCallback(new APIManagerCallback() {
             @Override
@@ -191,12 +193,15 @@ public class ItemInfoActivity extends AppCompatActivity {
             }
         });
         apiManager.itemInfo(value);
+        showSoftKeyboard(edtManualInput);
+        edtManualInput.requestFocus();
     }
 
     private void itemList(String value) {
         Log.d("1234567", "checkcheckcheck: val= " + val + "\n" + "value: " + value);
-        //Util.showProgressDialog("Loading..", ItemInfoActivity.this);
         itemModelArrayList.clear();
+        showSoftKeyboard(edtManualInput);
+        edtManualInput.requestFocus();
         APIManager apiManager = new APIManager();
         apiManager.setCallback(new APIManagerCallback() {
             @Override
@@ -240,6 +245,8 @@ public class ItemInfoActivity extends AppCompatActivity {
             }
         });
         apiManager.itemInfo(value);
+        showSoftKeyboard(edtManualInput);
+        edtManualInput.requestFocus();
     }
 
     private void setupView() {
@@ -316,8 +323,7 @@ public class ItemInfoActivity extends AppCompatActivity {
 
     public void showSoftKeyboard(View view) {
         if (view.requestFocus()) {
-            InputMethodManager imm = (InputMethodManager)
-                    getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
         }
     }

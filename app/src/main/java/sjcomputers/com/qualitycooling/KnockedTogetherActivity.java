@@ -1,16 +1,11 @@
 package sjcomputers.com.qualitycooling;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import cz.msebera.android.httpclient.Header;
 import sjcomputers.com.qualitycooling.Adapters.KnockedTogetherAdapter;
-import sjcomputers.com.qualitycooling.Adapters.LoadingAdapter;
-import sjcomputers.com.qualitycooling.Adapters.LoadingModel;
 import sjcomputers.com.qualitycooling.Admin.OrderItemActivity;
 import sjcomputers.com.qualitycooling.Global.APIManager;
 import sjcomputers.com.qualitycooling.Global.APIManagerCallback;
-import sjcomputers.com.qualitycooling.Global.UserData;
 import sjcomputers.com.qualitycooling.Global.Util;
 import sjcomputers.com.qualitycooling.Util.SharedPref;
 import sjcomputers.com.qualitycooling.models.KnockedTogetherModel;
@@ -21,13 +16,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.PersistableBundle;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -41,7 +34,9 @@ import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -67,7 +62,7 @@ public class KnockedTogetherActivity extends AppCompatActivity {
     public static Handler handler;
     ListView lvKnockedTogether;
     public static String inputVal;
-    ArrayList<KnockedTogetherModel> knockedTogetherModelArrayList = new ArrayList<>();
+    ArrayList<KnockedTogetherModel> knockedTogetherModelArrayList;
     String completed, customer, inNumber, itemName, jobSite, jobSiteAddress, orderItemId;
     String pieceNo, delivered, ShowNotificationPopup, ShowPopup, Button1Text, Button2Text;
     String OrderId;
@@ -99,6 +94,8 @@ public class KnockedTogetherActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(this, R.color.colorAccent)));
         getSupportActionBar().setTitle("Knocked Together");
+
+        knockedTogetherModelArrayList = new ArrayList<>();
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         apiUrl = sharedPreferences.getString("URL", "");
@@ -217,6 +214,8 @@ public class KnockedTogetherActivity extends AppCompatActivity {
     public void checkcheckcheck(String value) {
         Util.showProgressDialog("Loading..", KnockedTogetherActivity.this);
         handler2.removeMessages(0);
+        showSoftKeyboard(edtManualInput);
+        edtManualInput.requestFocus();
         APIManager apiManager = new APIManager();
         apiManager.setCallback(new APIManagerCallback() {
             @Override
@@ -275,6 +274,8 @@ public class KnockedTogetherActivity extends AppCompatActivity {
             }
         });
         apiManager.knockedTogether(value);
+        showSoftKeyboard(edtManualInput);
+        edtManualInput.requestFocus();
     }
 
     @Override

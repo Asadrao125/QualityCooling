@@ -139,6 +139,8 @@ public class LoadingActivity extends AppCompatActivity {
     private void loadValue(String value) {
         Util.showProgressDialog("Loading..", LoadingActivity.this);
         handler2.removeMessages(0);
+        showSoftKeyboard(edtManualInput);
+        edtManualInput.requestFocus();
         APIManager apiManager = new APIManager();
         apiManager.setCallback(new APIManagerCallback() {
             @Override
@@ -198,6 +200,8 @@ public class LoadingActivity extends AppCompatActivity {
             }
         });
         apiManager.loading(value);
+        showSoftKeyboard(edtManualInput);
+        edtManualInput.requestFocus();
     }
 
     private void setupView() {

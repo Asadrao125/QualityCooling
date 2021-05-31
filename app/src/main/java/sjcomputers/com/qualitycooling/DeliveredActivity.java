@@ -207,6 +207,8 @@ public class DeliveredActivity extends AppCompatActivity {
     public void checkcheckcheck(String value) {
         Util.showProgressDialog("Loading..", DeliveredActivity.this);
         handler2.removeMessages(0);
+        showSoftKeyboard(edtManualInput);
+        edtManualInput.requestFocus();
         APIManager apiManager = new APIManager();
         apiManager.setCallback(new APIManagerCallback() {
             @Override
@@ -264,6 +266,8 @@ public class DeliveredActivity extends AppCompatActivity {
             }
         });
         apiManager.getDeliveryList(value);
+        showSoftKeyboard(edtManualInput);
+        edtManualInput.requestFocus();
     }
 
     @Override

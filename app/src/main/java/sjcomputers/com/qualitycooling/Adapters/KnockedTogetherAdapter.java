@@ -75,9 +75,8 @@ public class KnockedTogetherAdapter extends ArrayAdapter<KnockedTogetherModel> {
             viewHolder.jobSiteAddress = (TextView) convertView.findViewById(R.id.tvJobSiteAddress);
             viewHolder.pieceNo = (TextView) convertView.findViewById(R.id.tvPieceNo);
             viewHolder.cbCompleted = convertView.findViewById(R.id.cbCompleted);
-            viewHolder.itemInfo = convertView.findViewById(R.id.itemInfo);
+            viewHolder.itemInfo = convertView.findViewById(R.id.tvItemInfo);
             viewHolder.cbDelivered = convertView.findViewById(R.id.cbDelivered);
-
             result = convertView;
             convertView.setTag(viewHolder);
         } else {
