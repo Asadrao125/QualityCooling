@@ -104,7 +104,7 @@ public class DriverOrderAdapter extends BaseAdapter {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 vehicleId = DriverOrderActivity.vehicleIdList.get(position);
-                //getDriverOrders();
+                getDriverOrders();
                 Log.d("kknkfkjjll", "onItemSelected: " + vehicleId);
             }
 

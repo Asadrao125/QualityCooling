@@ -67,7 +67,7 @@ public class KnockedTogetherActivity extends AppCompatActivity {
     String pieceNo, delivered, ShowNotificationPopup, ShowPopup, Button1Text, Button2Text;
     String OrderId;
     Handler handler2 = new Handler();
-    public static String lastLoc;
+    public static String lastLoc = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -116,6 +116,7 @@ public class FindItemActivity extends AppCompatActivity {
 
     public void getItems(String inNumber) {
         findItemModelArrayList.clear();
+        itemInfoTv.setVisibility(View.GONE);
         ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Loading..");
         progressDialog.setCanceledOnTouchOutside(false);
@@ -132,6 +133,7 @@ public class FindItemActivity extends AppCompatActivity {
                 if (objAPIResult != null) {
                     try {
                         if (objAPIResult.getString("Status").equals("Success")) {
+                            itemInfoTv.setVisibility(View.VISIBLE);
                             String itemInfo = objAPIResult.getString("ItemInfo");
                             itemInfoTv.setText(itemInfo.replace("\\n", "\n"));
                             JSONArray documentJSONArr = objAPIResult.getJSONArray("ItemList");
@@ -162,6 +164,7 @@ public class FindItemActivity extends AppCompatActivity {
 
                         } else {
                             //Util.hideProgressDialog();
+                            itemInfoTv.setVisibility(View.GONE);
                             Toast.makeText(FindItemActivity.this, "" + objAPIResult.getString("Status"), Toast.LENGTH_SHORT).show();
                         }
 
