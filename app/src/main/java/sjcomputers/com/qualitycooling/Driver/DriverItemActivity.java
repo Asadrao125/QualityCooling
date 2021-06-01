@@ -7,14 +7,19 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,15 +28,20 @@ import org.json.JSONObject;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import sjcomputers.com.qualitycooling.Adapters.KnockedTogetherAdapter;
 import sjcomputers.com.qualitycooling.Admin.OrderItemAdapter;
 import sjcomputers.com.qualitycooling.Global.APIManager;
 import sjcomputers.com.qualitycooling.Global.APIManagerCallback;
 import sjcomputers.com.qualitycooling.Global.Util;
+import sjcomputers.com.qualitycooling.KnockedTogetherActivity;
+import sjcomputers.com.qualitycooling.QRScannerActivity;
 import sjcomputers.com.qualitycooling.R;
+import sjcomputers.com.qualitycooling.models.KnockedTogetherModel;
 
 import static sjcomputers.com.qualitycooling.Global.Util.MSG_DRIVER_ORDER_ITEM_ADDED;
 import static sjcomputers.com.qualitycooling.Global.Util.MSG_ORDER_ITEMS_MARK_CHANGED;
 import static sjcomputers.com.qualitycooling.Global.Util.MSG_ORDER_ITEMS_MARK_COMPLETED;
+import static sjcomputers.com.qualitycooling.Global.Util.MSG_SERIAL_SCANNED;
 
 public class DriverItemActivity extends AppCompatActivity {
     DriverItemAdapter driverItemAdapter;
@@ -39,6 +49,9 @@ public class DriverItemActivity extends AppCompatActivity {
     Spinner filterSpinner;
     String[] filters;
     public static Handler handler;
+    Button btnScan;
+    EditText edtManualInput;
+    Handler handler2 = new Handler();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,11 +62,78 @@ public class DriverItemActivity extends AppCompatActivity {
         handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
-                if(msg.what == MSG_DRIVER_ORDER_ITEM_ADDED) {
+                if (msg.what == MSG_DRIVER_ORDER_ITEM_ADDED) {
                     driverItemAdapter.getOrderItems(filterSpinner.getSelectedItemPosition());
+                }
+
+                if (msg.what == MSG_SERIAL_SCANNED) {
+                    String scanResult = (String) msg.obj;
+                    manualInputApiCall(scanResult);
                 }
             }
         };
+
+        edtManualInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (charSequence.length() > 5 && charSequence.length() <= 9) {
+                    handler2.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            String serial = charSequence.toString();
+                            manualInputApiCall(serial);
+                            edtManualInput.setText("");
+                        }
+                    }, 2000);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+    }
+
+    private void manualInputApiCall(String scannedValue) {
+        Util.showProgressDialog("Loading..", DriverItemActivity.this);
+        handler2.removeMessages(0);
+        edtManualInput.requestFocus();
+        APIManager apiManager = new APIManager();
+        apiManager.setCallback(new APIManagerCallback() {
+            @Override
+            public void APICallback(JSONObject objAPIResult) {
+                Util.hideProgressDialog();
+                if (objAPIResult != null) {
+                    try {
+                        Log.d("manual_api_call", "APICallback: " + objAPIResult);
+                        JSONObject jsonObject = new JSONObject(objAPIResult.toString());
+                        JSONArray jsonArray = jsonObject.getJSONArray("Items");
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject obj = jsonArray.getJSONObject(i);
+                            Log.d("mnbvcxxz", "APICallback: " + obj);
+                        }
+                        Toast.makeText(DriverItemActivity.this, "" + objAPIResult.getString("Message"), Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(DriverItemActivity.this, DriverItemActivity.class));
+                        finish();
+                        //saveItems();
+
+                    } catch (Exception e) {
+                        Util.showToast("Failed and try again", DriverItemActivity.this);
+                    }
+                } else {
+                    Util.showToast("Failed and try again", DriverItemActivity.this);
+                }
+            }
+        });
+        Log.d("value_check", "manualInputApiCall: \n" + orderID + "\n" + scannedValue);
+        apiManager.manualInputCall(orderID, scannedValue);
     }
 
     private void configureDesign() {
@@ -61,6 +141,9 @@ public class DriverItemActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(this, R.color.colorAccent)));
         getSupportActionBar().setTitle("Items");
+
+        btnScan = findViewById(R.id.btnScan);
+        edtManualInput = findViewById(R.id.edtManualInput);
 
         Button finishBt = findViewById(R.id.button9);
         finishBt.setOnClickListener(new View.OnClickListener() {
@@ -93,8 +176,17 @@ public class DriverItemActivity extends AppCompatActivity {
                 markItemLoadedInTruck();
             }
         });
-    }
 
+        btnScan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(DriverItemActivity.this, QRScannerActivity.class);
+                QRScannerActivity.screenType = 6;
+                startActivity(intent);
+            }
+        });
+
+    }
 
     private void saveItems() {
         APIManager apiManager = new APIManager();
@@ -107,7 +199,7 @@ public class DriverItemActivity extends AppCompatActivity {
         });
         JSONArray completedItemJSONArr = new JSONArray();
         try {
-            for(int i = 0; i < DriverItemAdapter.itemOrderJSONArr.length(); i++) {
+            for (int i = 0; i < DriverItemAdapter.itemOrderJSONArr.length(); i++) {
                 JSONObject itemJSONObj = DriverItemAdapter.itemOrderJSONArr.getJSONObject(i);
                 completedItemJSONArr.put(itemJSONObj);
             }
@@ -171,7 +263,7 @@ public class DriverItemActivity extends AppCompatActivity {
     }
 
     private void markItemLoadedInTruck() {
-        APIManager.getInstance().setCallback( new APIManagerCallback() {
+        APIManager.getInstance().setCallback(new APIManagerCallback() {
             @Override
             public void APICallback(JSONObject objAPIResult) {
                 Util.hideProgressDialog();

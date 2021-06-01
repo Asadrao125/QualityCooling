@@ -13,7 +13,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="3"
+            android:layout_weight="2"
             android:gravity="left|center_vertical"
             android:paddingLeft="4dp"
             android:text="Status"
@@ -30,7 +30,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="3"
+            android:layout_weight="1"
             android:gravity="left|center_vertical"
             android:paddingLeft="4dp"
             android:text="Vehicle"
@@ -47,7 +47,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="4"
+            android:layout_weight="2"
             android:gravity="left|center_vertical"
             android:paddingLeft="4dp"
             android:text="Customer"
@@ -65,10 +65,10 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="2"
+            android:layout_weight="0.5"
             android:gravity="left|center_vertical"
             android:paddingLeft="4dp"
-            android:text="Order #"
+            android:text="Order # "
             android:textColor="#ffffff"
             android:textSize="12sp"
             android:textStyle="bold" />
@@ -82,7 +82,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="3"
+            android:layout_weight="1"
             android:gravity="left|center_vertical"
             android:paddingLeft="4dp"
             android:text="Job Site"
@@ -116,7 +116,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="3"
+            android:layout_weight="2"
             android:gravity="left|center_vertical"
             android:maxLines="1"
             android:paddingLeft="4dp"
@@ -134,7 +134,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="6"
+            android:layout_weight="2"
             android:gravity="left|center_vertical"
             android:paddingLeft="4dp"
             android:text="DropOff Address"
@@ -151,7 +151,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="3"
+            android:layout_weight="2"
             android:gravity="left|center_vertical"
             android:paddingLeft="4dp"
             android:text="Description"
@@ -168,7 +168,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="3"
+            android:layout_weight="1"
             android:gravity="left|center_vertical"
             android:paddingLeft="4dp"
             android:text="Notes"
@@ -185,10 +185,27 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="3"
+            android:layout_weight="1"
             android:gravity="left|center_vertical"
             android:paddingLeft="4dp"
             android:text="Contact #"
+            android:textColor="#ffffff"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:background="#555555"
+            android:text="TextView" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="left|center_vertical"
+            android:paddingLeft="4dp"
+            android:text="Vehicle"
             android:textColor="#ffffff"
             android:textSize="12sp"
             android:textStyle="bold" />

@@ -79,6 +79,16 @@
             android:textAllCaps="false"
             android:textColor="#555555" />
 
+        <Button
+            android:id="@+id/btnFindItems"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/bt_back_dash"
+            android:text="Find Items"
+            android:textAllCaps="false"
+            android:textColor="#555555" />
+
     </LinearLayout>
 
 </RelativeLayout>

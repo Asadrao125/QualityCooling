@@ -67,6 +67,7 @@ public class KnockedTogetherActivity extends AppCompatActivity {
     String pieceNo, delivered, ShowNotificationPopup, ShowPopup, Button1Text, Button2Text;
     String OrderId;
     Handler handler2 = new Handler();
+    public static String lastLoc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -273,7 +274,8 @@ public class KnockedTogetherActivity extends AppCompatActivity {
                 }
             }
         });
-        apiManager.knockedTogether(value);
+        Log.d("last_loc_check", "checkcheckcheck: \n" + value + "\n" + lastLoc);
+        apiManager.knockedTogether(value, lastLoc);
         showSoftKeyboard(edtManualInput);
         edtManualInput.requestFocus();
     }

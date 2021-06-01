@@ -83,8 +83,19 @@ public class APIManager {
     }
 
     //----- Driver apis
-    public void getDriverOrders(int status, int startIndex, int readCount, String orderNo) {
-        String API_URL = String.format("/DriverOrders?userid=%s&authtoken=%s&status=%d&startIndex=%d&count=%d&orderno=%s", UserData.getInstance().userId, UserData.getInstance().authToken, status, startIndex, readCount, orderNo);
+    public void getDriverOrders(int status, int startIndex, int readCount, String orderNo, String vehicleId) {
+
+        /* Old Url:  DriverOrders?userid=3013&authtoken=912f6b03-7792-4cef-b454-4dda3437d9be&orderno&status=1&startIndex=0&count=30&vehicleId=1 */
+
+        //String API_URL = String.format("/DriverOrders?userid=%s&authtoken=%s&status=%d&startIndex=%d&count=%d&orderno=%s", UserData.getInstance().userId, UserData.getInstance().authToken, status, startIndex, readCount, orderNo);
+        String API_URL = String.format("/DriverOrders?userid=%s&authtoken=%s&orderno=%s&status=%d&startIndex=%d&count=%d&vehicleId=%s",
+                UserData.getInstance().userId, UserData.getInstance().authToken, orderNo, status, startIndex, readCount, vehicleId);
+        APITask task = new APITask(SERVER_ADDR, API_URL, null, HTTP_POST);
+        task.execute((Void) null);
+    }
+
+    public void getVehicleList() {
+        String API_URL = String.format("/GetVehicles?driverId=%s&authtoken=%s", UserData.getInstance().userId, UserData.getInstance().authToken);
         APITask task = new APITask(SERVER_ADDR, API_URL, null, HTTP_POST);
         task.execute((Void) null);
     }
@@ -296,6 +307,13 @@ public class APIManager {
         task.execute((Void) null);
     }
 
+    public void manualInputCall(int orderId, String scannedValue) {
+        String API_URL = String.format("/DriverDeliveryItemCheckUncheck?orderId=%d&scannedValue=%s&userid=%s&authtoken=%s", orderId, scannedValue, UserData.getInstance().userId, UserData.getInstance().authToken);
+        APITask task = new APITask(SERVER_ADDR, API_URL, null, HTTP_POST);
+        task.execute((Void) null);
+    }
+
+
     public void markItemLoadedInTruck(int orderId) {
         Log.d("order_id_api", "markItemLoadedInTruck: " + orderId);
         String API_URL = String.format("/MarkItemLoadedInTruck?authtoken=%s&orderid=%d&userId=%s", UserData.getInstance().authToken, orderId, UserData.getInstance().userId);
@@ -349,14 +367,20 @@ public class APIManager {
 
     /***************************************** Methods By Asad ********************************************************/
 
-    public void knockedTogether(String scanResult) {
-        String API_URL = String.format("/KnockedTogether?scannedValue=%s&authtoken=%s&userid=%d", scanResult, UserData.getInstance().authToken, UserData.getInstance().userId);
+    public void knockedTogether(String scanResult, String lastLoc) {
+        String API_URL = String.format("/KnockedTogetherDelivery?scannedValue=%s&userId=%d&authtoken=%s&location=%s", scanResult, UserData.getInstance().userId, UserData.getInstance().authToken, lastLoc);
         APITask task = new APITask(SERVER_ADDR, API_URL, null, HTTP_POST);
         task.execute((Void) null);
     }
 
     public void checkOrUncheckKnocked(String orderItemId, String completed) {
         String API_URL = String.format("/KnockedTogetherCheckOrUncheck?orderItemId=%s&completed=%s&userid=%d&authtoken=%s", orderItemId, completed, UserData.getInstance().userId, UserData.getInstance().authToken);
+        APITask task = new APITask(SERVER_ADDR, API_URL, null, HTTP_POST);
+        task.execute((Void) null);
+    }
+
+    public void addLocation(String orderItemId, String orderId, String location) {
+        String API_URL = String.format("/SetOrderItemLocation?orderId=%s&orderItemId=%s&location=%s&userid=%d&authtoken=%s", orderId, orderItemId, location, UserData.getInstance().userId, UserData.getInstance().authToken);
         APITask task = new APITask(SERVER_ADDR, API_URL, null, HTTP_POST);
         task.execute((Void) null);
     }
@@ -372,6 +396,14 @@ public class APIManager {
         APITask task = new APITask(SERVER_ADDR, API_URL, null, HTTP_POST);
         task.execute((Void) null);
     }
+    /* /FindItemsLocation?innumber=36326&userId=3013&authtoken=7907ae60-6b1c-4e71-9ea7-2aa7de1d86cc */
+    public void findItems(String inNumber) {
+        String API_URL = String.format("/FindItemsLocation?innumber=%s&userId=%d&authtoken=%s", inNumber, UserData.getInstance().userId, UserData.getInstance().authToken);
+        APITask task = new APITask(SERVER_ADDR, API_URL, null, HTTP_POST);
+        task.execute((Void) null);
+    }
+
+
 
     public void checkUncheckDelivered(String orderItemId, String delivered) {
         String API_URL = String.format("/KnockedTogetherCheckOrUncheckDelivered?orderItemId=%s&delivered=%s&userId=%d&authtoken=%s", orderItemId, delivered, UserData.getInstance().userId, UserData.getInstance().authToken);

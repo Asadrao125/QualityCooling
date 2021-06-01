@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tvItemName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:padding="5dp"
+        android:textColor="@android:color/white"
+        android:background="@color/colorPrimary"
+        android:textAlignment="center"
+        android:text="Item Name" />
+
+    <LinearLayout
+        android:layout_margin="10dp"
+        android:layout_below="@id/tvItemName"
+        android:weightSum="2"
+        android:id="@+id/layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvPiece"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Piece No" />
+
+            <TextView
+                android:layout_marginTop="5dp"
+                android:id="@+id/tvWidth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Width" />
+
+            <TextView
+                android:layout_marginTop="5dp"
+                android:id="@+id/tvLength"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Length" />
+
+            <TextView
+                android:layout_marginTop="5dp"
+                android:id="@+id/tvLoaded"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Loaded" />
+
+            <TextView
+                android:layout_marginTop="5dp"
+                android:id="@+id/tvCompletedBy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Completed By" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Location"
+                android:layout_marginTop="5dp"
+                android:id="@+id/tvLocation"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_weight="1"
+                android:id="@+id/tvDelivered"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Delivered" />
+
+            <TextView
+                android:layout_marginTop="5dp"
+                android:id="@+id/tvQuantity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Quantity" />
+
+            <TextView
+                android:layout_marginTop="5dp"
+                android:id="@+id/tvHeight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Height" />
+
+            <TextView
+                android:layout_marginTop="5dp"
+                android:id="@+id/tvDepth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Depth" />
+
+            <TextView
+                android:layout_marginTop="5dp"
+                android:id="@+id/tvCompleted"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Completed" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

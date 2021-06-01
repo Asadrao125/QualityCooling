@@ -100,14 +100,14 @@ public class SignatureActivity extends AppCompatActivity {
             }
         });
 
-        mSaveButton = (Button)findViewById(R.id.saveSignature);
-        mClearButton = (Button)findViewById(R.id.clearSignature);
+        mSaveButton = (Button) findViewById(R.id.saveSignature);
+        mClearButton = (Button) findViewById(R.id.clearSignature);
 
         mSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String note = noteEt.getText().toString();
-                if(note.equals("")) {
+                if (note.equals("")) {
                     Util.showToast("Please input note", SignatureActivity.this);
                     return;
                 }

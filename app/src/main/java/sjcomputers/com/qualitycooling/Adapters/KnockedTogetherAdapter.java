@@ -9,12 +9,15 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,10 +48,12 @@ public class KnockedTogetherAdapter extends ArrayAdapter<KnockedTogetherModel> {
     Context mContext;
     private SharedPreferences sharedPreferences;
     String apiUrl;
+    public static String inputLoc;
 
     private static class ViewHolder {
         TextView customer, inNumber, itemName, jobSite, jobSiteAddress, pieceNo, itemInfo;
         CheckBox cbCompleted, cbDelivered;
+        EditText edtLocationInput;
     }
 
     public KnockedTogetherAdapter(ArrayList<KnockedTogetherModel> data, Context context) {
@@ -77,6 +82,7 @@ public class KnockedTogetherAdapter extends ArrayAdapter<KnockedTogetherModel> {
             viewHolder.cbCompleted = convertView.findViewById(R.id.cbCompleted);
             viewHolder.itemInfo = convertView.findViewById(R.id.tvItemInfo);
             viewHolder.cbDelivered = convertView.findViewById(R.id.cbDelivered);
+            viewHolder.edtLocationInput = convertView.findViewById(R.id.edtLocationInput);
             result = convertView;
             convertView.setTag(viewHolder);
         } else {
@@ -97,6 +103,23 @@ public class KnockedTogetherAdapter extends ArrayAdapter<KnockedTogetherModel> {
         if (knockedTogetherModel.Delivered.equals("1")) {
             viewHolder.cbDelivered.setChecked(true);
         }
+
+        viewHolder.edtLocationInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if (i == EditorInfo.IME_ACTION_DONE) {
+                    inputLoc = viewHolder.edtLocationInput.getText().toString().trim();
+                    if (!TextUtils.isEmpty(inputLoc)) {
+                        addLocation(knockedTogetherModel.OrderId, knockedTogetherModel.OrderItemId, inputLoc);
+                        KnockedTogetherActivity.lastLoc = inputLoc;
+                    } else {
+                        Toast.makeText(mContext, "Please enter location", Toast.LENGTH_SHORT).show();
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
 
         /*if (knockedTogetherModel.ShowNotificationPopup.equals("1")) {
             showDialog2(knockedTogetherModel.OrderItemId);
@@ -130,6 +153,31 @@ public class KnockedTogetherAdapter extends ArrayAdapter<KnockedTogetherModel> {
             }
         });
         return convertView;
+    }
+
+    public void addLocation(String orderId, String orderItemId, String inputLoc) {
+        Util.showProgressDialog("Loading..", mContext);
+        APIManager apiManager = new APIManager();
+        apiManager.setCallback(new APIManagerCallback() {
+            @Override
+            public void APICallback(JSONObject objAPIResult) {
+                Util.hideProgressDialog();
+                if (objAPIResult != null) {
+                    try {
+                        if (objAPIResult.getString("Status").equals("Success")) {
+                            Toast.makeText(mContext, "" + objAPIResult.getString("Message"), Toast.LENGTH_SHORT).show();
+                        } else {
+                            Util.showToast(objAPIResult.getString("Message"), mContext);
+                        }
+                    } catch (Exception e) {
+                        Util.showToast("Failed and try again", mContext);
+                    }
+                } else {
+                    Util.showToast("Failed and try again", mContext);
+                }
+            }
+        });
+        apiManager.addLocation(orderItemId, orderId, inputLoc);
     }
 
     public void checkcheckcheck(String orderId, String completed, String inNumber) {

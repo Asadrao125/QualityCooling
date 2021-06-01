@@ -12,7 +12,7 @@
         <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="36dp"
-            android:layout_weight="3">
+            android:layout_weight="2">
 
             <Button
                 android:id="@+id/pick_bt"
@@ -26,8 +26,8 @@
                 android:textAllCaps="false"
                 android:textColor="#ffffff"
                 android:textSize="12sp" />
-        </RelativeLayout>
 
+        </RelativeLayout>
 
         <TextView
             android:layout_width="0.5dp"
@@ -39,7 +39,7 @@
             android:id="@+id/d_textView11"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="3"
+            android:layout_weight="1"
             android:gravity="left|center_vertical"
             android:maxLines="2"
             android:paddingLeft="4dp"
@@ -56,9 +56,9 @@
             android:id="@+id/d_textView1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="4"
-            android:gravity="center_vertical|center_horizontal"
-            android:maxLines="1"
+            android:layout_weight="2"
+            android:gravity="left|center_vertical"
+            android:maxLines="2"
             android:paddingLeft="4dp"
             android:text="1"
             android:textSize="12sp" />
@@ -73,11 +73,12 @@
             android:id="@+id/d_textView2"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="2"
+            android:layout_weight="0.5"
+            android:paddingRight="4dp"
             android:gravity="left|center_vertical"
             android:maxLines="1"
             android:paddingLeft="4dp"
-            android:text="00020664" />
+            android:text="20664" />
 
         <TextView
             android:layout_width="0.5dp"
@@ -89,9 +90,9 @@
             android:id="@+id/d_textView4"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="3"
+            android:layout_weight="1"
             android:gravity="left|center_vertical"
-            android:maxLines="1"
+            android:maxLines="2"
             android:paddingLeft="4dp"
             android:text="AIR TECH COOLING"
             android:textSize="12sp" />
@@ -123,9 +124,9 @@
             android:id="@+id/d_textView6"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="3"
+            android:layout_weight="2"
             android:gravity="left|center_vertical"
-            android:maxLines="1"
+            android:maxLines="2"
             android:paddingLeft="4dp"
             android:text="Sam do email"
             android:textSize="12sp" />
@@ -139,7 +140,7 @@
         <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="6"
+            android:layout_weight="2"
             android:gravity="left|center_vertical">
 
             <TextView
@@ -164,6 +165,7 @@
                 android:src="@drawable/clipboard"
                 android:textAllCaps="false"
                 android:textColor="#ffffff" />
+
         </RelativeLayout>
 
         <TextView
@@ -176,9 +178,9 @@
             android:id="@+id/d_textView8"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="3"
+            android:layout_weight="2"
             android:gravity="left|center_vertical"
-            android:maxLines="1"
+            android:maxLines="2"
             android:paddingLeft="4dp"
             android:text="Ready for Delivery"
             android:textSize="12sp" />
@@ -193,9 +195,9 @@
             android:id="@+id/d_textView9"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="3"
+            android:layout_weight="1"
             android:gravity="left|center_vertical"
-            android:maxLines="1"
+            android:maxLines="2"
             android:paddingLeft="4dp"
             android:text="Un Billed"
             android:textSize="12sp" />
@@ -210,11 +212,28 @@
             android:id="@+id/d_textView10"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="3"
+            android:layout_weight="1"
             android:gravity="left|center_vertical"
             android:maxLines="2"
             android:paddingLeft="4dp"
             android:text="12345"
+            android:textSize="12sp" />
+
+        <TextView
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:background="#555555"
+            android:text="TextView" />
+
+        <TextView
+            android:id="@+id/d_textView12"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="left|center_vertical"
+            android:maxLines="2"
+            android:paddingLeft="4dp"
+            android:text="1"
             android:textSize="12sp" />
 
     </LinearLayout>

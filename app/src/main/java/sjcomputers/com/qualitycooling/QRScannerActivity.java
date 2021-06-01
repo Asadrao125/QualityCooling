@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import me.dm7.barcodescanner.zbar.ZBarScannerView;
+import sjcomputers.com.qualitycooling.Driver.DriverItemActivity;
 import sjcomputers.com.qualitycooling.Global.APIManager;
 import sjcomputers.com.qualitycooling.Global.APIManagerCallback;
 import sjcomputers.com.qualitycooling.Global.Util;
@@ -117,7 +118,7 @@ public class QRScannerActivity extends AppCompatActivity implements ZBarScannerV
             } else if (screenType == 1) {
                 apiManager.forming(scanResult);
             }
-        } else if (screenType == 2 || screenType == 3 || screenType == 4 || screenType == 5) {
+        } else if (screenType == 2 || screenType == 3 || screenType == 4 || screenType == 5 || screenType == 6 || screenType == 7) {
             Message message = new Message();
             message.what = MSG_SERIAL_SCANNED;
             message.obj = scanResult;
@@ -127,10 +128,13 @@ public class QRScannerActivity extends AppCompatActivity implements ZBarScannerV
                 KnockedTogetherActivity.handler.sendMessage(message);
             } else if (screenType == 4) {
                 DeliveredActivity.handler.sendMessage(message);
-            } else if (screenType == 5){
+            } else if (screenType == 5) {
                 ItemInfoActivity.handler.sendMessage(message);
-            }
-            else {
+            } else if (screenType == 6) {
+                DriverItemActivity.handler.sendMessage(message);
+            } else if (screenType == 7) {
+                FindItemActivity.handler.sendMessage(message);
+            } else {
                 ItemInfoActivity.handler.sendMessage(message);
             }
             finish();

@@ -3,6 +3,7 @@ package sjcomputers.com.qualitycooling.Driver;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,14 +14,23 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import sjcomputers.com.qualitycooling.Adapters.KnockedTogetherAdapter;
 import sjcomputers.com.qualitycooling.Global.APIManager;
+import sjcomputers.com.qualitycooling.Global.APIManagerCallback;
 import sjcomputers.com.qualitycooling.Global.UserData;
+import sjcomputers.com.qualitycooling.Global.Util;
+import sjcomputers.com.qualitycooling.KnockedTogetherActivity;
 import sjcomputers.com.qualitycooling.R;
+import sjcomputers.com.qualitycooling.models.KnockedTogetherModel;
 
 import static sjcomputers.com.qualitycooling.Global.Util.LOCATION_UPDATE_INTERVAL;
 import static sjcomputers.com.qualitycooling.Global.Util.MSG_REFRESH_ORDER;
@@ -37,9 +47,13 @@ public class DriverOrderActivity extends AppCompatActivity {
     public static Button nextBt;
     public static Spinner pageSpinner;
     private Timer timer;
+    public static Spinner spinner5;
+    ArrayList<String> vehicleNameList = new ArrayList<>();
+    public static ArrayList<String> vehicleIdList = new ArrayList<>();
 
     String[] statuses = {"Assigned Deliveries", "Open Deliveries", "Open Orders", "Completed"};
     private DriverOrderAdapter driverOrderAdapter;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +62,8 @@ public class DriverOrderActivity extends AppCompatActivity {
         initValue();
         configureDesign();
         startTimer();
+        getVehicles();
+
     }
 
     @Override
@@ -65,10 +81,11 @@ public class DriverOrderActivity extends AppCompatActivity {
         prevBt = findViewById(R.id.prev_bt);
         nextBt = findViewById(R.id.next_bt);
         pageSpinner = findViewById(R.id.spinner3);
+        spinner5 = findViewById(R.id.spinner5);
 
-        ListView driverOrderLv = (ListView)findViewById(R.id.driver_order_lv);
-        driverSearchInEt = (EditText)findViewById(R.id.search_driver_IN_txt);
-        driverSearchCusEt = (EditText)findViewById(R.id.search_driver_cus_txt);
+        ListView driverOrderLv = (ListView) findViewById(R.id.driver_order_lv);
+        driverSearchInEt = (EditText) findViewById(R.id.search_driver_IN_txt);
+        driverSearchCusEt = (EditText) findViewById(R.id.search_driver_cus_txt);
         driverOrderAdapter = new DriverOrderAdapter(this);
         driverOrderLv.setAdapter(driverOrderAdapter);
 
@@ -86,7 +103,7 @@ public class DriverOrderActivity extends AppCompatActivity {
         statusSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(status != (position + 1)) {
+                if (status != (position + 1)) {
                     status = position + 1;
                     DriverOrderAdapter.handler.sendEmptyMessage(MSG_REFRESH_ORDER);
                 }
@@ -112,7 +129,7 @@ public class DriverOrderActivity extends AppCompatActivity {
     }
 
     private void cancelTimer() {
-        if(timer != null) {
+        if (timer != null) {
             timer.cancel();
             timer = null;
         }
@@ -129,6 +146,25 @@ public class DriverOrderActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_refresh, menu);
         return true;
     }
+
+    /*private void setTruckSpinner() {
+        final ArrayAdapter<String> statusAdapter = new ArrayAdapter<String>(DriverOrderActivity.this, R.layout.item_spinner, statuses);
+        DriverOrderActivity.spinner5.setAdapter(statusAdapter);
+        DriverOrderActivity.spinner5.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                *//*if(status != (position + 1)) {
+                    status = position + 1;
+                    DriverOrderAdapter.handler.sendEmptyMessage(MSG_REFRESH_ORDER);
+                }*//*
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }*/
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -151,7 +187,6 @@ public class DriverOrderActivity extends AppCompatActivity {
     private void updateDriverLocation() {
         APIManager apiManager = new APIManager();
         apiManager.setCallback(null);
-
         apiManager.sendDriverLocation(orderId, UserData.getInstance().userId, UserData.getInstance().lat, UserData.getInstance().lng);
     }
 
@@ -171,4 +206,37 @@ public class DriverOrderActivity extends AppCompatActivity {
             }
         }
     }*/
+
+    public void getVehicles() {
+        APIManager apiManager = new APIManager();
+        apiManager.setCallback(new APIManagerCallback() {
+            @Override
+            public void APICallback(JSONObject objAPIResult) {
+                if (objAPIResult != null) {
+                    try {
+                        if (objAPIResult.getString("Status").equals("Success")) {
+                            Log.d("ldmldkbjbd", "APICallback: " + objAPIResult);
+                            JSONObject jsonObject = new JSONObject(objAPIResult.toString());
+                            JSONArray jsonArray = jsonObject.getJSONArray("VehicleList");
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                String vehicleName = jsonArray.getJSONObject(i).getString("VehicleName");
+                                String vehicleId = jsonArray.getJSONObject(i).getString("VehicleId");
+                                vehicleNameList.add(vehicleName);
+                                vehicleIdList.add(vehicleId);
+                            }
+
+                            final ArrayAdapter<String> statusAdapter2 = new ArrayAdapter<String>(DriverOrderActivity.this, R.layout.item_spinner, vehicleNameList);
+                            spinner5.setAdapter(statusAdapter2);
+                        }
+
+                    } catch (Exception e) {
+                        Util.showToast("Failed and try again", DriverOrderActivity.this);
+                    }
+                } else {
+                    Util.showToast("Failed and try again", DriverOrderActivity.this);
+                }
+            }
+        });
+        apiManager.getVehicleList();
+    }
 }
