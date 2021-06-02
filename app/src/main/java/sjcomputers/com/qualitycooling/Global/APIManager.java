@@ -368,7 +368,7 @@ public class APIManager {
     /***************************************** Methods By Asad ********************************************************/
 
     public void knockedTogether(String scanResult, String lastLoc) {
-        String API_URL = String.format("/KnockedTogetherDelivery?scannedValue=%s&userId=%d&authtoken=%s&location=%s", scanResult, UserData.getInstance().userId, UserData.getInstance().authToken, lastLoc);
+        String API_URL = String.format("/KnockedTogether?scannedValue=%s&location=%s&userid=%d&authtoken=%s", scanResult, lastLoc, UserData.getInstance().userId, UserData.getInstance().authToken);
         APITask task = new APITask(SERVER_ADDR, API_URL, null, HTTP_POST);
         task.execute((Void) null);
     }
@@ -396,14 +396,13 @@ public class APIManager {
         APITask task = new APITask(SERVER_ADDR, API_URL, null, HTTP_POST);
         task.execute((Void) null);
     }
+
     /* /FindItemsLocation?innumber=36326&userId=3013&authtoken=7907ae60-6b1c-4e71-9ea7-2aa7de1d86cc */
     public void findItems(String inNumber) {
         String API_URL = String.format("/FindItemsLocation?innumber=%s&userId=%d&authtoken=%s", inNumber, UserData.getInstance().userId, UserData.getInstance().authToken);
         APITask task = new APITask(SERVER_ADDR, API_URL, null, HTTP_POST);
         task.execute((Void) null);
     }
-
-
 
     public void checkUncheckDelivered(String orderItemId, String delivered) {
         String API_URL = String.format("/KnockedTogetherCheckOrUncheckDelivered?orderItemId=%s&delivered=%s&userId=%d&authtoken=%s", orderItemId, delivered, UserData.getInstance().userId, UserData.getInstance().authToken);

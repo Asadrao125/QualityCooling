@@ -91,6 +91,8 @@ public class KnockedTogetherActivity extends AppCompatActivity {
             }
         };
 
+        KnockedTogetherAdapter.inputLoc = "";
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(this, R.color.colorAccent)));
@@ -382,5 +384,11 @@ public class KnockedTogetherActivity extends AppCompatActivity {
                     getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        lastLoc = "";
     }
 }

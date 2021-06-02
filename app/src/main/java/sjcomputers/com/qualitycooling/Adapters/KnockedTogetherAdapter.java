@@ -48,7 +48,7 @@ public class KnockedTogetherAdapter extends ArrayAdapter<KnockedTogetherModel> {
     Context mContext;
     private SharedPreferences sharedPreferences;
     String apiUrl;
-    public static String inputLoc;
+    public static String inputLoc = "";
 
     private static class ViewHolder {
         TextView customer, inNumber, itemName, jobSite, jobSiteAddress, pieceNo, itemInfo;
@@ -120,6 +120,8 @@ public class KnockedTogetherAdapter extends ArrayAdapter<KnockedTogetherModel> {
                 return false;
             }
         });
+
+        viewHolder.edtLocationInput.setText(inputLoc);
 
         /*if (knockedTogetherModel.ShowNotificationPopup.equals("1")) {
             showDialog2(knockedTogetherModel.OrderItemId);
