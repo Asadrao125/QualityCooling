@@ -1,6 +1,7 @@
 package sjcomputers.com.qualitycooling.Driver;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -73,6 +75,8 @@ public class DriverItemActivity extends AppCompatActivity {
             }
         };
 
+        edtManualInput.requestFocus();
+        showSoftKeyboard(edtManualInput);
         edtManualInput.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -105,6 +109,7 @@ public class DriverItemActivity extends AppCompatActivity {
         Util.showProgressDialog("Loading..", DriverItemActivity.this);
         handler2.removeMessages(0);
         edtManualInput.requestFocus();
+        showSoftKeyboard(edtManualInput);
         APIManager apiManager = new APIManager();
         apiManager.setCallback(new APIManagerCallback() {
             @Override
@@ -134,6 +139,8 @@ public class DriverItemActivity extends AppCompatActivity {
         });
         Log.d("value_check", "manualInputApiCall: \n" + orderID + "\n" + scannedValue);
         apiManager.manualInputCall(orderID, scannedValue);
+        edtManualInput.requestFocus();
+        showSoftKeyboard(edtManualInput);
     }
 
     private void configureDesign() {
@@ -333,4 +340,13 @@ public class DriverItemActivity extends AppCompatActivity {
         Intent intent = new Intent(DriverItemActivity.this, NewItemActivity.class);
         startActivity(intent);
     }
+
+    public void showSoftKeyboard(View view) {
+        if (view.requestFocus()) {
+            InputMethodManager imm = (InputMethodManager)
+                    getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
+        }
+    }
+
 }

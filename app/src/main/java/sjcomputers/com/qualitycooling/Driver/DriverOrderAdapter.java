@@ -198,6 +198,18 @@ public class DriverOrderAdapter extends BaseAdapter {
             }
         });
 
+        vehicleTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SignatureActivity.orderId = (int) orderObj.get("OrderID");
+                SignatureActivity.driverOrderId = (String) orderObj.get("RefNo");
+                DriverOrderActivity.orderId = (int) orderObj.get("OrderID");
+
+                Intent intent = new Intent(activity, SignatureActivity.class);
+                activity.startActivity(intent);
+            }
+        });
+
         clipBoardIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -220,7 +232,8 @@ public class DriverOrderAdapter extends BaseAdapter {
         vehicleName.setText(orderObj.get("Vehicle").toString());
         String contactNo = orderObj.get("ContactNo").toString();
         phoneTv.setText(contactNo);
-        vehicleTv.setText(orderObj.get("Vehicle").toString());
+        /*vehicleTv.setText(orderObj.get("Vehicle").toString());*/
+        vehicleTv.setText(orderObj.get("INNumber").toString());
         final String[] phoneNumbers = contactNo.split(",");
         DroppyMenuPopup.Builder droppyBuilder = new DroppyMenuPopup.Builder(activity, phoneTv);
         for (int i = 0; i < phoneNumbers.length; i++) {

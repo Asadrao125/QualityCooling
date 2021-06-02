@@ -85,8 +85,7 @@
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".Driver.DriverItemActivity"
-            android:configChanges="orientation|screenSize"
-            android:windowSoftInputMode="adjustPan" />
+            android:configChanges="orientation|screenSize" /> <!-- android:windowSoftInputMode="adjustPan" -->
         <activity
             android:name=".Driver.NewItemActivity"
             android:configChanges="orientation|screenSize"

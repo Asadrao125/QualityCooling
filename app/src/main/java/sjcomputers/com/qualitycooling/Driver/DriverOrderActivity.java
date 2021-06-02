@@ -100,6 +100,7 @@ public class DriverOrderActivity extends AppCompatActivity {
         Spinner statusSpinner = findViewById(R.id.spinner2);
         final ArrayAdapter<String> statusAdapter = new ArrayAdapter<String>(DriverOrderActivity.this, R.layout.item_spinner, statuses);
         statusSpinner.setAdapter(statusAdapter);
+        statusSpinner.setSelection(1);
         statusSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
