@@ -386,6 +386,7 @@ public class DriverOrderAdapter extends BaseAdapter {
                     vehicleId = "0";
                 }
 
+                Log.d("statusmjnj", "run: " + DriverOrderActivity.status);
                 APIManager.getInstance().getDriverOrders(DriverOrderActivity.status, curIndex * readCount, readCount, DriverOrderActivity.driverSearchInEt.getText().toString(), vehicleId);
             }
         }, 100);

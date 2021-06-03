@@ -11,7 +11,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".FindItemActivity"></activity>
+        <activity android:name=".FindItemActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".DeliveredActivity"
             android:screenOrientation="portrait" />

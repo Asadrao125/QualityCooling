@@ -75,7 +75,7 @@ public class DriverOrderActivity extends AppCompatActivity {
     }
 
     private void initValue() {
-        status = 1;
+        status = 2;
         orderId = 0;
     }
 
@@ -117,8 +117,6 @@ public class DriverOrderActivity extends AppCompatActivity {
 
             }
         });
-
-        //statusSpinner.setSelection(1);
     }
 
     private void startTimer() {

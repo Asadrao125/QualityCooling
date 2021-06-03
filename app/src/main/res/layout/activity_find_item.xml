@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="12dp"
     tools:context=".FindItemActivity">
 
     <LinearLayout
+        android:layout_margin="12dp"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:orientation="horizontal">
@@ -48,19 +48,248 @@
 
     </LinearLayout>
 
-    <TextView
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/itemInfoTv"
-        android:visibility="gone"
-        android:text="Item Info"/>
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:orientation="vertical">
 
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/lvFindItem"
-        tools:listitem="@layout/item_find_item"/>
+       <TextView
+           android:layout_marginBottom="5dp"
+           android:layout_marginTop="5dp"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:id="@+id/itemInfoTv"
+           android:visibility="gone"
+           android:text="Item Info"/>
+
+       <HorizontalScrollView
+           android:layout_marginTop="10dp"
+           android:fillViewport="true"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content">
+
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:orientation="vertical"
+               android:layout_height="wrap_content">
+
+               <LinearLayout
+                   android:background="@android:color/black"
+                   android:layout_width="1000dp"
+                   android:layout_height="35dp"
+                   android:orientation="horizontal">
+
+                   <TextView
+                       android:gravity="left|center_vertical"
+                       android:paddingLeft="4dp"
+                       android:paddingRight="4dp"
+                       android:layout_weight="0.3"
+                       android:id="@+id/tvItemName"
+                       android:textColor="@android:color/white"
+                       android:layout_width="0dp"
+                       android:layout_height="match_parent"
+                       android:text="Item Name" />
+
+                   <TextView
+                       android:layout_width="0.5dp"
+                       android:layout_height="match_parent"
+                       android:background="#555555"
+                       android:text="TextView" />
+
+                   <TextView
+                       android:gravity="left|center_vertical"
+                       android:paddingLeft="4dp"
+                       android:paddingRight="4dp"
+                       android:layout_weight="0.3"
+                       android:id="@+id/tvLocation"
+                       android:textColor="@android:color/white"
+                       android:layout_width="0dp"
+                       android:layout_height="match_parent"
+                       android:text="Location" />
+
+                   <TextView
+                       android:layout_width="0.5dp"
+                       android:layout_height="match_parent"
+                       android:background="#555555"
+                       android:text="TextView" />
+
+                   <TextView
+                       android:gravity="left|center_vertical"
+                       android:paddingLeft="4dp"
+                       android:paddingRight="4dp"
+                       android:textColor="@android:color/white"
+                       android:layout_weight="0.3"
+                       android:id="@+id/tvPiece"
+                       android:layout_width="0dp"
+                       android:layout_height="match_parent"
+                       android:text="Piece No" />
+
+                   <TextView
+                       android:layout_width="0.5dp"
+                       android:layout_height="match_parent"
+                       android:background="#555555"
+                       android:text="TextView" />
+
+                   <TextView
+                       android:gravity="left|center_vertical"
+                       android:paddingLeft="4dp"
+                       android:paddingRight="4dp"
+                       android:layout_weight="0.3"
+                       android:id="@+id/tvWidth"
+                       android:textColor="@android:color/white"
+                       android:layout_width="0dp"
+                       android:layout_height="match_parent"
+                       android:text="Width" />
+
+                   <TextView
+                       android:layout_width="0.5dp"
+                       android:layout_height="match_parent"
+                       android:background="#555555"
+                       android:text="TextView" />
+
+                   <TextView
+                       android:gravity="left|center_vertical"
+                       android:paddingLeft="4dp"
+                       android:paddingRight="4dp"
+                       android:textColor="@android:color/white"
+                       android:layout_weight="0.3"
+                       android:id="@+id/tvLength"
+                       android:layout_width="0dp"
+                       android:layout_height="match_parent"
+                       android:text="Length" />
+
+                   <TextView
+                       android:layout_width="0.5dp"
+                       android:layout_height="match_parent"
+                       android:background="#555555"
+                       android:text="TextView" />
+
+                   <TextView
+                       android:gravity="left|center_vertical"
+                       android:paddingLeft="4dp"
+                       android:paddingRight="4dp"
+                       android:layout_weight="0.3"
+                       android:id="@+id/tvLoaded"
+                       android:textColor="@android:color/white"
+                       android:layout_width="0dp"
+                       android:layout_height="match_parent"
+                       android:text="Loaded" />
+
+                   <TextView
+                       android:layout_width="0.5dp"
+                       android:layout_height="match_parent"
+                       android:background="#555555"
+                       android:text="TextView" />
+
+                   <TextView
+                       android:gravity="left|center_vertical"
+                       android:paddingLeft="4dp"
+                       android:paddingRight="4dp"
+                       android:layout_weight="0.3"
+                       android:id="@+id/tvCompletedBy"
+                       android:textColor="@android:color/white"
+                       android:layout_width="0dp"
+                       android:layout_height="match_parent"
+                       android:text="Completed By" />
+
+                   <TextView
+                       android:layout_width="0.5dp"
+                       android:layout_height="match_parent"
+                       android:background="#555555"
+                       android:text="TextView" />
+
+                   <TextView
+                       android:gravity="left|center_vertical"
+                       android:paddingLeft="4dp"
+                       android:paddingRight="4dp"
+                       android:layout_weight="0.3"
+                       android:textColor="@android:color/white"
+                       android:id="@+id/tvDelivered"
+                       android:layout_width="0dp"
+                       android:layout_height="match_parent"
+                       android:text="Delivered" />
+
+                   <TextView
+                       android:layout_width="0.5dp"
+                       android:layout_height="match_parent"
+                       android:background="#555555"
+                       android:text="TextView" />
+
+                   <TextView
+                       android:gravity="left|center_vertical"
+                       android:paddingLeft="4dp"
+                       android:paddingRight="4dp"
+                       android:layout_weight="0.3"
+                       android:textColor="@android:color/white"
+                       android:id="@+id/tvQuantity"
+                       android:layout_width="0dp"
+                       android:layout_height="match_parent"
+                       android:text="Quantity" />
+
+                   <TextView
+                       android:layout_width="0.5dp"
+                       android:layout_height="match_parent"
+                       android:background="#555555"
+                       android:text="TextView" />
+
+                   <TextView
+                       android:gravity="left|center_vertical"
+                       android:paddingLeft="4dp"
+                       android:paddingRight="4dp"
+                       android:layout_weight="0.3"
+                       android:id="@+id/tvHeight"
+                       android:textColor="@android:color/white"
+                       android:layout_width="0dp"
+                       android:layout_height="match_parent"
+                       android:text="Height" />
+
+                   <TextView
+                       android:layout_width="0.5dp"
+                       android:layout_height="match_parent"
+                       android:background="#555555"
+                       android:text="TextView" />
+
+                   <TextView
+                       android:gravity="left|center_vertical"
+                       android:paddingLeft="4dp"
+                       android:paddingRight="4dp"
+                       android:layout_weight="0.3"
+                       android:id="@+id/tvDepth"
+                       android:textColor="@android:color/white"
+                       android:layout_width="0dp"
+                       android:layout_height="match_parent"
+                       android:text="Depth" />
+
+                   <TextView
+                       android:layout_width="0.5dp"
+                       android:layout_height="match_parent"
+                       android:background="#555555"
+                       android:text="TextView" />
+
+                   <TextView
+                       android:gravity="left|center_vertical"
+                       android:paddingLeft="4dp"
+                       android:paddingRight="4dp"
+                       android:layout_weight="0.3"
+                       android:id="@+id/tvCompleted"
+                       android:textColor="@android:color/white"
+                       android:layout_width="0dp"
+                       android:layout_height="match_parent"
+                       android:text="Completed" />
+
+               </LinearLayout>
+
+               <ListView
+                   android:divider="@null"
+                   android:layout_width="1000dp"
+                   android:layout_height="match_parent"
+                   android:id="@+id/lvFindItem"
+                   tools:listitem="@layout/item_find_item"/>
+
+           </LinearLayout>
+
+       </HorizontalScrollView>
+
+   </LinearLayout>
 
 </LinearLayout>

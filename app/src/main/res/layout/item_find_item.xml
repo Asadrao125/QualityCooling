@@ -1,132 +1,200 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-    <TextView
-        android:id="@+id/tvItemName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:padding="5dp"
-        android:textColor="@android:color/white"
-        android:background="@color/colorPrimary"
-        android:textAlignment="center"
-        android:text="Item Name" />
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <LinearLayout
-        android:layout_margin="10dp"
-        android:layout_below="@id/tvItemName"
-        android:weightSum="2"
-        android:id="@+id/layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+        <TextView
+            android:gravity="left|center_vertical"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:layout_weight="0.3"
+            android:id="@+id/tvItemName"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="Item Name" />
 
-            <TextView
-                android:id="@+id/tvPiece"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Piece No" />
+        <TextView
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:background="#555555"
+            android:text="TextView" />
 
-            <TextView
-                android:layout_marginTop="5dp"
-                android:id="@+id/tvWidth"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Width" />
+        <TextView
+            android:gravity="left|center_vertical"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:layout_weight="0.3"
+            android:id="@+id/tvLocation"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="Location" />
 
-            <TextView
-                android:layout_marginTop="5dp"
-                android:id="@+id/tvLength"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Length" />
+        <TextView
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:background="#555555"
+            android:text="TextView" />
 
-            <TextView
-                android:layout_marginTop="5dp"
-                android:id="@+id/tvLoaded"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Loaded" />
+        <TextView
+            android:gravity="left|center_vertical"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:layout_weight="0.3"
+            android:id="@+id/tvPiece"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="Piece No" />
 
-            <TextView
-                android:layout_marginTop="5dp"
-                android:id="@+id/tvCompletedBy"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Completed By" />
+        <TextView
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:background="#555555"
+            android:text="TextView" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Location"
-                android:layout_marginTop="5dp"
-                android:id="@+id/tvLocation"/>
+        <TextView
+            android:gravity="left|center_vertical"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:layout_weight="0.3"
+            android:id="@+id/tvWidth"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="Width" />
 
-        </LinearLayout>
+        <TextView
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:background="#555555"
+            android:text="TextView" />
 
-        <LinearLayout
-            android:layout_weight="1"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+        <TextView
+            android:gravity="left|center_vertical"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:layout_weight="0.3"
+            android:id="@+id/tvLength"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="Length" />
 
-            <TextView
-                android:layout_weight="1"
-                android:id="@+id/tvDelivered"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Delivered" />
+        <TextView
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:background="#555555"
+            android:text="TextView" />
 
-            <TextView
-                android:layout_marginTop="5dp"
-                android:id="@+id/tvQuantity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Quantity" />
+        <TextView
+            android:gravity="left|center_vertical"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:layout_weight="0.3"
+            android:id="@+id/tvLoaded"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="Loaded" />
 
-            <TextView
-                android:layout_marginTop="5dp"
-                android:id="@+id/tvHeight"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Height" />
+        <TextView
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:background="#555555"
+            android:text="TextView" />
 
-            <TextView
-                android:layout_marginTop="5dp"
-                android:id="@+id/tvDepth"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Depth" />
+        <TextView
+            android:gravity="left|center_vertical"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:layout_weight="0.3"
+            android:id="@+id/tvCompletedBy"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="Completed By" />
 
-            <TextView
-                android:layout_marginTop="5dp"
-                android:id="@+id/tvCompleted"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Completed" />
+        <TextView
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:background="#555555"
+            android:text="TextView" />
 
-        </LinearLayout>
+        <TextView
+            android:gravity="left|center_vertical"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:layout_weight="0.3"
+            android:id="@+id/tvDelivered"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="Delivered" />
+
+        <TextView
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:background="#555555"
+            android:text="TextView" />
+
+        <TextView
+            android:gravity="left|center_vertical"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:layout_weight="0.3"
+            android:id="@+id/tvQuantity"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="Quantity" />
+
+        <TextView
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:background="#555555"
+            android:text="TextView" />
+
+        <TextView
+            android:gravity="left|center_vertical"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:layout_weight="0.3"
+            android:id="@+id/tvHeight"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="Height" />
+
+        <TextView
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:background="#555555"
+            android:text="TextView" />
+
+        <TextView
+            android:gravity="left|center_vertical"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:layout_weight="0.3"
+            android:id="@+id/tvDepth"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="Depth" />
+
+        <TextView
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:background="#555555"
+            android:text="TextView" />
+
+        <TextView
+            android:gravity="left|center_vertical"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:layout_weight="0.3"
+            android:id="@+id/tvCompleted"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="Completed" />
 
     </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>

@@ -1,6 +1,7 @@
 package sjcomputers.com.qualitycooling;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,24 +52,32 @@ public class FindItemAdapter extends ArrayAdapter<FindItemModel> {
             viewHolder.tvCompletedBy = (TextView) convertView.findViewById(R.id.tvCompletedBy);
             viewHolder.tvDelivered = (TextView) convertView.findViewById(R.id.tvDelivered);
             viewHolder.tvLocation = convertView.findViewById(R.id.tvLocation);
+
             result = convertView;
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
             result = convertView;
         }
-        viewHolder.txtName.setText("Item Name: " + dataModel.ItemName);
-        viewHolder.tvPiece.setText("Price: " + dataModel.Piece);
-        viewHolder.tvQuantitiy.setText("Quantity: " + dataModel.Quantity);
-        viewHolder.tvWidth.setText("Width: " + dataModel.Width);
-        viewHolder.tvHeight.setText("Height: " + dataModel.Height);
-        viewHolder.tvLength.setText("Length: " + dataModel.Length);
-        viewHolder.tvDepth.setText("Depth: " + dataModel.Depth);
-        viewHolder.tvLoaded.setText("Loaded: " + dataModel.Loaded);
-        viewHolder.tvCompleted.setText("Completed: " + dataModel.Completed);
-        viewHolder.tvCompletedBy.setText("Completed by: " + dataModel.CompletedBy);
-        viewHolder.tvDelivered.setText("Delivered: " + dataModel.Delivered);
-        viewHolder.tvLocation.setText("Location: " + dataModel.Location);
+
+        if (position % 2 == 1) {
+            convertView.setBackgroundColor(Color.LTGRAY);
+        } else {
+            convertView.setBackgroundColor(Color.WHITE);
+        }
+
+        viewHolder.txtName.setText(dataModel.ItemName);
+        viewHolder.tvPiece.setText(dataModel.Piece);
+        viewHolder.tvQuantitiy.setText(dataModel.Quantity);
+        viewHolder.tvWidth.setText(dataModel.Width);
+        viewHolder.tvHeight.setText(dataModel.Height);
+        viewHolder.tvLength.setText(dataModel.Length);
+        viewHolder.tvDepth.setText(dataModel.Depth);
+        viewHolder.tvLoaded.setText(dataModel.Loaded);
+        viewHolder.tvCompleted.setText(dataModel.Completed);
+        viewHolder.tvCompletedBy.setText(dataModel.CompletedBy);
+        viewHolder.tvDelivered.setText(dataModel.Delivered);
+        viewHolder.tvLocation.setText(dataModel.Location);
         return convertView;
     }
 }
