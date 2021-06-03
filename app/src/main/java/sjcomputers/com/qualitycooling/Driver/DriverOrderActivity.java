@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -50,6 +51,7 @@ public class DriverOrderActivity extends AppCompatActivity {
     public static Spinner spinner5;
     ArrayList<String> vehicleNameList = new ArrayList<>();
     public static ArrayList<String> vehicleIdList = new ArrayList<>();
+    public String DriverVehicleId;
 
     String[] statuses = {"Assigned Deliveries", "Open Deliveries", "Open Orders", "Completed"};
     private DriverOrderAdapter driverOrderAdapter;
@@ -216,6 +218,7 @@ public class DriverOrderActivity extends AppCompatActivity {
                 if (objAPIResult != null) {
                     try {
                         if (objAPIResult.getString("Status").equals("Success")) {
+                            DriverVehicleId = objAPIResult.getString("DriverVehicleId");
                             Log.d("ldmldkbjbd", "APICallback: " + objAPIResult);
                             JSONObject jsonObject = new JSONObject(objAPIResult.toString());
                             JSONArray jsonArray = jsonObject.getJSONArray("VehicleList");
@@ -228,6 +231,14 @@ public class DriverOrderActivity extends AppCompatActivity {
 
                             final ArrayAdapter<String> statusAdapter2 = new ArrayAdapter<String>(DriverOrderActivity.this, R.layout.item_spinner, vehicleNameList);
                             spinner5.setAdapter(statusAdapter2);
+
+                            for (int i = 0; i < vehicleIdList.size(); i++) {
+                                if (DriverVehicleId.equals(vehicleIdList.get(i))) {
+                                    String default_vehicle = vehicleNameList.get(i);
+                                    //Toast.makeText(DriverOrderActivity.this, "" + default_vehicle, Toast.LENGTH_SHORT).show();
+                                    spinner5.setSelection(i);
+                                }
+                            }
                         }
 
                     } catch (Exception e) {
