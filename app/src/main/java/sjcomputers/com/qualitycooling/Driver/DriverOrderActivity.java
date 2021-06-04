@@ -173,6 +173,9 @@ public class DriverOrderActivity extends AppCompatActivity {
             case R.id.refresh:
                 driverOrderAdapter.refreshOrders();
                 return true;
+            case R.id.home:
+                onBackPressed();
+                return true;
             case R.id.logout:
                 sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
                 sharedPreferences.edit().putString("UserName", "").apply();
@@ -240,7 +243,7 @@ public class DriverOrderActivity extends AppCompatActivity {
                         }
 
                     } catch (Exception e) {
-                        Util.showToast("Failed and try again", DriverOrderActivity.this);
+                        e.printStackTrace();
                     }
                 } else {
                     Util.showToast("Failed and try again", DriverOrderActivity.this);

@@ -61,7 +61,7 @@ public class DriverOrderAdapter extends BaseAdapter {
     public DriverOrderAdapter(Activity activity) {
         this.activity = activity;
         initValue();
-        getDriverOrders();
+        //getDriverOrders();
         configureSearch();
         handler = new Handler() {
             @Override
@@ -371,7 +371,7 @@ public class DriverOrderAdapter extends BaseAdapter {
                             Util.showToast("Failed and try again", activity);
                         }*/
                             } catch (Exception e) {
-                                Util.showToast("Failed and try again", activity);
+                                e.printStackTrace();
                             }
                         } else {
                             Util.showToast("Failed and try again", activity);

@@ -184,11 +184,15 @@ public class LoginActivity extends AppCompatActivity implements LocationListener
                         }
 
                         if (userRole == 3) {
-                            Intent intent = new Intent(LoginActivity.this, DriverOrderActivity.class);
+                            /* Driver Panel */
+                            Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
+                            intent.putExtra("val", "3");
                             startActivity(intent);
                             finish();
                         } else {//if(userRole == 1) {
+                            /* Admin Panel */
                             Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
+                            intent.putExtra("val", "1");
                             startActivity(intent);
                             finish();
                         }

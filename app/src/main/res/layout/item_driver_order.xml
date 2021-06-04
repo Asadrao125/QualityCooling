@@ -61,12 +61,14 @@
             android:textSize="12sp" />
 
         <TextView
+            android:visibility="gone"
             android:layout_width="0.5dp"
             android:layout_height="match_parent"
             android:background="#555555"
             android:text="TextView" />
 
         <TextView
+            android:visibility="gone"
             android:id="@+id/d_textView2"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -77,12 +79,14 @@
             android:text="20664" />
 
         <TextView
+            android:visibility="gone"
             android:layout_width="0.5dp"
             android:layout_height="match_parent"
             android:background="#555555"
             android:text="TextView" />
 
         <TextView
+            android:visibility="gone"
             android:id="@+id/d_textView4"
             android:layout_width="0dp"
             android:layout_height="match_parent"

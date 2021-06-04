@@ -25,6 +25,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import sjcomputers.com.qualitycooling.Admin.JobActivity;
 import sjcomputers.com.qualitycooling.Admin.OrderAdapter;
+import sjcomputers.com.qualitycooling.Driver.DriverOrderActivity;
 import sjcomputers.com.qualitycooling.Global.UserData;
 import sjcomputers.com.qualitycooling.Util.SharedPref;
 
@@ -36,6 +37,7 @@ public class DashboardActivity extends AppCompatActivity {
     public static Handler handler;
     Dialog dialog;
     private SharedPreferences sharedPreferences;
+    String val;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -106,6 +108,7 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     private void setupView() {
+        val = getIntent().getStringExtra("val");
         Button jobsBt = findViewById(R.id.bt_jobs);
         Button cuttingBt = findViewById(R.id.bt_cutting);
         Button formingBt = findViewById(R.id.bt_forming);
@@ -114,6 +117,20 @@ public class DashboardActivity extends AppCompatActivity {
         Button btnKnockedTogether = findViewById(R.id.btnKnockedTogether);
         Button btnDelivered = findViewById(R.id.btnDelivered);
         Button btnFindItems = findViewById(R.id.btnFindItems);
+        Button btnVehicleList = findViewById(R.id.btnVehicleList);
+
+        if (val.equals("1") && val != null) {
+            btnVehicleList.setVisibility(View.GONE);
+        } else {
+            btnVehicleList.setVisibility(View.VISIBLE);
+        }
+
+        btnVehicleList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(DashboardActivity.this, DriverOrderActivity.class));
+            }
+        });
 
         jobsBt.setVisibility(UserData.getInstance().jobsButtonShow == 1 ? View.VISIBLE : View.INVISIBLE);
         cuttingBt.setVisibility(UserData.getInstance().cuttingButtonShow == 1 ? View.VISIBLE : View.INVISIBLE);

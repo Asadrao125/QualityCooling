@@ -57,12 +57,14 @@
             android:textStyle="bold" />
 
         <TextView
+            android:visibility="gone"
             android:layout_width="0.5dp"
             android:layout_height="match_parent"
             android:background="#555555"
             android:text="TextView" />
 
         <TextView
+            android:visibility="gone"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.5"
@@ -74,12 +76,14 @@
             android:textStyle="bold" />
 
         <TextView
+            android:visibility="gone"
             android:layout_width="0.5dp"
             android:layout_height="match_parent"
             android:background="#555555"
             android:text="TextView" />
 
         <TextView
+            android:visibility="gone"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.5"

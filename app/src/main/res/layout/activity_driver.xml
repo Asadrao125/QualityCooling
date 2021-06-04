@@ -137,7 +137,7 @@
 
             <ListView
                 android:id="@+id/driver_order_lv"
-                android:layout_width="1400dp"
+                android:layout_width="1200dp"
                 android:layout_height="match_parent"
                 android:divider="@null"
                 app:layout_constraintBottom_toBottomOf="parent"
