@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
@@ -137,6 +138,8 @@ public class DriverOrderAdapter extends BaseAdapter {
         View vi;
         if (position == 0) {
             vi = layoutInflater.inflate(R.layout.item_driver_order_title, parent, false);
+            vi.setLayoutParams(new AbsListView.LayoutParams(-1,1));
+            vi.setVisibility(View.GONE);
         } else {
             vi = layoutInflater.inflate(R.layout.item_driver_order, parent, false);
             if (position % 2 == 1) {
@@ -325,6 +328,8 @@ public class DriverOrderAdapter extends BaseAdapter {
                             try {
                                 //if(objAPIResult.getString("StatusCode").equals("Success")) {
                                 JSONArray orderJSONArr = objAPIResult.getJSONArray("Orders");
+                                DriverOrderActivity.tvCount.setText("Count: " + orderJSONArr.length());
+                                DriverOrderActivity.tvVisibleCount.setText("Visible Count: " + orderJSONArr.length());
                                 driverOrderArry = Util.toList(orderJSONArr);
 
                                 int totalCount = objAPIResult.getInt("Count");

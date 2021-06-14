@@ -73,15 +73,14 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <include layout="@layout/item_order_title"/>
+
             <ListView
                 android:id="@+id/order_lv"
                 android:layout_width="1000dp"
                 android:layout_height="match_parent"
                 android:divider="@null"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                tools:listitem="@layout/item_order" />
 
         </LinearLayout>
 
@@ -167,4 +166,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/next_bt"
         app:layout_constraintTop_toTopOf="@+id/next_bt" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

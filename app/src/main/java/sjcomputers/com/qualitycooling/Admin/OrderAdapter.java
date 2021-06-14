@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
@@ -84,6 +85,8 @@ public class OrderAdapter extends BaseAdapter {
         View vi;
         if (position == 0) {
             vi = layoutInflater.inflate(R.layout.item_order_title, parent, false);
+            vi.setLayoutParams(new AbsListView.LayoutParams(-1,1));
+            vi.setVisibility(View.GONE);
             configureTitleItem(vi);
         } else {
             vi = layoutInflater.inflate(R.layout.item_order, parent, false);

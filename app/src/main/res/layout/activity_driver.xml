@@ -121,11 +121,12 @@
     </LinearLayout>
 
     <HorizontalScrollView
+        android:id="@+id/hori"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/next_bt"
+        app:layout_constraintBottom_toTopOf="@+id/tvCount"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spinnerLayout">
@@ -135,17 +136,51 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <include layout="@layout/item_driver_order_title"/>
+
             <ListView
                 android:id="@+id/driver_order_lv"
                 android:layout_width="1200dp"
                 android:layout_height="match_parent"
                 android:divider="@null"
+                tools:listitem="@layout/item_driver_order"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
         </LinearLayout>
+
     </HorizontalScrollView>
+
+    <TextView
+        android:id="@+id/tvCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Count 0"
+        android:layout_marginBottom="10dp"
+        android:textSize="16sp"
+        android:layout_marginRight="10dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/prev_bt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.022"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/hori" />
+
+    <TextView
+        android:id="@+id/tvVisibleCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Visible Count 0"
+        android:textSize="16sp"
+        android:layout_marginLeft="10dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/next_bt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.022"
+        app:layout_constraintStart_toEndOf="@+id/tvCount"
+        app:layout_constraintTop_toBottomOf="@+id/hori" />
 
     <Button
         android:id="@+id/next_bt"

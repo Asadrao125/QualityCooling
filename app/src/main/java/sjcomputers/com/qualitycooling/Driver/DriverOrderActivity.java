@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -52,6 +53,7 @@ public class DriverOrderActivity extends AppCompatActivity {
     ArrayList<String> vehicleNameList = new ArrayList<>();
     public static ArrayList<String> vehicleIdList = new ArrayList<>();
     public String DriverVehicleId;
+    public static TextView tvCount, tvVisibleCount;
 
     String[] statuses = {"Assigned Deliveries", "Open Deliveries", "Open Orders", "Completed"};
     private DriverOrderAdapter driverOrderAdapter;
@@ -90,6 +92,9 @@ public class DriverOrderActivity extends AppCompatActivity {
         driverSearchCusEt = (EditText) findViewById(R.id.search_driver_cus_txt);
         driverOrderAdapter = new DriverOrderAdapter(this);
         driverOrderLv.setAdapter(driverOrderAdapter);
+
+        tvCount = findViewById(R.id.tvCount);
+        tvVisibleCount = findViewById(R.id.tvVisibleCount);
 
         Button searchBt = findViewById(R.id.button6);
         searchBt.setOnClickListener(new View.OnClickListener() {

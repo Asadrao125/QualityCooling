@@ -15,6 +15,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.util.Base64;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -70,7 +71,7 @@ public class DocumentActivity extends AppCompatActivity {
         handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
-                if(msg.what == MSG_IMAGE_ROTATED) {
+                if (msg.what == MSG_IMAGE_ROTATED) {
                     selectedBmp = (Bitmap) msg.obj;
                     uploadPicture();
                 }
@@ -90,12 +91,12 @@ public class DocumentActivity extends AppCompatActivity {
         }*/
         getSupportActionBar().setTitle("");
 
-        ListView documentLv = (ListView)findViewById(R.id.document_lv);
+        ListView documentLv = (ListView) findViewById(R.id.document_lv);
         DocumentAdapter adapter = new DocumentAdapter(this);
         documentLv.setAdapter(adapter);
 
-        Button uploadBt = (Button)findViewById(R.id.button4);
-        if(documentType == 1) {
+        Button uploadBt = (Button) findViewById(R.id.button4);
+        if (documentType == 1) {
             uploadBt.setVisibility(View.GONE);
         }
         uploadBt.setOnClickListener(new View.OnClickListener() {
@@ -115,8 +116,8 @@ public class DocumentActivity extends AppCompatActivity {
         documentUploadDialog.getWindow().setGravity(Gravity.CENTER);
         documentUploadDialog.show();
 
-        final EditText fileNameEt = (EditText)documentUploadDialog.findViewById(R.id.urlText);
-        Button closeBt = (Button)documentUploadDialog.findViewById(R.id.closeBtn);
+        final EditText fileNameEt = (EditText) documentUploadDialog.findViewById(R.id.urlText);
+        Button closeBt = (Button) documentUploadDialog.findViewById(R.id.closeBtn);
         closeBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -124,12 +125,12 @@ public class DocumentActivity extends AppCompatActivity {
             }
         });
 
-        Button picBt = (Button)documentUploadDialog.findViewById(R.id.pic_bt);
+        Button picBt = (Button) documentUploadDialog.findViewById(R.id.pic_bt);
         picBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 fileName = fileNameEt.getText().toString();
-                if(fileName.equals("")) {
+                if (fileName.equals("")) {
                     Util.showToast("Please input file name", DocumentActivity.this);
                     return;
                 }
@@ -137,18 +138,16 @@ public class DocumentActivity extends AppCompatActivity {
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
                     boolean permission1 = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
                     boolean permission2 = checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
-                    if(permission1 && permission2) {
+                    if (permission1 && permission2) {
                         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                         File file = new File(Environment.getExternalStorageDirectory() + File.separator + "image.jpg");
                         intent.putExtra(MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(DocumentActivity.this, getApplicationContext().getPackageName() + ".my.package.name.provider", file));
                         intent.putExtra("return-data", true);
                         startActivityForResult(intent, CAMERA_IMAGE);
-                    }
-                    else {
+                    } else {
                         Util.showToast("Please check storage permission and camera permission", DocumentActivity.this);
                     }
-                }
-                else {
+                } else {
                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     File file = new File(Environment.getExternalStorageDirectory() + File.separator + "image.jpg");
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(DocumentActivity.this, getApplicationContext().getPackageName() + ".my.package.name.provider", file));
@@ -158,12 +157,12 @@ public class DocumentActivity extends AppCompatActivity {
             }
         });
 
-        Button fileBt = (Button)documentUploadDialog.findViewById(R.id.file_bt);
+        Button fileBt = (Button) documentUploadDialog.findViewById(R.id.file_bt);
         fileBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 fileName = fileNameEt.getText().toString();
-                if(fileName.equals("")) {
+                if (fileName.equals("")) {
                     Util.showToast("Please input file name", DocumentActivity.this);
                     return;
                 }
@@ -181,7 +180,7 @@ public class DocumentActivity extends AppCompatActivity {
 
     private void uploadPicture() {
         String pictureString = BitmapToString(selectedBmp);
-        APIManager.getInstance().setCallback( new APIManagerCallback() {
+        APIManager.getInstance().setCallback(new APIManagerCallback() {
             @Override
             public void APICallback(JSONObject objAPIResult) {
                 Util.hideProgressDialog();
@@ -220,15 +219,16 @@ public class DocumentActivity extends AppCompatActivity {
             // Read file and return data
             byte[] data = new byte[length];
             f.readFully(data);
-            documentStr =  Base64.encodeToString(data, Base64.DEFAULT);
+            documentStr = Base64.encodeToString(data, Base64.DEFAULT);
             f.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        APIManager.getInstance().setCallback( new APIManagerCallback() {
+        APIManager.getInstance().setCallback(new APIManagerCallback() {
             @Override
             public void APICallback(JSONObject objAPIResult) {
                 Util.hideProgressDialog();
+                Log.d("file_upload_check", "APICallback: " + objAPIResult);
                 if (objAPIResult != null) {
                     try {
                         //if(objAPIResult.getString("StatusCode").equals("Success")) {
@@ -239,8 +239,10 @@ public class DocumentActivity extends AppCompatActivity {
                             Log.d("result", "success");
                         }*/
                     } catch (Exception e) {
-                        Util.showToast("Failed and try again", DocumentActivity.this);
+                        //Util.showToast("Failed and try again", DocumentActivity.this);
+                        e.printStackTrace();
                     }
+
                 } else {
                     Util.showToast("Failed and try again", DocumentActivity.this);
                 }
@@ -255,9 +257,9 @@ public class DocumentActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == -1) {
-            if(requestCode == CAMERA_IMAGE) {
-                File file = new File(Environment.getExternalStorageDirectory()+File.separator + "image.jpg");
+        if (resultCode == -1) {
+            if (requestCode == CAMERA_IMAGE) {
+                File file = new File(Environment.getExternalStorageDirectory() + File.separator + "image.jpg");
                 BitmapFactory.Options bmOptions = new BitmapFactory.Options();
                 Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath(), bmOptions);
                 try {
@@ -287,8 +289,7 @@ public class DocumentActivity extends AppCompatActivity {
                 Intent intent = new Intent(DocumentActivity.this, RotateImageActivity.class);
                 RotateImageActivity.bitmap = selectedBmp;
                 startActivity(intent);
-            }
-            else if(requestCode == DOCUMENT_FILE) {
+            } else if (requestCode == DOCUMENT_FILE) {
                 String filePath = data.getStringExtra(FilePickerActivity.RESULT_FILE_PATH);
                 File file = new File(filePath);
                 int dotPos = filePath.lastIndexOf(".");

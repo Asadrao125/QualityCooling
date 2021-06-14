@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -59,6 +60,8 @@ public class OrderItemAdapter extends BaseAdapter {
         View vi;
         if(position == 0) {
             vi = layoutInflater.inflate(R.layout.item_order_list_title, parent, false);
+            vi.setLayoutParams(new AbsListView.LayoutParams(-1,1));
+            vi.setVisibility(View.GONE);
         }
         else {
             vi = layoutInflater.inflate(R.layout.item_order_list, parent, false);

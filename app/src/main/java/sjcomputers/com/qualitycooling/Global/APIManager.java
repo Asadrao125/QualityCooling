@@ -201,6 +201,7 @@ public class APIManager {
         String API_URL = String.format("/UploadDocument?orderId=%d&userId=%d&authtoken=%s", orderId, userId, UserData.getInstance().authToken);
         JSONObject jsonObject = new JSONObject();
         try {
+
             jsonObject.accumulate("Name", name);
             jsonObject.accumulate("Content", documentStr);
 
@@ -449,6 +450,12 @@ public class APIManager {
             this.apiURL = apiURL;
             this.reqObject = reqParams;
             this.method = method;
+
+            System.out.println("--      Request Params: " + reqParams);
+            System.out.println("--      Api Url: " + apiURL);
+            System.out.println("--      Server Address: " + serverAddr);
+            System.out.println("--      Method: " + method);
+
         }
 
         @Override
