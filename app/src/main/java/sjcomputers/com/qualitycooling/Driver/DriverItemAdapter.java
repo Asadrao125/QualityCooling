@@ -263,7 +263,6 @@ public class DriverItemAdapter extends BaseAdapter {
             }
         }
         DriverItemActivity.tvActualCount.setText("Actual Count: " + j);
-        //DriverItemActivity.tvCount.setText("Count: " + itemOrderJSONArr.length());
         notifyDataSetChanged();
     }
 }
