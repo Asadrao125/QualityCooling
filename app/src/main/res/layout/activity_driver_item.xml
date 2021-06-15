@@ -124,11 +124,14 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <include layout="@layout/item_order_list_title"/>
+
             <ListView
                 android:id="@+id/item_lv"
                 android:layout_width="1100dp"
                 android:layout_height="match_parent"
                 android:divider="@null"
+                tools:listitem="@layout/item_order_list"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

@@ -18,6 +18,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import sjcomputers.com.qualitycooling.Driver.DriverItemActivity;
 import sjcomputers.com.qualitycooling.Global.APIManager;
 import sjcomputers.com.qualitycooling.Global.APIManagerCallback;
 import sjcomputers.com.qualitycooling.Global.Util;
@@ -58,17 +59,16 @@ public class OrderItemAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater layoutInflater = activity.getLayoutInflater();
         View vi;
-        if(position == 0) {
+        if (position == 0) {
             vi = layoutInflater.inflate(R.layout.item_order_list_title, parent, false);
-            vi.setLayoutParams(new AbsListView.LayoutParams(-1,1));
+            vi.setLayoutParams(new AbsListView.LayoutParams(-1, 1));
             vi.setVisibility(View.GONE);
-        }
-        else {
+        } else {
             vi = layoutInflater.inflate(R.layout.item_order_list, parent, false);
-            if(position % 2 == 1) {
+            if (position % 2 == 1) {
                 vi.setBackgroundColor(Color.WHITE);
 
-            }else {
+            } else {
                 vi.setBackgroundColor(Color.LTGRAY);
             }
             configureItemOrderList(vi, position);
@@ -78,9 +78,10 @@ public class OrderItemAdapter extends BaseAdapter {
     }
 
     public void showItemsWithStatus(int status) {
+        int j = 0;
         searchedItemOrderJSONArr = new JSONArray();
         searchedItemOrderList = new ArrayList<>();
-        for(int i = 0; i < itemOrderJSONArr.length(); i++) {
+        for (int i = 0; i < itemOrderJSONArr.length(); i++) {
             JSONObject itemOrderJSONObj = null;
             try {
                 itemOrderJSONObj = itemOrderJSONArr.getJSONObject(i);
@@ -88,25 +89,50 @@ public class OrderItemAdapter extends BaseAdapter {
                 e.printStackTrace();
             }
 
-            if(status == 0) {
+            if (status == 0) {
                 searchedItemOrderJSONArr.put(itemOrderJSONObj);
                 searchedItemOrderList.add(itemOrderList.get(i));
-            }
-            else if(status == 1) {
+
+                String pieceNo = null;
                 try {
-                    if(itemOrderJSONObj.getBoolean("IsCompleted")) {
+                    pieceNo = itemOrderJSONObj.getString("PieceNo");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                if (pieceNo != null && !pieceNo.isEmpty() && !pieceNo.equals("null")) {
+                    j++;
+                }
+                OrderItemActivity.visibleCountTv.setText("Visible Count: " + searchedItemOrderJSONArr.length());
+
+            } else if (status == 1) {
+                try {
+                    if (itemOrderJSONObj.getBoolean("IsCompleted")) {
                         searchedItemOrderJSONArr.put(itemOrderJSONObj);
                         searchedItemOrderList.add(itemOrderList.get(i));
+
+                        OrderItemActivity.visibleCountTv.setText("Visible Count: " + searchedItemOrderJSONArr.length());
+                        String pieceNo = itemOrderJSONObj.getString("PieceNo");
+                        if (pieceNo != null && !pieceNo.isEmpty() && !pieceNo.equals("null")) {
+                            j++;
+                        }
+
                     }
                 } catch (JSONException e) {
 
                 }
-            }
-            else {
+            } else {
                 try {
-                    if(!itemOrderJSONObj.getBoolean("IsCompleted")) {
+                    if (!itemOrderJSONObj.getBoolean("IsCompleted")) {
                         searchedItemOrderJSONArr.put(itemOrderJSONObj);
                         searchedItemOrderList.add(itemOrderList.get(i));
+
+                        OrderItemActivity.visibleCountTv.setText("Visible Count: " + searchedItemOrderJSONArr.length());
+                        String pieceNo = itemOrderJSONObj.getString("PieceNo");
+                        if (pieceNo != null && !pieceNo.isEmpty() && !pieceNo.equals("null")) {
+                            j++;
+                        }
+
                     }
                 } catch (JSONException e) {
 
@@ -115,20 +141,22 @@ public class OrderItemAdapter extends BaseAdapter {
         }
 
         OrderItemActivity.visibleCountTv.setText(String.format("Visible Count: %d", searchedItemOrderList.size()));
+        OrderItemActivity.tvActualCount.setText("Actual Count: " + j);
+        OrderItemActivity.countTv.setText(String.format("Count: %d", searchedItemOrderList.size()));
         notifyDataSetChanged();
     }
 
     public void configureItemOrderList(View vi, final int position) {
-        TextView pieceNoTv = (TextView)vi.findViewById(R.id.item_list_piece_no);
-        TextView nameTv = (TextView)vi.findViewById(R.id.item_list_name);
-        TextView quantityTv = (TextView)vi.findViewById(R.id.item_list_qty);
-        TextView widthTv = (TextView)vi.findViewById(R.id.item_list_width);
-        TextView depthTv = (TextView)vi.findViewById(R.id.item_list_depth);
-        TextView lengthTv = (TextView)vi.findViewById(R.id.item_list_length);
-        TextView descTv = (TextView)vi.findViewById(R.id.item_list_desc);
-        TextView linerTv = (TextView)vi.findViewById(R.id.item_list_liner);
-        TextView vanesTv = (TextView)vi.findViewById(R.id.item_list_vanes);
-        TextView damperTv = (TextView)vi.findViewById(R.id.item_list_damper);
+        TextView pieceNoTv = (TextView) vi.findViewById(R.id.item_list_piece_no);
+        TextView nameTv = (TextView) vi.findViewById(R.id.item_list_name);
+        TextView quantityTv = (TextView) vi.findViewById(R.id.item_list_qty);
+        TextView widthTv = (TextView) vi.findViewById(R.id.item_list_width);
+        TextView depthTv = (TextView) vi.findViewById(R.id.item_list_depth);
+        TextView lengthTv = (TextView) vi.findViewById(R.id.item_list_length);
+        TextView descTv = (TextView) vi.findViewById(R.id.item_list_desc);
+        TextView linerTv = (TextView) vi.findViewById(R.id.item_list_liner);
+        TextView vanesTv = (TextView) vi.findViewById(R.id.item_list_vanes);
+        TextView damperTv = (TextView) vi.findViewById(R.id.item_list_damper);
 
         final CheckBox loadedCb = (CheckBox) vi.findViewById(R.id.loaded_cb);
         final CheckBox deliveredCb = (CheckBox) vi.findViewById(R.id.delivered_cb);
@@ -160,15 +188,15 @@ public class OrderItemAdapter extends BaseAdapter {
                     itemOrderObj.put("IsCompleted", isChecked);
 
                     boolean allItemCompleted = true;
-                    for(int i = 0; i < itemOrderList.size(); i++) {
+                    for (int i = 0; i < itemOrderList.size(); i++) {
                         HashMap<String, Object> itemOrderObj = itemOrderList.get(i);
-                        if(!(boolean)itemOrderObj.get("IsCompleted")) {
+                        if (!(boolean) itemOrderObj.get("IsCompleted")) {
                             allItemCompleted = false;
                             break;
                         }
                     }
 
-                    if(allItemCompleted) {
+                    if (allItemCompleted) {
                         OrderItemActivity.handler.sendEmptyMessage(MSG_ORDER_ITEMS_MARK_COMPLETED);
                     }
 
@@ -222,30 +250,30 @@ public class OrderItemAdapter extends BaseAdapter {
                 if (objAPIResult != null) {
                     try {
                         //if(objAPIResult.getString("StatusCode").equals("Success")) {
-                            itemOrderJSONArr = objAPIResult.getJSONArray("Items");
-                            itemOrderList = Util.toList(itemOrderJSONArr);
+                        itemOrderJSONArr = objAPIResult.getJSONArray("Items");
+                        itemOrderList = Util.toList(itemOrderJSONArr);
 
-                            for(int i = 0; i < itemOrderJSONArr.length(); i++) {
-                                JSONObject itemOrderJSONObj = itemOrderJSONArr.getJSONObject(i);
-                                searchedItemOrderJSONArr.put(itemOrderJSONObj);
-                            }
+                        for (int i = 0; i < itemOrderJSONArr.length(); i++) {
+                            JSONObject itemOrderJSONObj = itemOrderJSONArr.getJSONObject(i);
+                            searchedItemOrderJSONArr.put(itemOrderJSONObj);
+                        }
 
-                            int itemCount = 0;
-                            for(int i = 0; i < itemOrderList.size(); i++) {
-                                HashMap<String, Object> itemOrderObj = itemOrderList.get(i);
-                                searchedItemOrderList.add(itemOrderObj);
+                        int itemCount = 0;
+                        for (int i = 0; i < itemOrderList.size(); i++) {
+                            HashMap<String, Object> itemOrderObj = itemOrderList.get(i);
+                            searchedItemOrderList.add(itemOrderObj);
 
-                                String itemName = (String) itemOrderObj.get("Name");
+                            String itemName = (String) itemOrderObj.get("Name");
                                 /*if(!itemName.equals("Slip") && !itemName.equals("Drive")) {
                                     itemCount ++;
                                 }*/
-                                itemCount ++;
-                            }
+                            itemCount++;
+                        }
 
-                            OrderItemActivity.countTv.setText(String.format("Count: %d", itemCount));
-                            //notifyDataSetChanged();
+                        OrderItemActivity.countTv.setText(String.format("Count: %d", itemCount));
+                        //notifyDataSetChanged();
 
-                            showItemsWithStatus(itemStatus);
+                        showItemsWithStatus(itemStatus);
                         /*} else {
                             Util.showToast("Failed and try again", activity);
                         }*/

@@ -248,19 +248,33 @@
                 android:layout_width="1100dp"
                 android:layout_height="match_parent"
                 android:divider="@null"
+                tools:listitem="@layout/item_order_list"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
         </LinearLayout>
+
     </HorizontalScrollView>
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12dp"
+        android:layout_marginBottom="8dp"
+        android:text="Count: 0"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/button_ll"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textView15"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
         android:layout_marginBottom="8dp"
         android:text="Visible Count: 0"
         android:textSize="16sp"
@@ -269,17 +283,16 @@
         app:layout_constraintStart_toEndOf="@+id/textView11" />
 
     <TextView
-        android:id="@+id/textView11"
+        android:id="@+id/tvActualCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginLeft="12dp"
-        android:layout_marginBottom="8dp"
-        android:text="Count: 0"
+        android:text="Actual Count: 0"
         android:textSize="16sp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginBottom="8dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/button_ll"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/textView15" />
 
     <Button
         android:id="@+id/button5"

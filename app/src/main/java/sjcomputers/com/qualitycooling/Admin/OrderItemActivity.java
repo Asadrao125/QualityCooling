@@ -98,7 +98,7 @@ public class OrderItemActivity extends AppCompatActivity {
     Button mClearButton;
     ImageView signatureIv;
     public static TextView countTv;
-    public static TextView visibleCountTv;
+    public static TextView visibleCountTv, tvActualCount;
 
     private ConstraintLayout landscapeCl;
 
@@ -202,6 +202,7 @@ public class OrderItemActivity extends AppCompatActivity {
         signatureBt = findViewById(R.id.button5);
         signatureBtLand = findViewById(R.id.button5_land);
         signatureIv = findViewById(R.id.imageView);
+        tvActualCount = findViewById(R.id.tvActualCount);
 
         int orientation = getResources().getConfiguration().orientation;
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
