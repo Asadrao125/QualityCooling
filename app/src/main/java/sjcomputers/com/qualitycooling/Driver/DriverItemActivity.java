@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -54,6 +55,7 @@ public class DriverItemActivity extends AppCompatActivity {
     Button btnScan;
     EditText edtManualInput;
     Handler handler2 = new Handler();
+    public static TextView tvCount, tvActualCount;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -151,6 +153,8 @@ public class DriverItemActivity extends AppCompatActivity {
 
         btnScan = findViewById(R.id.btnScan);
         edtManualInput = findViewById(R.id.edtManualInput);
+        tvCount = findViewById(R.id.tvCount);
+        tvActualCount = findViewById(R.id.tvActualCount);
 
         Button finishBt = findViewById(R.id.button9);
         finishBt.setOnClickListener(new View.OnClickListener() {
