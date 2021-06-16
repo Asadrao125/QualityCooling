@@ -112,10 +112,22 @@ public class DriverOrderActivity extends AppCompatActivity {
         statusSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (status != (position + 1)) {
-                    status = position + 1;
+
+                if (position == 0) {
+                    status = 1;
+                    DriverOrderAdapter.handler.sendEmptyMessage(MSG_REFRESH_ORDER);
+                } else if (position == 1) {
+                    status = 3;
+                    DriverOrderAdapter.handler.sendEmptyMessage(MSG_REFRESH_ORDER);
+                } else if (position == 2) {
+                    status = 4;
                     DriverOrderAdapter.handler.sendEmptyMessage(MSG_REFRESH_ORDER);
                 }
+
+                /*if (status != (position + 1)) {
+                    status = position + 1;
+                    DriverOrderAdapter.handler.sendEmptyMessage(MSG_REFRESH_ORDER);
+                }*/
             }
 
             @Override
