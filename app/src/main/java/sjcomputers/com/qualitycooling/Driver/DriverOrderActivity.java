@@ -55,7 +55,8 @@ public class DriverOrderActivity extends AppCompatActivity {
     public String DriverVehicleId;
     public static TextView tvCount, tvVisibleCount;
 
-    String[] statuses = {"Assigned Deliveries", "Open Deliveries", "Open Orders", "Completed"};
+    String[] statuses = {"Assigned Deliveries", "Open Orders", "Completed"};
+    //String[] statuses = {"Assigned Deliveries", "Open Deliveries", "Open Orders", "Completed"};
     private DriverOrderAdapter driverOrderAdapter;
 
     @Override
