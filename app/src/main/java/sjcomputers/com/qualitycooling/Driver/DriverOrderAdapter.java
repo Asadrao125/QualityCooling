@@ -70,11 +70,13 @@ public class DriverOrderAdapter extends BaseAdapter {
                 if (msg.what == MSG_ORDER_DELIVERED) {
                     getDriverOrders();
                 } else if (msg.what == MSG_REFRESH_ORDER) {
+
                     isFirstRead = true;
                     isFirstSpinnerSelect = true;
 
                     initValue();
                     getDriverOrders();
+
                 }
             }
         };
@@ -106,6 +108,7 @@ public class DriverOrderAdapter extends BaseAdapter {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 vehicleId = DriverOrderActivity.vehicleIdList.get(position);
                 getDriverOrders();
+                Util.hideProgressDialog();
                 Log.d("kknkfkjjll", "onItemSelected: " + vehicleId);
             }
 
@@ -138,7 +141,7 @@ public class DriverOrderAdapter extends BaseAdapter {
         View vi;
         if (position == 0) {
             vi = layoutInflater.inflate(R.layout.item_driver_order_title, parent, false);
-            vi.setLayoutParams(new AbsListView.LayoutParams(-1,1));
+            vi.setLayoutParams(new AbsListView.LayoutParams(-1, 1));
             vi.setVisibility(View.GONE);
         } else {
             vi = layoutInflater.inflate(R.layout.item_driver_order, parent, false);
@@ -323,7 +326,7 @@ public class DriverOrderAdapter extends BaseAdapter {
                 APIManager.getInstance().setCallback(new APIManagerCallback() {
                     @Override
                     public void APICallback(JSONObject objAPIResult) {
-                        Util.hideProgressDialog();
+                        //Util.hideProgressDialog();
                         if (objAPIResult != null) {
                             try {
                                 //if(objAPIResult.getString("StatusCode").equals("Success")) {
@@ -384,7 +387,7 @@ public class DriverOrderAdapter extends BaseAdapter {
                     }
                 });
 
-                Util.showProgressDialog("Getting orders..", activity);
+                //Util.showProgressDialog("Getting orders..", activity);
                 Log.d("lldkkhdkhd", "run: \n" + DriverOrderActivity.status + "\n" + curIndex * readCount + "\n" + readCount + "\n" + DriverOrderActivity.driverSearchInEt.getText().toString() + "\n" + vehicleId);
 
                 if (vehicleId == null || vehicleId.isEmpty()) {
@@ -395,7 +398,6 @@ public class DriverOrderAdapter extends BaseAdapter {
                 APIManager.getInstance().getDriverOrders(DriverOrderActivity.status, curIndex * readCount, readCount, DriverOrderActivity.driverSearchInEt.getText().toString(), vehicleId);
             }
         }, 100);
-        Util.hideProgressDialog();
     }
 
     public void configureSearch() {
