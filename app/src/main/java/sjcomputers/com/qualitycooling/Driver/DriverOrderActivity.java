@@ -3,6 +3,7 @@ package sjcomputers.com.qualitycooling.Driver;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
@@ -231,12 +232,22 @@ public class DriverOrderActivity extends AppCompatActivity {
     }*/
 
     public void getVehicles() {
-        //ProgressDialog pd = new ProgressDialog(this);
+        /*ProgressDialog pd = new ProgressDialog(this);
+        pd.setMessage("Loading Vehicles..");
+        pd.setCanceledOnTouchOutside(false);
+        pd.show();*/
         APIManager apiManager = new APIManager();
         apiManager.setCallback(new APIManagerCallback() {
             @Override
             public void APICallback(JSONObject objAPIResult) {
-                //pd.dismiss();
+                /*Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        pd.dismiss();
+                    }
+                }, 2000);*/
+
                 if (objAPIResult != null) {
                     try {
                         if (objAPIResult.getString("Status").equals("Success")) {
@@ -272,8 +283,5 @@ public class DriverOrderActivity extends AppCompatActivity {
             }
         });
         apiManager.getVehicleList();
-      /*pd.setMessage("Loading Vehicles..");
-        pd.setCanceledOnTouchOutside(false);
-        pd.show();*/
     }
 }

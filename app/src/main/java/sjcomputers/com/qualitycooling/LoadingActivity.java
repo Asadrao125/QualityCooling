@@ -39,6 +39,7 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 import androidx.annotation.Nullable;
@@ -180,12 +181,15 @@ public class LoadingActivity extends AppCompatActivity {
                                 if (loadingModelArrayList.size() > 1 || loadingModelArrayList.size() > 0) {
                                     loadingModelArrayList.remove(loadingModelArrayList.size() - 1);
                                 }
+                                Collections.reverse(loadingModelArrayList);
                                 showDialog2(OrderId, objAPIResult.getString("Message"), Customer, JobSite);
                             }
 
                             if (ShowPopup.equals("1")) {
                                 showDialog(Button1Text, Button2Text, inNumber, "Notification");
                             }
+
+                            Collections.reverse(loadingModelArrayList);
 
 
                         } else {

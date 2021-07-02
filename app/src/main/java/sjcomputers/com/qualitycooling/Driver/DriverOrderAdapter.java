@@ -2,6 +2,7 @@ package sjcomputers.com.qualitycooling.Driver;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -318,86 +319,92 @@ public class DriverOrderAdapter extends BaseAdapter {
     }
 
     public void getDriverOrders() {
-        final Handler handler = new Handler();
+        Handler handler = new Handler();
+        ProgressDialog pd = new ProgressDialog(activity);
+        pd.setMessage("Getting orders..");
+        pd.setCanceledOnTouchOutside(false);
+        pd.show();
+
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                //Do something after 100ms
-                APIManager.getInstance().setCallback(new APIManagerCallback() {
-                    @Override
-                    public void APICallback(JSONObject objAPIResult) {
-                        //Util.hideProgressDialog();
-                        if (objAPIResult != null) {
-                            try {
-                                //if(objAPIResult.getString("StatusCode").equals("Success")) {
-                                JSONArray orderJSONArr = objAPIResult.getJSONArray("Orders");
-                                DriverOrderActivity.tvCount.setText("Count: " + orderJSONArr.length());
-                                DriverOrderActivity.tvVisibleCount.setText("Visible Count: " + orderJSONArr.length());
-                                driverOrderArry = Util.toList(orderJSONArr);
+                pd.dismiss();
+            }
+        }, 1000);
 
-                                int totalCount = objAPIResult.getInt("Count");
-                                if (totalCount % readCount == 0) {
-                                    lastIndex = totalCount / readCount - 1;
-                                } else {
-                                    lastIndex = totalCount / readCount;
-                                }
+        APIManager.getInstance().setCallback(new APIManagerCallback() {
+            @Override
+            public void APICallback(JSONObject objAPIResult) {
+                //Util.hideProgressDialog();
+                if (objAPIResult != null) {
+                    try {
+                        //if(objAPIResult.getString("StatusCode").equals("Success")) {
+                        JSONArray orderJSONArr = objAPIResult.getJSONArray("Orders");
+                        DriverOrderActivity.tvCount.setText("Count: " + orderJSONArr.length());
+                        DriverOrderActivity.tvVisibleCount.setText("Visible Count: " + orderJSONArr.length());
+                        driverOrderArry = Util.toList(orderJSONArr);
 
-                                if (isFirstRead) {
-                                    String[] pages = new String[lastIndex + 1];
-                                    for (int i = 0; i < lastIndex + 1; i++) {
-                                        pages[i] = String.valueOf(i + 1);
+                        int totalCount = objAPIResult.getInt("Count");
+                        if (totalCount % readCount == 0) {
+                            lastIndex = totalCount / readCount - 1;
+                        } else {
+                            lastIndex = totalCount / readCount;
+                        }
+
+                        if (isFirstRead) {
+                            String[] pages = new String[lastIndex + 1];
+                            for (int i = 0; i < lastIndex + 1; i++) {
+                                pages[i] = String.valueOf(i + 1);
+                            }
+
+                            final ArrayAdapter<String> pageSpinnerAdapter = new ArrayAdapter<String>(activity, R.layout.item_spinner, pages);
+                            DriverOrderActivity.pageSpinner.setAdapter(pageSpinnerAdapter);
+                            DriverOrderActivity.pageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                @Override
+                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                    if (!isFirstSpinnerSelect) {
+                                        curIndex = position;
+                                        getDriverOrders();
                                     }
 
-                                    final ArrayAdapter<String> pageSpinnerAdapter = new ArrayAdapter<String>(activity, R.layout.item_spinner, pages);
-                                    DriverOrderActivity.pageSpinner.setAdapter(pageSpinnerAdapter);
-                                    DriverOrderActivity.pageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                                        @Override
-                                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                                            if (!isFirstSpinnerSelect) {
-                                                curIndex = position;
-                                                getDriverOrders();
-                                            }
-
-                                            isFirstSpinnerSelect = false;
-                                        }
-
-                                        @Override
-                                        public void onNothingSelected(AdapterView<?> parent) {
-
-                                        }
-                                    });
+                                    isFirstSpinnerSelect = false;
                                 }
 
-                                isFirstRead = false;
+                                @Override
+                                public void onNothingSelected(AdapterView<?> parent) {
 
-                                searchedDriverOrderArr = (ArrayList<HashMap<String, Object>>) driverOrderArry.clone();
-                                notifyDataSetChanged();
-                                if (driverOrderArry.size() == 0) {
-                                    Util.showToast("No order to pick up", activity);
                                 }
+                            });
+                        }
+
+                        isFirstRead = false;
+
+                        searchedDriverOrderArr = (ArrayList<HashMap<String, Object>>) driverOrderArry.clone();
+                        notifyDataSetChanged();
+                        if (driverOrderArry.size() == 0) {
+                            Util.showToast("No order to pick up", activity);
+                        }
                         /*} else {
                             Util.showToast("Failed and try again", activity);
                         }*/
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        } else {
-                            Util.showToast("Failed and try again", activity);
-                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                });
-
-                //Util.showProgressDialog("Getting orders..", activity);
-                Log.d("lldkkhdkhd", "run: \n" + DriverOrderActivity.status + "\n" + curIndex * readCount + "\n" + readCount + "\n" + DriverOrderActivity.driverSearchInEt.getText().toString() + "\n" + vehicleId);
-
-                if (vehicleId == null || vehicleId.isEmpty()) {
-                    vehicleId = "0";
+                } else {
+                    Util.showToast("Failed and try again", activity);
                 }
-
-                Log.d("statusmjnj", "run: " + DriverOrderActivity.status);
-                APIManager.getInstance().getDriverOrders(DriverOrderActivity.status, curIndex * readCount, readCount, DriverOrderActivity.driverSearchInEt.getText().toString(), vehicleId);
             }
-        }, 100);
+        });
+
+        //Util.showProgressDialog("Getting orders..", activity);
+        Log.d("lldkkhdkhd", "run: \n" + DriverOrderActivity.status + "\n" + curIndex * readCount + "\n" + readCount + "\n" + DriverOrderActivity.driverSearchInEt.getText().toString() + "\n" + vehicleId);
+
+        if (vehicleId == null || vehicleId.isEmpty()) {
+            vehicleId = "0";
+        }
+
+        Log.d("statusmjnj", "run: " + DriverOrderActivity.status);
+        APIManager.getInstance().getDriverOrders(DriverOrderActivity.status, curIndex * readCount, readCount, DriverOrderActivity.driverSearchInEt.getText().toString(), vehicleId);
     }
 
     public void configureSearch() {

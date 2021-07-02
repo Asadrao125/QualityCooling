@@ -43,6 +43,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import static sjcomputers.com.qualitycooling.Global.Util.MSG_SERIAL_SCANNED;
 
@@ -249,12 +250,16 @@ public class DeliveredActivity extends AppCompatActivity {
                                 if (knockedTogetherModelArrayList.size() > 1 || knockedTogetherModelArrayList.size() > 0) {
                                     knockedTogetherModelArrayList.remove(knockedTogetherModelArrayList.size() - 1);
                                 }
+                                Collections.reverse(knockedTogetherModelArrayList);
                                 showDialog2(OrderId, objAPIResult.getString("Message"), customer, jobSite, inNumber);
                             }
 
                             if (ShowPopup.equals("1")) {
                                 showDialog(Button1Text, Button2Text, inNumber, "Notification");
                             }
+
+                            Collections.reverse(knockedTogetherModelArrayList);
+
                         }
 
                     } catch (Exception e) {
