@@ -49,6 +49,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -86,8 +89,8 @@ public class KnockedTogetherActivity extends AppCompatActivity {
             public void handleMessage(Message msg) {
                 if (msg.what == MSG_SERIAL_SCANNED) {
                     String scanResult = (String) msg.obj;
-                    checkcheckcheck(scanResult);
-                    inputVal = scanResult;
+                    checkcheckcheck(encodeURLPathComponent(scanResult));
+                    inputVal = encodeURLPathComponent(scanResult);
                 }
             }
         };
@@ -114,13 +117,13 @@ public class KnockedTogetherActivity extends AppCompatActivity {
         });
 
         showSoftKeyboard(edtManualInput);
-        /* edtManualInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        /*edtManualInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
                 if (i == EditorInfo.IME_ACTION_DONE) {
                     String input = edtManualInput.getText().toString().trim();
                     if (!TextUtils.isEmpty(input)) {
-                        checkcheckcheck(input);
+                        checkcheckcheck(encodeURLPathComponent(input));
                         inputVal = input;
                         edtManualInput.setText("");
                     } else {
@@ -131,6 +134,7 @@ public class KnockedTogetherActivity extends AppCompatActivity {
                 return false;
             }
         });*/
+
         edtManualInput.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -144,8 +148,8 @@ public class KnockedTogetherActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             String serial = charSequence.toString();
-                            checkcheckcheck(serial);
-                            inputVal = serial;
+                            checkcheckcheck(encodeURLPathComponent(serial));
+                            inputVal = encodeURLPathComponent(serial);
                             edtManualInput.setText("");
                         }
                     }, 2000);
@@ -396,4 +400,14 @@ public class KnockedTogetherActivity extends AppCompatActivity {
         super.onDestroy();
         lastLoc = "";
     }
+
+    public static String encodeURLPathComponent(String path) {
+        try {
+            return new URI(null, null, path, null).toASCIIString();
+        } catch (URISyntaxException e) {
+            // do some error handling
+        }
+        return "";
+    }
+
 }

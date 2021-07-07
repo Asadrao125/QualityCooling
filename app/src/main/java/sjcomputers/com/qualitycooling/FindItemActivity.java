@@ -32,6 +32,8 @@ import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 
 import static sjcomputers.com.qualitycooling.Global.Util.MSG_SERIAL_SCANNED;
@@ -63,7 +65,7 @@ public class FindItemActivity extends AppCompatActivity {
             public void handleMessage(Message msg) {
                 if (msg.what == MSG_SERIAL_SCANNED) {
                     String scanResult = (String) msg.obj;
-                    getItems(scanResult);
+                    getItems(encodeURLPathComponent(scanResult));
                 }
             }
         };
@@ -197,6 +199,15 @@ public class FindItemActivity extends AppCompatActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public static String encodeURLPathComponent(String path) {
+        try {
+            return new URI(null, null, path, null).toASCIIString();
+        } catch (URISyntaxException e) {
+            // do some error handling
+        }
+        return "";
     }
 
 }

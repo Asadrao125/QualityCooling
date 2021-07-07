@@ -31,6 +31,8 @@ import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -73,9 +75,9 @@ public class ItemInfoActivity extends AppCompatActivity {
             public void handleMessage(Message msg) {
                 if (msg.what == MSG_SERIAL_SCANNED) {
                     String scanResult = (String) msg.obj;
-                    itemInfo(scanResult);
-                    itemList(scanResult);
-                    val = scanResult;
+                    itemInfo(encodeURLPathComponent(scanResult));
+                    itemList(encodeURLPathComponent(scanResult));
+                    val = encodeURLPathComponent(scanResult);
                 }
             }
         };
@@ -327,4 +329,14 @@ public class ItemInfoActivity extends AppCompatActivity {
             imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
         }
     }
+
+    public static String encodeURLPathComponent(String path) {
+        try {
+            return new URI(null, null, path, null).toASCIIString();
+        } catch (URISyntaxException e) {
+            // do some error handling
+        }
+        return "";
+    }
+
 }

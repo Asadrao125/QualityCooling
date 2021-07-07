@@ -93,6 +93,7 @@ public class Util {
     public static void hideProgressDialog() {
         if(progressDlg != null) {
             progressDlg.dismiss();
+            progressDlg.cancel();
         }
     }
 

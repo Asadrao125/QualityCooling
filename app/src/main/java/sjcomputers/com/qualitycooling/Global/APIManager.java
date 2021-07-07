@@ -369,6 +369,7 @@ public class APIManager {
     /***************************************** Methods By Asad ********************************************************/
 
     public void knockedTogether(String scanResult, String lastLoc) {
+        Log.d("scandkdnknk", "knockedTogether: " + scanResult);
         String API_URL = String.format("/KnockedTogether?scannedValue=%s&location=%s&userid=%d&authtoken=%s", scanResult, lastLoc, UserData.getInstance().userId, UserData.getInstance().authToken);
         APITask task = new APITask(SERVER_ADDR, API_URL, null, HTTP_POST);
         task.execute((Void) null);
