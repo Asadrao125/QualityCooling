@@ -1,9 +1,7 @@
 package sjcomputers.com.qualitycooling.Driver;
 
-import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
@@ -16,7 +14,6 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -27,7 +24,6 @@ import java.util.TimerTask;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import sjcomputers.com.qualitycooling.Adapters.KnockedTogetherAdapter;
 import sjcomputers.com.qualitycooling.Global.APIManager;
 import sjcomputers.com.qualitycooling.Global.APIManagerCallback;
 import sjcomputers.com.qualitycooling.Global.UserData;
@@ -41,12 +37,10 @@ import static sjcomputers.com.qualitycooling.Global.Util.MSG_REFRESH_ORDER;
 
 public class DriverOrderActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
-
     public static EditText driverSearchInEt;
     public static EditText driverSearchCusEt;
     public static int orderId;
     public static int status;
-
     public static Button prevBt;
     public static Button nextBt;
     public static Spinner pageSpinner;

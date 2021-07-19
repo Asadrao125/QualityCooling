@@ -184,6 +184,10 @@ public class DriverOrderAdapter extends BaseAdapter {
         final String status = (String) orderObj.get("Status");
         pickBt.setText(status);
 
+        if (status.equals("Ready for Delivery") || status.equals("Loaded") || status.equals("On Delivery")) {
+            vi.setBackgroundColor(activity.getResources().getColor(R.color.green));
+        }
+
         pickBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
